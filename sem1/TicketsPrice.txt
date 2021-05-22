@@ -1,0 +1,3 @@
+Economy 6000
+First 20000
+Business 90000
