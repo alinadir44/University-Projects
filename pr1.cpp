@@ -43,7 +43,6 @@ int searcharr(char arr[][50],int size,char *str)
 
 int ViewProperties();
 int checkpass(char *str);
-//superclass
 //base class of PROPERTY hierarchy
 class property{
 	protected:
