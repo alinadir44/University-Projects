@@ -1,0 +1,5048 @@
+Microsoft (R) Macro Assembler Version 14.29.30133.0	    02/10/22 17:14:10
+Text.asm						     Page 1 - 1
+
+
+				INCLUDE Irvine32.inc
+			      C ; Include file for Irvine32.lib             (Irvine32.inc)
+			      C 
+			      C ;OPTION CASEMAP:NONE		; optional: make identifiers case-sensitive
+			      C 
+			      C INCLUDE SmallWin.inc		; MS-Windows prototypes, structures, and constants
+			      C .NOLIST
+			      C .LIST
+			      C 
+			      C INCLUDE VirtualKeys.inc
+			      C ; VirtualKeys.inc
+			      C .NOLIST
+			      C .LIST
+			      C 
+			      C 
+			      C .NOLIST
+			      C .LIST
+			      C 
+				includelib kernel32.lib
+				include macros.inc
+			      C .NOLIST
+			      C .LIST
+			      C 
+
+
+ 00000000			.data
+ 00000000  00000005 [		arr1 dword 5 dup(6)
+	    00000006
+	   ]
+ 00000014 = 00000014		rowsize=($-arr1)
+ 00000014  00000005 [		dword 5 dup(6)
+	    00000006
+	   ]
+ 00000028  00000005 [		dword 5 dup(6)
+	    00000006
+	   ]
+ 0000003C  00000005 [		dword 5 dup(6)
+	    00000006
+	   ]
+ 00000050  00000005 [		dword 5 dup(6)
+	    00000006
+	   ]
+ 00000064  00000005 [		dword 5 dup(6)
+	    00000006
+	   ]
+ 00000078  00000005 [		dword 5 dup(6)
+	    00000006
+	   ]
+ 0000008C  00000005 [		dword 5 dup(6)
+	    00000006
+	   ]
+
+
+ 000000A0 4D 6F 6E 64 61	days byte "Monday   ",0
+	   79 20 20 20 00
+ 000000AA = 0000000A		daysize=($-days)
+ 000000AA  54 75 65 73 64	     byte "Tuesday  ",0
+	   61 79 20 20 00
+ 000000B4  57 65 64 6E 65	     byte "Wednesday",0
+	   73 64 61 79 00
+ 000000BE  54 68 75 72 73	     byte "Thursday ",0
+	   64 61 79 20 00
+ 000000C8  46 72 69 64 61	     byte "Friday   ",0
+	   79 20 20 20 00
+ 000000D2  0000000A [		tempstr byte 10 dup(0)
+	    00
+	   ]
+
+ 00000012			LPSYSTEMTIME STRUCT
+ 00000000  0000			    wYear       WORD ?
+ 00000002  0000			    wMonth      WORD ?
+ 00000004  0000			    wDayOfWeek  WORD ?
+ 00000006  0000			    wDay        WORD ?
+ 00000008  0000			    wHour       WORD ?
+ 0000000A  0000			    wMinute     WORD ?
+ 0000000C  0000			    wSecond     WORD ?
+ 0000000E  0000			    wMilliseconds WORD ?
+ 00000010  0000			    wDate       WORD ?
+				LPSYSTEMTIME ENDS
+
+ 000000DC 0000 0000 0000	localt LPSYSTEMTIME <>
+	   0000 0000 0000
+	   0000 0000 0000
+
+ = 00000032			maxlength=50
+ 000000EE 00000000		valid dword 0
+ 000000F2  0000000A [		id byte 10 dup(?)
+	    00
+	   ]
+ 000000FC 00000000		size1 dword ?
+ 00000100  00000006 [		duplicate dword 6 dup(?)
+	    00000000
+	   ]
+ 00000118 00000000		valid1 dword 0
+ 0000011C 00000000		yearchoice dword ?
+ 00000120 00000000		locked1 dword 0
+ 00000124  00000006 [		crarr dword 6 dup(?)
+	    00000000
+	   ]
+ 0000013C 00000000		overwrite1 dword 0
+ 00000140 00000000		gotcredits dword 0
+				;********************2d array for timetable*******************
+ 00000144  00000005 [		table1 byte 5 dup(6)
+	    06
+	   ]
+ 00000149 = 00000005		ftrowsize=($-table1)
+ = 00000005			colsize=lengthof table1
+ 00000149  00000005 [		byte 5 dup(6)
+	    06
+	   ]
+ 0000014E  00000005 [		byte 5 dup(6)
+	    06
+	   ]
+ 00000153  00000005 [		byte 5 dup(6)
+	    06
+	   ]
+ 00000158  00000005 [		byte 5 dup(6)
+	    06
+	   ]
+ 0000015D  00000005 [		byte 5 dup(6)
+	    06
+	   ]
+ 00000162  00000005 [		byte 5 dup(6)
+	    06
+	   ]
+ 00000167  00000005 [		byte 5 dup(6)
+	    06
+	   ]
+				;********************2d array for timetable*******************
+
+				;********************array for chosen subjects*******************
+				;*********6 subjects to be selected**********
+				;**************array of subject strings***************
+ 0000016C  00000006 [		mysubjects dword 6 dup(?)
+	    00000000
+	   ]
+ 00000184  00000006 [		subflag dword 6 dup(0)
+	    00000000
+	   ]
+ 0000019C  00000006 [		subgpa dword 6 dup(0)
+	    00000000
+	   ]
+
+ 000001B4  00000005 [		sub1 dword 5 dup(?)
+	    00000000
+	   ]
+ 000001C8  00000005 [		sub2 dword 5 dup(?)
+	    00000000
+	   ]
+ 000001DC  00000005 [		sub3 dword 5 dup(?)
+	    00000000
+	   ]
+ 000001F0  00000005 [		sub4 dword 5 dup(?)
+	    00000000
+	   ]
+ 00000204  00000005 [		sub5 dword 5 dup(?)
+	    00000000
+	   ]
+ 00000218  00000005 [		sub6 dword 5 dup(?)
+	    00000000
+	   ]
+				;********************2d array for chosen subjects*******************
+
+				;********************2d array for 1st yr strings*******************
+				;***********lengths kept equal
+ 0000022C 45 6E 67 6C 69	first byte "English Composition and Comprehension  ",0
+	   73 68 20 43 6F
+	   6D 70 6F 73 69
+	   74 69 6F 6E 20
+	   61 6E 64 20 43
+	   6F 6D 70 72 65
+	   68 65 6E 73 69
+	   6F 6E 20 20 00
+ 00000254 = 00000028		firstrowsize=($-first)
+ = 0000000B			firstsize=11
+ 00000254  41 70 70 6C 69	   byte	   "Applied Physics                        ",0
+	   65 64 20 50 68
+	   79 73 69 63 73
+	   20 20 20 20 20
+	   20 20 20 20 20
+	   20 20 20 20 20
+	   20 20 20 20 20
+	   20 20 20 20 00
+ 0000027C  49 73 6C 61 6D	   byte	   "Islamiyat                              ",0
+	   69 79 61 74 20
+	   20 20 20 20 20
+	   20 20 20 20 20
+	   20 20 20 20 20
+	   20 20 20 20 20
+	   20 20 20 20 20
+	   20 20 20 20 00
+ 000002A4  50 72 6F 67 72	   byte    "Programming Fundamentals               ",0
+	   61 6D 6D 69 6E
+	   67 20 46 75 6E
+	   64 61 6D 65 6E
+	   74 61 6C 73 20
+	   20 20 20 20 20
+	   20 20 20 20 20
+	   20 20 20 20 00
+ 000002CC  43 61 6C 63 75	   byte    "Calculus                               ",0
+	   6C 75 73 20 20
+	   20 20 20 20 20
+	   20 20 20 20 20
+	   20 20 20 20 20
+	   20 20 20 20 20
+	   20 20 20 20 20
+	   20 20 20 20 00
+ 000002F4  49 6E 66 6F 72	   byte    "Information and Computer Technology    ",0
+	   6D 61 74 69 6F
+	   6E 20 61 6E 64
+	   20 43 6F 6D 70
+	   75 74 65 72 20
+	   54 65 63 68 6E
+	   6F 6C 6F 67 79
+	   20 20 20 20 00
+ 0000031C  4F 62 6A 65 63	   byte    "Object Oriented Programming            ",0
+	   74 20 4F 72 69
+	   65 6E 74 65 64
+	   20 50 72 6F 67
+	   72 61 6D 6D 69
+	   6E 67 20 20 20
+	   20 20 20 20 20
+	   20 20 20 20 00
+ 00000344  43 6F 6D 6D 75	   byte    "Communication and Presentation Skills  ",0
+	   6E 69 63 61 74
+	   69 6F 6E 20 61
+	   6E 64 20 50 72
+	   65 73 65 6E 74
+	   61 74 69 6F 6E
+	   20 53 6B 69 6C
+	   6C 73 20 20 00
+ 0000036C  44 69 67 69 74	   byte    "Digital Logic Design                   ",0
+	   61 6C 20 4C 6F
+	   67 69 63 20 44
+	   65 73 69 67 6E
+	   20 20 20 20 20
+	   20 20 20 20 20
+	   20 20 20 20 20
+	   20 20 20 20 00
+ 00000394  50 61 6B 69 73	   byte    "Pakistan Studies                       ",0
+	   74 61 6E 20 53
+	   74 75 64 69 65
+	   73 20 20 20 20
+	   20 20 20 20 20
+	   20 20 20 20 20
+	   20 20 20 20 20
+	   20 20 20 20 00
+ 000003BC  44 69 66 66 65	   byte    "Differential Equations                 ",0
+	   72 65 6E 74 69
+	   61 6C 20 45 71
+	   75 61 74 69 6F
+	   6E 73 20 20 20
+	   20 20 20 20 20
+	   20 20 20 20 20
+	   20 20 20 20 00
+				;********************2d array for 1st yr strings*******************
+
+				;********************2d array for 2nd strings*******************
+ 000003E4 44 61 74 61 20	second byte "Data Structures                     ",0
+	   53 74 72 75 63
+	   74 75 72 65 73
+	   20 20 20 20 20
+	   20 20 20 20 20
+	   20 20 20 20 20
+	   20 20 20 20 20
+	   20 00
+ 00000409 = 00000025		secondrowsize=($-second)
+ = 0000000B			secondsize=11
+ 00000409  43 6F 6D 70 75	   byte	    "Computer Organization Assembly Lang.",0
+	   74 65 72 20 4F
+	   72 67 61 6E 69
+	   7A 61 74 69 6F
+	   6E 20 41 73 73
+	   65 6D 62 6C 79
+	   20 4C 61 6E 67
+	   2E 00
+ 0000042E  44 69 73 63 72	   byte	    "Discrete Structures                 ",0
+	   65 74 65 20 53
+	   74 72 75 63 74
+	   75 72 65 73 20
+	   20 20 20 20 20
+	   20 20 20 20 20
+	   20 20 20 20 20
+	   20 00
+ 00000453  4C 69 6E 65 61	   byte     "Linear Algebra                      ",0
+	   72 20 41 6C 67
+	   65 62 72 61 20
+	   20 20 20 20 20
+	   20 20 20 20 20
+	   20 20 20 20 20
+	   20 20 20 20 20
+	   20 00
+ 00000478  46 75 6E 64 61	   byte     "Fundamentals Of Management          ",0
+	   6D 65 6E 74 61
+	   6C 73 20 4F 66
+	   20 4D 61 6E 61
+	   67 65 6D 65 6E
+	   74 20 20 20 20
+	   20 20 20 20 20
+	   20 00
+ 0000049D  50 73 79 63 68	   byte     "Psychology                          ",0
+	   6F 6C 6F 67 79
+	   20 20 20 20 20
+	   20 20 20 20 20
+	   20 20 20 20 20
+	   20 20 20 20 20
+	   20 20 20 20 20
+	   20 00
+ 000004C2  53 6F 63 69 6F	   byte     "Sociology                           ",0
+	   6C 6F 67 79 20
+	   20 20 20 20 20
+	   20 20 20 20 20
+	   20 20 20 20 20
+	   20 20 20 20 20
+	   20 20 20 20 20
+	   20 00
+ 000004E7  44 61 74 61 42	   byte     "DataBase Systems                    ",0
+	   61 73 65 20 53
+	   79 73 74 65 6D
+	   73 20 20 20 20
+	   20 20 20 20 20
+	   20 20 20 20 20
+	   20 20 20 20 20
+	   20 00
+ 0000050C  4F 70 65 72 61	   byte     "Operating Systems                   ",0
+	   74 69 6E 67 20
+	   53 79 73 74 65
+	   6D 73 20 20 20
+	   20 20 20 20 20
+	   20 20 20 20 20
+	   20 20 20 20 20
+	   20 00
+ 00000531  44 65 73 69 67	   byte     "Design and Analysis of Algorithms   ",0
+	   6E 20 61 6E 64
+	   20 41 6E 61 6C
+	   79 73 69 73 20
+	   6F 66 20 41 6C
+	   67 6F 72 69 74
+	   68 6D 73 20 20
+	   20 00
+ 00000556  50 72 6F 62 61	   byte     "Probability & Statistics            ",0
+	   62 69 6C 69 74
+	   79 20 26 20 53
+	   74 61 74 69 73
+	   74 69 63 73 20
+	   20 20 20 20 20
+	   20 20 20 20 20
+	   20 00
+				;********************2d array for 2nd strings*******************
+
+				;********************2d array for 3rd strings*******************
+ 0000057B 54 68 65 6F 72	third byte  "Theory of Automata                  ",0
+	   79 20 6F 66 20
+	   41 75 74 6F 6D
+	   61 74 61 20 20
+	   20 20 20 20 20
+	   20 20 20 20 20
+	   20 20 20 20 20
+	   20 00
+ 000005A0 = 00000025		thirdrowsize=($-third)
+ = 0000000B			thirdsize=11
+ 000005A0  43 6F 6D 70 75	   byte	    "Computer Networks                   ",0
+	   74 65 72 20 4E
+	   65 74 77 6F 72
+	   6B 73 20 20 20
+	   20 20 20 20 20
+	   20 20 20 20 20
+	   20 20 20 20 20
+	   20 00
+ 000005C5  41 75 74 6F 6D	   byte	    "Automated Systems                   ",0
+	   61 74 65 64 20
+	   53 79 73 74 65
+	   6D 73 20 20 20
+	   20 20 20 20 20
+	   20 20 20 20 20
+	   20 20 20 20 20
+	   20 00
+ 000005EA  50 72 6F 62 61	   byte     "Probabilistic Models                ",0
+	   62 69 6C 69 73
+	   74 69 63 20 4D
+	   6F 64 65 6C 73
+	   20 20 20 20 20
+	   20 20 20 20 20
+	   20 20 20 20 20
+	   20 00
+ 0000060F  53 6F 66 74 77	   byte     "Software Design and Analysis        ",0
+	   61 72 65 20 44
+	   65 73 69 67 6E
+	   20 61 6E 64 20
+	   41 6E 61 6C 79
+	   73 69 73 20 20
+	   20 20 20 20 20
+	   20 00
+ 00000634  54 65 63 68 6E	   byte     "Technical & Business Writing        ",0
+	   69 63 61 6C 20
+	   26 20 42 75 73
+	   69 6E 65 73 73
+	   20 57 72 69 74
+	   69 6E 67 20 20
+	   20 20 20 20 20
+	   20 00
+ 00000659  4E 75 6D 65 72	   byte     "Numerical Computing                 ",0
+	   69 63 61 6C 20
+	   43 6F 6D 70 75
+	   74 69 6E 67 20
+	   20 20 20 20 20
+	   20 20 20 20 20
+	   20 20 20 20 20
+	   20 00
+ 0000067E  53 6F 66 74 77	   byte     "Software Engineering                ",0
+	   61 72 65 20 45
+	   6E 67 69 6E 65
+	   65 72 69 6E 67
+	   20 20 20 20 20
+	   20 20 20 20 20
+	   20 20 20 20 20
+	   20 00
+ 000006A3  50 61 72 61 6C	   byte     "Parallel & Distributed Computing    ",0
+	   6C 65 6C 20 26
+	   20 44 69 73 74
+	   72 69 62 75 74
+	   65 64 20 43 6F
+	   6D 70 75 74 69
+	   6E 67 20 20 20
+	   20 00
+ 000006C8  41 72 74 69 66	   byte     "Artificial Intelligence             ",0
+	   69 63 69 61 6C
+	   20 49 6E 74 65
+	   6C 6C 69 67 65
+	   6E 63 65 20 20
+	   20 20 20 20 20
+	   20 20 20 20 20
+	   20 00
+ 000006ED  42 6C 6F 63 6B	   byte     "BlockChain                          ",0
+	   43 68 61 69 6E
+	   20 20 20 20 20
+	   20 20 20 20 20
+	   20 20 20 20 20
+	   20 20 20 20 20
+	   20 20 20 20 20
+	   20 00
+				;********************2d array for 3rd strings*******************
+
+				;********************2d array for 4th strings*******************
+
+ 00000712 46 69 6E 61 6C	fourth byte "Final Year Project-I                ",0
+	   20 59 65 61 72
+	   20 50 72 6F 6A
+	   65 63 74 2D 49
+	   20 20 20 20 20
+	   20 20 20 20 20
+	   20 20 20 20 20
+	   20 00
+ 00000737 = 00000025		fourthrowsize=($-fourth)
+ = 0000000B			fourthsize=11
+ 00000737  49 6E 66 6F 72	   byte		"Information Security                ",0
+	   6D 61 74 69 6F
+	   6E 20 53 65 63
+	   75 72 69 74 79
+	   20 20 20 20 20
+	   20 20 20 20 20
+	   20 20 20 20 20
+	   20 00
+ 0000075C  50 72 6F 66 65	   byte		"Professional Practices              ",0
+	   73 73 69 6F 6E
+	   61 6C 20 50 72
+	   61 63 74 69 63
+	   65 73 20 20 20
+	   20 20 20 20 20
+	   20 20 20 20 20
+	   20 00
+ 00000781  57 65 62 20 44	   byte		"Web Development                     ",0
+	   65 76 65 6C 6F
+	   70 6D 65 6E 74
+	   20 20 20 20 20
+	   20 20 20 20 20
+	   20 20 20 20 20
+	   20 20 20 20 20
+	   20 00
+ 000007A6  48 61 72 64 77	   byte		"Hardware Design                     ",0
+	   61 72 65 20 44
+	   65 73 69 67 6E
+	   20 20 20 20 20
+	   20 20 20 20 20
+	   20 20 20 20 20
+	   20 20 20 20 20
+	   20 00
+ 000007CB  46 69 6E 61 6C	   byte		"Final Year Project-II               ",0
+	   20 59 65 61 72
+	   20 50 72 6F 6A
+	   65 63 74 2D 49
+	   49 20 20 20 20
+	   20 20 20 20 20
+	   20 20 20 20 20
+	   20 00
+ 000007F0  45 74 68 69 63	   byte		"Ethical Hacking                     ",0
+	   61 6C 20 48 61
+	   63 6B 69 6E 67
+	   20 20 20 20 20
+	   20 20 20 20 20
+	   20 20 20 20 20
+	   20 20 20 20 20
+	   20 00
+ 00000815  44 61 74 61 20	   byte		"Data Visualization                  ",0
+	   56 69 73 75 61
+	   6C 69 7A 61 74
+	   69 6F 6E 20 20
+	   20 20 20 20 20
+	   20 20 20 20 20
+	   20 20 20 20 20
+	   20 00
+ 0000083A  44 61 74 61 20	   byte		"Data Analysis                       ",0
+	   41 6E 61 6C 79
+	   73 69 73 20 20
+	   20 20 20 20 20
+	   20 20 20 20 20
+	   20 20 20 20 20
+	   20 20 20 20 20
+	   20 00
+ 0000085F  52 6F 62 6F 74	   byte		"Robotics                            ",0
+	   69 63 73 20 20
+	   20 20 20 20 20
+	   20 20 20 20 20
+	   20 20 20 20 20
+	   20 20 20 20 20
+	   20 20 20 20 20
+	   20 00
+ 00000884  4F 72 67 61 6E	   byte		"Organizational Management           ",0
+	   69 7A 61 74 69
+	   6F 6E 61 6C 20
+	   4D 61 6E 61 67
+	   65 6D 65 6E 74
+	   20 20 20 20 20
+	   20 20 20 20 20
+	   20 00
+				;********************2d array for 4th strings*******************
+
+				;***************arrays for subject marks*************************
+
+				;***************arrays for subject marks*************************
+
+
+ 00000000			.code
+ 00000000			main PROC
+ 00000000			o1:
+ 00000000  E8 00000000 E	call clrscr
+ 00000005  68 000000F2 R	push offset id
+ 0000000A  E8 00001484		call login
+ 0000000F  B8 00000000		mov eax,0
+ 00000014  39 05 000000EE R	cmp valid,eax
+ 0000001A  75 21		jne out1
+ 0000001C  E8 00000000 E	call crlf
+				mwrite "ID entered is invalid. Enter 1 to try again, or 2 to exit: "
+ 000008A9		     1		.data		
+ 000008A9 49 44 20 65 6E     1		??0000 BYTE "ID entered is invalid. Enter 1 to try again, or 2 to exit: ",0	
+	   74 65 72 65 64
+	   20 69 73 20 69
+	   6E 76 61 6C 69
+	   64 2E 20 45 6E
+	   74 65 72 20 31
+	   20 74 6F 20 74
+	   72 79 20 61 67
+	   61 69 6E 2C 20
+	   6F 72 20 32 20
+	   74 6F 20 65 78
+	   69 74 3A 20 00
+ 00000021		     1		.code
+ 00000021  52		     1		push	edx
+ 00000022  BA 000008A9 R     1		mov	edx,OFFSET ??0000
+ 00000027  E8 00000000 E     1		call	WriteString
+ 0000002C  5A		     1		pop	edx
+ 0000002D  E8 00000000 E	call readint
+ 00000032  83 F8 02		cmp eax,2
+ 00000035  0F 84 000000E7	je e2
+ 0000003B  E2 C3		loop o1
+
+ 0000003D			out1:
+ 0000003D  E8 00000000 E	call crlf
+				mwrite "Welcome user "
+ 000008E5		     1		.data		
+ 000008E5 57 65 6C 63 6F     1		??0001 BYTE "Welcome user ",0	
+	   6D 65 20 75 73
+	   65 72 20 00
+ 00000042		     1		.code
+ 00000042  52		     1		push	edx
+ 00000043  BA 000008E5 R     1		mov	edx,OFFSET ??0001
+ 00000048  E8 00000000 E     1		call	WriteString
+ 0000004D  5A		     1		pop	edx
+ 0000004E  BA 000000F2 R	mov edx,offset id
+ 00000053  E8 00000000 E	call writestring
+
+				;display menu only after subjects have been entered 
+ 00000058  68 0000016C R	push offset mysubjects
+ 0000005D  E8 000011EC		call setsubjects
+
+				mwrite <0ah,0dh,"Enter any key to proceed...">
+ 000008F3		     1		.data		
+ 000008F3 0A 0D 45 6E 74     1		??0002 BYTE 0ah,0dh,"Enter any key to proceed...",0	
+	   65 72 20 61 6E
+	   79 20 6B 65 79
+	   20 74 6F 20 70
+	   72 6F 63 65 65
+	   64 2E 2E 2E 00
+ 00000062		     1		.code
+ 00000062  52		     1		push	edx
+ 00000063  BA 000008F3 R     1		mov	edx,OFFSET ??0002
+ 00000068  E8 00000000 E     1		call	WriteString
+ 0000006D  5A		     1		pop	edx
+ 0000006E  50			push eax
+ 0000006F  E8 00000000 E	call readchar
+ 00000074  58			pop eax
+
+				;loop until user logs out
+ 00000075			kl1:
+ 00000075  E8 00000000 E	call clrscr
+ 0000007A  E8 000013A7		call displaymenu
+ 0000007F  E8 00000000 E	call readint
+ 00000084  83 F8 08		cmp eax,8
+ 00000087  0F 84 00000095	je e2
+ 0000008D  83 F8 01		cmp eax,1
+ 00000090  74 1E		je case1
+ 00000092  83 F8 02		cmp eax,2
+ 00000095  74 31		je case2
+ 00000097  83 F8 03		cmp eax,3
+ 0000009A  74 3D		je case3
+ 0000009C  83 F8 04		cmp eax,4
+ 0000009F  74 3F		je case4
+ 000000A1  83 F8 05		cmp eax,5
+ 000000A4  74 41		je case5
+ 000000A6  83 F8 06		cmp eax,6
+ 000000A9  74 43		je case6
+ 000000AB  83 F8 07		cmp eax,7
+ 000000AE  74 52		je case7
+
+ 000000B0			case1:
+ 000000B0  E8 00001148		call displaysubs
+				mwrite <"Press any key to continue...">
+ 00000911		     1		.data		
+ 00000911 50 72 65 73 73     1		??0003 BYTE "Press any key to continue...",0	
+	   20 61 6E 79 20
+	   6B 65 79 20 74
+	   6F 20 63 6F 6E
+	   74 69 6E 75 65
+	   2E 2E 2E 00
+ 000000B5		     1		.code
+ 000000B5  52		     1		push	edx
+ 000000B6  BA 00000911 R     1		mov	edx,OFFSET ??0003
+ 000000BB  E8 00000000 E     1		call	WriteString
+ 000000C0  5A		     1		pop	edx
+ 000000C1  E8 00000000 E	call readchar
+ 000000C6  EB AD		jmp kl1
+ 000000C8			case2:
+ 000000C8  E8 00000814		call setmarks
+ 000000CD  C7 05 0000013C R	mov overwrite1,0
+	   00000000
+ 000000D7  EB 9C		jmp kl1
+ 000000D9			case3:
+ 000000D9  E8 00000424		call viewrecords
+ 000000DE  EB 95		jmp kl1
+ 000000E0			case4:
+ 000000E0  E8 0000027B		call getchallan
+ 000000E5  EB 8E		jmp kl1
+ 000000E7			case5:
+ 000000E7  E8 0000004E		call gettranscript
+ 000000EC  EB 87		jmp kl1
+ 000000EE			case6:
+ 000000EE  68 0000016C R	push offset mysubjects
+ 000000F3  68 00000000 R	push offset arr1
+ 000000F8  E8 00001432		call settable
+ 000000FD  E9 FFFFFF73		jmp kl1
+ 00000102			case7:
+				mwrite <0ah,0dh,"Viewing table">
+ 0000092E		     1		.data		
+ 0000092E 0A 0D 56 69 65     1		??0004 BYTE 0ah,0dh,"Viewing table",0	
+	   77 69 6E 67 20
+	   74 61 62 6C 65
+	   00
+ 00000102		     1		.code
+ 00000102  52		     1		push	edx
+ 00000103  BA 0000092E R     1		mov	edx,OFFSET ??0004
+ 00000108  E8 00000000 E     1		call	WriteString
+ 0000010D  5A		     1		pop	edx
+ 0000010E  E8 00000000 E	call readchar
+ 00000113  E8 00000000 E	call clrscr
+ 00000118  E8 0000171B		call viewtable
+ 0000011D  E9 FFFFFF53		jmp kl1
+				;
+ 00000122			e2:
+ 00000122  E8 00000000 E	call crlf
+				mwrite "Now exiting..."
+ 0000093E		     1		.data		
+ 0000093E 4E 6F 77 20 65     1		??0005 BYTE "Now exiting...",0	
+	   78 69 74 69 6E
+	   67 2E 2E 2E 00
+ 00000127		     1		.code
+ 00000127  52		     1		push	edx
+ 00000128  BA 0000093E R     1		mov	edx,OFFSET ??0005
+ 0000012D  E8 00000000 E     1		call	WriteString
+ 00000132  5A		     1		pop	edx
+				exit
+ 0000013A			main endp
+
+ 0000013A			gettranscript proc uses eax edx ecx esi
+
+ 0000013E  A1 00000140 R	mov eax,gotcredits
+ 00000143  83 F8 00		cmp eax,0
+ 00000146  0F 84 0000018F	je invld
+
+ 0000014C  B9 00000006		mov ecx,6
+ 00000151  BE 00000000		mov esi,0
+ 00000156			loo1:
+ 00000156  8B 04 B5		mov eax,subflag[esi*type subflag]
+	   00000184 R
+ 0000015D  83 F8 00		cmp eax,0
+ 00000160  0F 84 00000175	je invld
+ 00000166  8B 04 B5		mov eax,subgpa[esi*type subgpa]
+	   0000019C R
+ 0000016D  83 F8 00		cmp eax,0
+ 00000170  0F 84 00000165	je invld
+ 00000176  46			inc esi
+ 00000177  E2 DD		loop loo1
+
+				mwrite <0ah,0dh,"Warning: Generating transcript will lock your grades in the system. Enter 1 to continue, any other key to return: ">
+ 0000094D		     1		.data		
+ 0000094D 0A 0D 57 61 72     1		??0006 BYTE 0ah,0dh,"Warning: Generating transcript will lock your grades in the system. Enter 1 to continue, any other key to return: ",0	
+	   6E 69 6E 67 3A
+	   20 47 65 6E 65
+	   72 61 74 69 6E
+	   67 20 74 72 61
+	   6E 73 63 72 69
+	   70 74 20 77 69
+	   6C 6C 20 6C 6F
+	   63 6B 20 79 6F
+	   75 72 20 67 72
+	   61 64 65 73 20
+	   69 6E 20 74 68
+	   65 20 73 79 73
+	   74 65 6D 2E 20
+	   45 6E 74 65 72
+	   20 31 20 74 6F
+	   20 63 6F 6E 74
+	   69 6E 75 65 2C
+	   20 61 6E 79 20
+	   6F 74 68 65 72
+	   20 6B 65 79 20
+	   74 6F 20 72 65
+	   74 75 72 6E 3A
+	   20 00
+ 00000179		     1		.code
+ 00000179  52		     1		push	edx
+ 0000017A  BA 0000094D R     1		mov	edx,OFFSET ??0006
+ 0000017F  E8 00000000 E     1		call	WriteString
+ 00000184  5A		     1		pop	edx
+ 00000185  E8 00000000 E	call readint
+ 0000018A  83 F8 01		cmp eax,1
+ 0000018D  0F 85 00000156	jne scc
+ 00000193  C7 05 00000120 R	mov locked1,1
+	   00000001
+
+ 0000019D  B8 000000FA		mov eax,250
+ 000001A2  E8 00000000 E	call delay
+				mwrite <0ah,0dh,"Now generating your transcript...">
+ 000009C2		     1		.data		
+ 000009C2 0A 0D 4E 6F 77     1		??0007 BYTE 0ah,0dh,"Now generating your transcript...",0	
+	   20 67 65 6E 65
+	   72 61 74 69 6E
+	   67 20 79 6F 75
+	   72 20 74 72 61
+	   6E 73 63 72 69
+	   70 74 2E 2E 2E
+	   00
+ 000001A7		     1		.code
+ 000001A7  52		     1		push	edx
+ 000001A8  BA 000009C2 R     1		mov	edx,OFFSET ??0007
+ 000001AD  E8 00000000 E     1		call	WriteString
+ 000001B2  5A		     1		pop	edx
+ 000001B3  B8 000000FA		mov eax,250
+ 000001B8  E8 00000000 E	call delay
+
+ 000001BD  BE 00000000		mov esi,0
+ 000001C2  BF 00000006		mov edi,6
+ 000001C7  B9 00000006		mov ecx,6
+
+ 000001CC  E8 00000000 E	call crlf
+ 000001D1  E8 00000000 E	call crlf
+				mwrite <0ah,0dh,"TRANSCRIPT FOR STUDENT ">
+ 000009E6		     1		.data		
+ 000009E6 0A 0D 54 52 41     1		??0008 BYTE 0ah,0dh,"TRANSCRIPT FOR STUDENT ",0	
+	   4E 53 43 52 49
+	   50 54 20 46 4F
+	   52 20 53 54 55
+	   44 45 4E 54 20
+	   00
+ 000001D6		     1		.code
+ 000001D6  52		     1		push	edx
+ 000001D7  BA 000009E6 R     1		mov	edx,OFFSET ??0008
+ 000001DC  E8 00000000 E     1		call	WriteString
+ 000001E1  5A		     1		pop	edx
+ 000001E2  BA 000000F2 R	mov edx,offset id
+ 000001E7  E8 00000000 E	call writestring
+				mwrite <0ah,0dh,"YEAR ">
+ 00000A00		     1		.data		
+ 00000A00 0A 0D 59 45 41     1		??0009 BYTE 0ah,0dh,"YEAR ",0	
+	   52 20 00
+ 000001EC		     1		.code
+ 000001EC  52		     1		push	edx
+ 000001ED  BA 00000A00 R     1		mov	edx,OFFSET ??0009
+ 000001F2  E8 00000000 E     1		call	WriteString
+ 000001F7  5A		     1		pop	edx
+ 000001F8  A1 0000011C R	mov eax,yearchoice
+ 000001FD  E8 00000000 E	call writedec
+
+ 00000202  E8 00000000 E	call crlf
+ 00000207  E8 00000000 E	call crlf
+ 0000020C  E8 00000000 E	call crlf
+				mwrite <0ah,0dh,"||                Subject                |  GPA  |  Grade  ||">
+ 00000A08		     1		.data		
+ 00000A08 0A 0D 7C 7C 20     1		??000A BYTE 0ah,0dh,"||                Subject                |  GPA  |  Grade  ||",0	
+	   20 20 20 20 20
+	   20 20 20 20 20
+	   20 20 20 20 20
+	   53 75 62 6A 65
+	   63 74 20 20 20
+	   20 20 20 20 20
+	   20 20 20 20 20
+	   20 20 20 7C 20
+	   20 47 50 41 20
+	   20 7C 20 20 47
+	   72 61 64 65 20
+	   20 7C 7C 00
+ 00000211		     1		.code
+ 00000211  52		     1		push	edx
+ 00000212  BA 00000A08 R     1		mov	edx,OFFSET ??000A
+ 00000217  E8 00000000 E     1		call	WriteString
+ 0000021C  5A		     1		pop	edx
+ 0000021D  E8 00000000 E	call crlf
+ 00000222			itlp1:
+				mwrite "  "
+ 00000A48		     1		.data		
+ 00000A48 20 20 00	     1		??000B BYTE "  ",0	
+ 00000222		     1		.code
+ 00000222  52		     1		push	edx
+ 00000223  BA 00000A48 R     1		mov	edx,OFFSET ??000B
+ 00000228  E8 00000000 E     1		call	WriteString
+ 0000022D  5A		     1		pop	edx
+ 0000022E  8B 14 B5		mov edx,mysubjects[esi*type mysubjects]
+	   0000016C R
+ 00000235  E8 00000000 E	call writestring
+				mwrite "  "
+ 00000A4B		     1		.data		
+ 00000A4B 20 20 00	     1		??000C BYTE "  ",0	
+ 0000023A		     1		.code
+ 0000023A  52		     1		push	edx
+ 0000023B  BA 00000A4B R     1		mov	edx,OFFSET ??000C
+ 00000240  E8 00000000 E     1		call	WriteString
+ 00000245  5A		     1		pop	edx
+ 00000246  8B 04 B5		mov eax,subgpa[esi*type subgpa]
+	   0000019C R
+ 0000024D  E8 00000000 E	call writedec
+				mwrite ".00    "
+ 00000A4E		     1		.data		
+ 00000A4E 2E 30 30 20 20     1		??000D BYTE ".00    ",0	
+	   20 20 00
+ 00000252		     1		.code
+ 00000252  52		     1		push	edx
+ 00000253  BA 00000A4E R     1		mov	edx,OFFSET ??000D
+ 00000258  E8 00000000 E     1		call	WriteString
+ 0000025D  5A		     1		pop	edx
+ 0000025E  83 F8 04		cmp eax,4
+ 00000261  74 0F		je apluss
+ 00000263  83 F8 03		cmp eax,3
+ 00000266  74 18		je ab1
+ 00000268  83 F8 02		cmp eax,2
+ 0000026B  74 21		je cd1
+ 0000026D  83 F8 01		cmp eax,1
+ 00000270  74 2A		je fa1
+
+ 00000272			apluss:
+				mwrite <"A/+",0ah,0dh>
+ 00000A56		     1		.data		
+ 00000A56 41 2F 2B 0A 0D     1		??000E BYTE "A/+",0ah,0dh,0	
+	   00
+ 00000272		     1		.code
+ 00000272  52		     1		push	edx
+ 00000273  BA 00000A56 R     1		mov	edx,OFFSET ??000E
+ 00000278  E8 00000000 E     1		call	WriteString
+ 0000027D  5A		     1		pop	edx
+ 0000027E  EB 2A		jmp sdf1
+
+ 00000280			ab1:
+				mwrite <"A/B",0ah,0dh>
+ 00000A5C		     1		.data		
+ 00000A5C 41 2F 42 0A 0D     1		??000F BYTE "A/B",0ah,0dh,0	
+	   00
+ 00000280		     1		.code
+ 00000280  52		     1		push	edx
+ 00000281  BA 00000A5C R     1		mov	edx,OFFSET ??000F
+ 00000286  E8 00000000 E     1		call	WriteString
+ 0000028B  5A		     1		pop	edx
+ 0000028C  EB 1C		jmp sdf1
+
+ 0000028E			cd1:
+				mwrite <"C/D",0ah,0dh>
+ 00000A62		     1		.data		
+ 00000A62 43 2F 44 0A 0D     1		??0010 BYTE "C/D",0ah,0dh,0	
+	   00
+ 0000028E		     1		.code
+ 0000028E  52		     1		push	edx
+ 0000028F  BA 00000A62 R     1		mov	edx,OFFSET ??0010
+ 00000294  E8 00000000 E     1		call	WriteString
+ 00000299  5A		     1		pop	edx
+ 0000029A  EB 0E		jmp sdf1
+
+ 0000029C			fa1:
+				mwrite <"F",0ah,0dh>
+ 00000A68		     1		.data		
+ 00000A68 46 0A 0D 00	     1		??0011 BYTE "F",0ah,0dh,0	
+ 0000029C		     1		.code
+ 0000029C  52		     1		push	edx
+ 0000029D  BA 00000A68 R     1		mov	edx,OFFSET ??0011
+ 000002A2  E8 00000000 E     1		call	WriteString
+ 000002A7  5A		     1		pop	edx
+ 000002A8  EB 00		jmp sdf1
+ 000002AA			sdf1:
+ 000002AA  46			inc esi
+ 000002AB  83 EF 01		sub edi,1
+ 000002AE  0F 85 FFFFFF6E	jnz itlp1
+
+ 000002B4			breaklp:
+
+ 000002B4  E8 00000046		call getsgpa
+
+ 000002B9  E8 00000000 E	call crlf
+ 000002BE  E8 00000000 E	call crlf
+ 000002C3  B8 000000FA		mov eax,250
+ 000002C8  E8 00000000 E	call delay
+				mwrite <"Transcript Generated.">
+ 00000A6C		     1		.data		
+ 00000A6C 54 72 61 6E 73     1		??0012 BYTE "Transcript Generated.",0	
+	   63 72 69 70 74
+	   20 47 65 6E 65
+	   72 61 74 65 64
+	   2E 00
+ 000002CD		     1		.code
+ 000002CD  52		     1		push	edx
+ 000002CE  BA 00000A6C R     1		mov	edx,OFFSET ??0012
+ 000002D3  E8 00000000 E     1		call	WriteString
+ 000002D8  5A		     1		pop	edx
+ 000002D9  EB 0E		jmp scc
+
+ 000002DB			invld:
+				mwrite <0ah,0dh,"Error. Could not generate transcript. Marks not entered completely, GPA not yet calculated, or Fee challan not generated.">
+ 00000A82		     1		.data		
+ 00000A82 0A 0D 45 72 72     1		??0013 BYTE 0ah,0dh,"Error. Could not generate transcript. Marks not entered completely, GPA not yet calculated, or Fee challan not generated.",0	
+	   6F 72 2E 20 43
+	   6F 75 6C 64 20
+	   6E 6F 74 20 67
+	   65 6E 65 72 61
+	   74 65 20 74 72
+	   61 6E 73 63 72
+	   69 70 74 2E 20
+	   4D 61 72 6B 73
+	   20 6E 6F 74 20
+	   65 6E 74 65 72
+	   65 64 20 63 6F
+	   6D 70 6C 65 74
+	   65 6C 79 2C 20
+	   47 50 41 20 6E
+	   6F 74 20 79 65
+	   74 20 63 61 6C
+	   63 75 6C 61 74
+	   65 64 2C 20 6F
+	   72 20 46 65 65
+	   20 63 68 61 6C
+	   6C 61 6E 20 6E
+	   6F 74 20 67 65
+	   6E 65 72 61 74
+	   65 64 2E 00
+ 000002DB		     1		.code
+ 000002DB  52		     1		push	edx
+ 000002DC  BA 00000A82 R     1		mov	edx,OFFSET ??0013
+ 000002E1  E8 00000000 E     1		call	WriteString
+ 000002E6  5A		     1		pop	edx
+ 000002E7  EB 00		jmp scc
+
+ 000002E9			scc:
+				mwrite <0ah,0dh,"Press any key to continue...">
+ 00000AFE		     1		.data		
+ 00000AFE 0A 0D 50 72 65     1		??0014 BYTE 0ah,0dh,"Press any key to continue...",0	
+	   73 73 20 61 6E
+	   79 20 6B 65 79
+	   20 74 6F 20 63
+	   6F 6E 74 69 6E
+	   75 65 2E 2E 2E
+	   00
+ 000002E9		     1		.code
+ 000002E9  52		     1		push	edx
+ 000002EA  BA 00000AFE R     1		mov	edx,OFFSET ??0014
+ 000002EF  E8 00000000 E     1		call	WriteString
+ 000002F4  5A		     1		pop	edx
+ 000002F5  E8 00000000 E	call readchar
+				ret
+ 000002FF			gettranscript endp
+
+ 000002FF			getsgpa proc uses eax esi
+				local onecount:dword,twocount:dword
+ 00000307  C7 45 F8		mov twocount,0
+	   00000000
+ 0000030E  C7 45 FC		mov onecount,0
+	   00000000
+ 00000315  BE 00000000		mov esi,0
+ 0000031A  B9 00000006		mov ecx,6
+ 0000031F			ulp1:
+ 0000031F  8B 04 B5		mov eax,subgpa[esi*type subgpa]
+	   0000019C R
+ 00000326  8B 1C B5		mov ebx,crarr[esi*type crarr]
+	   00000124 R
+ 0000032D  01 5D F8		add twocount,ebx
+ 00000330  F7 E3		mul ebx
+ 00000332  01 45 FC		add onecount,eax
+ 00000335  46			inc esi
+ 00000336  E2 E7		loop ulp1
+
+ 00000338  8B 5D F8		mov ebx,twocount
+ 0000033B  8B 45 FC		mov eax,onecount
+ 0000033E  99			cdq
+ 0000033F  F7 F3		div ebx
+
+
+				mwrite <0ah,0dh,"Over GPA for this academic year (SGPA) is: ">
+ 00000B1D		     1		.data		
+ 00000B1D 0A 0D 4F 76 65     1		??0015 BYTE 0ah,0dh,"Over GPA for this academic year (SGPA) is: ",0	
+	   72 20 47 50 41
+	   20 66 6F 72 20
+	   74 68 69 73 20
+	   61 63 61 64 65
+	   6D 69 63 20 79
+	   65 61 72 20 28
+	   53 47 50 41 29
+	   20 69 73 3A 20
+	   00
+ 00000341		     1		.code
+ 00000341  52		     1		push	edx
+ 00000342  BA 00000B1D R     1		mov	edx,OFFSET ??0015
+ 00000347  E8 00000000 E     1		call	WriteString
+ 0000034C  5A		     1		pop	edx
+ 0000034D  E8 00000000 E	call writedec
+ 00000352  E8 00000000 E	call crlf
+ 00000357  E8 00000000 E	call crlf
+				ret
+ 00000360			getsgpa endp
+
+ 00000360			getchallan proc uses esi edi eax ebx ecx edx
+				local stotal:dword
+				;crarr[6]:dword
+ 0000036C  E8 0000014A		call getcreditcost;cost in eax
+ 00000371  50			push eax
+
+ 00000372  C7 45 FC		mov stotal,0
+	   00000000
+ 00000379  BE 0000016C R	mov esi,offset mysubjects
+ 0000037E  BF 00000000		mov edi,0
+ 00000383  B9 00000006		mov ecx,6
+
+ 00000388			la1:
+				mwrite <0ah,0dh,"Enter credit hours for ">
+ 00000B4B		     1		.data		
+ 00000B4B 0A 0D 45 6E 74     1		??0016 BYTE 0ah,0dh,"Enter credit hours for ",0	
+	   65 72 20 63 72
+	   65 64 69 74 20
+	   68 6F 75 72 73
+	   20 66 6F 72 20
+	   00
+ 00000388		     1		.code
+ 00000388  52		     1		push	edx
+ 00000389  BA 00000B4B R     1		mov	edx,OFFSET ??0016
+ 0000038E  E8 00000000 E     1		call	WriteString
+ 00000393  5A		     1		pop	edx
+ 00000394  8B 16		mov edx,[esi]
+ 00000396  E8 00000000 E	call writestring
+				mwrite ": "
+ 00000B65		     1		.data		
+ 00000B65 3A 20 00	     1		??0017 BYTE ": ",0	
+ 0000039B		     1		.code
+ 0000039B  52		     1		push	edx
+ 0000039C  BA 00000B65 R     1		mov	edx,OFFSET ??0017
+ 000003A1  E8 00000000 E     1		call	WriteString
+ 000003A6  5A		     1		pop	edx
+ 000003A7  E8 00000000 E	call readint
+ 000003AC  89 04 BD		mov crarr[edi*type crarr],eax
+	   00000124 R
+ 000003B3  83 C6 04		add esi,4
+ 000003B6  47			inc edi
+ 000003B7  E2 CF		loop la1
+
+ 000003B9  58			pop eax;cost in eax
+ 000003BA  8B D8		mov ebx,eax
+ 000003BC  BE 0000016C R	mov esi,offset mysubjects
+ 000003C1  BF 00000000		mov edi,0
+ 000003C6  B9 00000006		mov ecx,6
+ 000003CB  E8 00000000 E	call crlf
+ 000003D0  E8 00000000 E	call crlf
+				mwrite<"Now printing fee challan...">
+ 00000B68		     1		.data		
+ 00000B68 4E 6F 77 20 70     1		??0018 BYTE "Now printing fee challan...",0	
+	   72 69 6E 74 69
+	   6E 67 20 66 65
+	   65 20 63 68 61
+	   6C 6C 61 6E 2E
+	   2E 2E 00
+ 000003D5		     1		.code
+ 000003D5  52		     1		push	edx
+ 000003D6  BA 00000B68 R     1		mov	edx,OFFSET ??0018
+ 000003DB  E8 00000000 E     1		call	WriteString
+ 000003E0  5A		     1		pop	edx
+ 000003E1  E8 00000000 E	call crlf
+ 000003E6  E8 00000000 E	call crlf
+				mwrite<"*********************************FEE CHALLAN FOR USER ">
+ 00000B84		     1		.data		
+ 00000B84 2A 2A 2A 2A 2A     1		??0019 BYTE "*********************************FEE CHALLAN FOR USER ",0	
+	   2A 2A 2A 2A 2A
+	   2A 2A 2A 2A 2A
+	   2A 2A 2A 2A 2A
+	   2A 2A 2A 2A 2A
+	   2A 2A 2A 2A 2A
+	   2A 2A 2A 46 45
+	   45 20 43 48 41
+	   4C 4C 41 4E 20
+	   46 4F 52 20 55
+	   53 45 52 20 00
+ 000003EB		     1		.code
+ 000003EB  52		     1		push	edx
+ 000003EC  BA 00000B84 R     1		mov	edx,OFFSET ??0019
+ 000003F1  E8 00000000 E     1		call	WriteString
+ 000003F6  5A		     1		pop	edx
+ 000003F7  BA 000000F2 R	mov edx,offset id
+ 000003FC  E8 00000000 E	call writestring
+				mwrite<"*********************************">
+ 00000BBB		     1		.data		
+ 00000BBB 2A 2A 2A 2A 2A     1		??001A BYTE "*********************************",0	
+	   2A 2A 2A 2A 2A
+	   2A 2A 2A 2A 2A
+	   2A 2A 2A 2A 2A
+	   2A 2A 2A 2A 2A
+	   2A 2A 2A 2A 2A
+	   2A 2A 2A 00
+ 00000401		     1		.code
+ 00000401  52		     1		push	edx
+ 00000402  BA 00000BBB R     1		mov	edx,OFFSET ??001A
+ 00000407  E8 00000000 E     1		call	WriteString
+ 0000040C  5A		     1		pop	edx
+
+ 0000040D  E8 00000000 E	call crlf
+ 00000412  E8 00000000 E	call crlf
+ 00000417			lla2:
+				mwrite <0ah,0dh,"For ">
+ 00000BDD		     1		.data		
+ 00000BDD 0A 0D 46 6F 72     1		??001B BYTE 0ah,0dh,"For ",0	
+	   20 00
+ 00000417		     1		.code
+ 00000417  52		     1		push	edx
+ 00000418  BA 00000BDD R     1		mov	edx,OFFSET ??001B
+ 0000041D  E8 00000000 E     1		call	WriteString
+ 00000422  5A		     1		pop	edx
+ 00000423  8B 16		mov edx,[esi]
+ 00000425  E8 00000000 E	call writestring
+				mwrite <": ",0ah,0dh>
+ 00000BE4		     1		.data		
+ 00000BE4 3A 20 0A 0D 00     1		??001C BYTE ": ",0ah,0dh,0	
+ 0000042A		     1		.code
+ 0000042A  52		     1		push	edx
+ 0000042B  BA 00000BE4 R     1		mov	edx,OFFSET ??001C
+ 00000430  E8 00000000 E     1		call	WriteString
+ 00000435  5A		     1		pop	edx
+				mwrite <"Credit Hours: ">
+ 00000BE9		     1		.data		
+ 00000BE9 43 72 65 64 69     1		??001D BYTE "Credit Hours: ",0	
+	   74 20 48 6F 75
+	   72 73 3A 20 00
+ 00000436		     1		.code
+ 00000436  52		     1		push	edx
+ 00000437  BA 00000BE9 R     1		mov	edx,OFFSET ??001D
+ 0000043C  E8 00000000 E     1		call	WriteString
+ 00000441  5A		     1		pop	edx
+ 00000442  8B 04 BD		mov eax,crarr[edi*type crarr]
+	   00000124 R
+ 00000449  E8 00000000 E	call writedec
+ 0000044E  50			push eax
+				mwrite <0ah,0dh,"Cost per Credit Hour: PKR ">
+ 00000BF8		     1		.data		
+ 00000BF8 0A 0D 43 6F 73     1		??001E BYTE 0ah,0dh,"Cost per Credit Hour: PKR ",0	
+	   74 20 70 65 72
+	   20 43 72 65 64
+	   69 74 20 48 6F
+	   75 72 3A 20 50
+	   4B 52 20 00
+ 0000044F		     1		.code
+ 0000044F  52		     1		push	edx
+ 00000450  BA 00000BF8 R     1		mov	edx,OFFSET ??001E
+ 00000455  E8 00000000 E     1		call	WriteString
+ 0000045A  5A		     1		pop	edx
+ 0000045B  8B C3		mov eax,ebx
+ 0000045D  E8 00000000 E	call writedec
+ 00000462  58			pop eax
+ 00000463  F7 E3		mul ebx
+ 00000465  01 45 FC		add stotal,eax
+ 00000468  83 C6 04		add esi,4
+ 0000046B  47			inc edi
+ 0000046C  E8 00000000 E	call crlf
+ 00000471  E2 A4		loop lla2
+ 00000473  C7 05 00000140 R	mov gotcredits,1
+	   00000001
+				mwrite "*****************Total charges due for the 6 chosen subjects: PKR "
+ 00000C15		     1		.data		
+ 00000C15 2A 2A 2A 2A 2A     1		??001F BYTE "*****************Total charges due for the 6 chosen subjects: PKR ",0	
+	   2A 2A 2A 2A 2A
+	   2A 2A 2A 2A 2A
+	   2A 2A 54 6F 74
+	   61 6C 20 63 68
+	   61 72 67 65 73
+	   20 64 75 65 20
+	   66 6F 72 20 74
+	   68 65 20 36 20
+	   63 68 6F 73 65
+	   6E 20 73 75 62
+	   6A 65 63 74 73
+	   3A 20 50 4B 52
+	   20 00
+ 0000047D		     1		.code
+ 0000047D  52		     1		push	edx
+ 0000047E  BA 00000C15 R     1		mov	edx,OFFSET ??001F
+ 00000483  E8 00000000 E     1		call	WriteString
+ 00000488  5A		     1		pop	edx
+ 00000489  8B 45 FC		mov eax,stotal
+ 0000048C  E8 00000000 E	call writedec
+				mwrite<"*****************",0ah,0dh,"**********************************************************************************************",0ah,0dh>
+ 00000C58		     1		.data		
+ 00000C58 2A 2A 2A 2A 2A     1		??0020 BYTE "*****************",0ah,0dh,"**********************************************************************************************",0ah,0dh,0	
+	   2A 2A 2A 2A 2A
+	   2A 2A 2A 2A 2A
+	   2A 2A 0A 0D 2A
+	   2A 2A 2A 2A 2A
+	   2A 2A 2A 2A 2A
+	   2A 2A 2A 2A 2A
+	   2A 2A 2A 2A 2A
+	   2A 2A 2A 2A 2A
+	   2A 2A 2A 2A 2A
+	   2A 2A 2A 2A 2A
+	   2A 2A 2A 2A 2A
+	   2A 2A 2A 2A 2A
+	   2A 2A 2A 2A 2A
+	   2A 2A 2A 2A 2A
+	   2A 2A 2A 2A 2A
+	   2A 2A 2A 2A 2A
+	   2A 2A 2A 2A 2A
+	   2A 2A 2A 2A 2A
+	   2A 2A 2A 2A 2A
+	   2A 2A 2A 2A 2A
+	   2A 2A 2A 2A 2A
+	   2A 2A 2A 0A 0D
+	   00
+ 00000491		     1		.code
+ 00000491  52		     1		push	edx
+ 00000492  BA 00000C58 R     1		mov	edx,OFFSET ??0020
+ 00000497  E8 00000000 E     1		call	WriteString
+ 0000049C  5A		     1		pop	edx
+ 0000049D  E8 00000000 E	call crlf
+				mwrite <"Press any key to continue...">
+ 00000CCC		     1		.data		
+ 00000CCC 50 72 65 73 73     1		??0021 BYTE "Press any key to continue...",0	
+	   20 61 6E 79 20
+	   6B 65 79 20 74
+	   6F 20 63 6F 6E
+	   74 69 6E 75 65
+	   2E 2E 2E 00
+ 000004A2		     1		.code
+ 000004A2  52		     1		push	edx
+ 000004A3  BA 00000CCC R     1		mov	edx,OFFSET ??0021
+ 000004A8  E8 00000000 E     1		call	WriteString
+ 000004AD  5A		     1		pop	edx
+ 000004AE  E8 00000000 E	call readchar
+				ret
+ 000004BB			getchallan endp
+
+ 000004BB			getcreditcost proc uses ebx
+ 000004BC  BB 00000001		mov ebx,1
+ 000004C1  39 1D 0000011C R	cmp yearchoice,ebx
+ 000004C7  74 1B		je yr1
+ 000004C9  43			inc ebx
+ 000004CA  39 1D 0000011C R	cmp yearchoice,ebx
+ 000004D0  74 19		je yr2
+ 000004D2  43			inc ebx
+ 000004D3  39 1D 0000011C R	cmp yearchoice,ebx
+ 000004D9  74 17		je yr3
+ 000004DB  43			inc ebx
+ 000004DC  39 1D 0000011C R	cmp yearchoice,ebx
+ 000004E2  74 15		je yr4
+
+ 000004E4			yr1:
+ 000004E4  B8 00001388		mov eax,5000
+ 000004E9  EB 15		jmp r1
+ 000004EB			yr2:
+ 000004EB  B8 00001964		mov eax,6500
+ 000004F0  EB 0E		jmp r1
+ 000004F2			yr3:
+ 000004F2  B8 00001D4C		mov eax,7500
+ 000004F7  EB 07		jmp r1
+ 000004F9			yr4:
+ 000004F9  B8 00002710		mov eax,10000
+ 000004FE  EB 00		jmp r1
+
+ 00000500			r1:ret
+ 00000502			getcreditcost endp
+
+ 00000502			viewrecords proc
+				local tempcount:dword
+
+ 00000508			retry1:
+				mwrite <0ah,0dh,"Select subject whose record you wish to view: ">
+ 00000CE9		     1		.data		
+ 00000CE9 0A 0D 53 65 6C     1		??0022 BYTE 0ah,0dh,"Select subject whose record you wish to view: ",0	
+	   65 63 74 20 73
+	   75 62 6A 65 63
+	   74 20 77 68 6F
+	   73 65 20 72 65
+	   63 6F 72 64 20
+	   79 6F 75 20 77
+	   69 73 68 20 74
+	   6F 20 76 69 65
+	   77 3A 20 00
+ 00000508		     1		.code
+ 00000508  52		     1		push	edx
+ 00000509  BA 00000CE9 R     1		mov	edx,OFFSET ??0022
+ 0000050E  E8 00000000 E     1		call	WriteString
+ 00000513  5A		     1		pop	edx
+ 00000514  E8 00000CE4		call displaysubs
+				mwrite <0ah,0dh,"Enter choice: ">
+ 00000D1A		     1		.data		
+ 00000D1A 0A 0D 45 6E 74     1		??0023 BYTE 0ah,0dh,"Enter choice: ",0	
+	   65 72 20 63 68
+	   6F 69 63 65 3A
+	   20 00
+ 00000519		     1		.code
+ 00000519  52		     1		push	edx
+ 0000051A  BA 00000D1A R     1		mov	edx,OFFSET ??0023
+ 0000051F  E8 00000000 E     1		call	WriteString
+ 00000524  5A		     1		pop	edx
+ 00000525  E8 00000000 E	call readint 
+ 0000052A  83 F8 01		cmp eax,1
+ 0000052D  72 D9		jb retry1
+ 0000052F  83 F8 06		cmp eax,6
+ 00000532  77 D4		ja retry1
+ 00000534  89 45 FC		mov tempcount,eax
+ 00000537  83 F8 01		cmp eax,1
+ 0000053A  74 1D		je onearr
+ 0000053C  83 F8 02		cmp eax,2
+ 0000053F  74 35		je twoarr
+ 00000541  83 F8 03		cmp eax,3
+ 00000544  74 4A		je threearr
+ 00000546  83 F8 04		cmp eax,4
+ 00000549  74 5F		je fourarr
+ 0000054B  83 F8 05		cmp eax,5
+ 0000054E  74 74		je fivearr
+ 00000550  83 F8 06		cmp eax,6
+ 00000553  0F 84 00000085	je sixarr
+
+ 00000559			onearr:
+ 00000559  BE 00000000		mov esi,0
+ 0000055E  83 3C B5		cmp subflag[esi*type subflag],0
+	   00000184 R 00
+ 00000566  0F 84 0000023C	je err11
+ 0000056C  BE 000001B4 R	mov esi,offset sub1
+ 00000571  E9 00000082		jmp show1
+
+ 00000576			twoarr:
+ 00000576  BE 00000001		mov esi,1
+ 0000057B  83 3C B5		cmp subflag[esi*type subflag],0
+	   00000184 R 00
+ 00000583  0F 84 0000021F	je err11
+ 00000589  BE 000001C8 R	mov esi,offset sub2
+ 0000058E  EB 68		jmp show1
+
+ 00000590			threearr:
+ 00000590  BE 00000002		mov esi,2
+ 00000595  83 3C B5		cmp subflag[esi*type subflag],0
+	   00000184 R 00
+ 0000059D  0F 84 00000205	je err11
+ 000005A3  BE 000001DC R	mov esi,offset sub3
+ 000005A8  EB 4E		jmp show1
+
+ 000005AA			fourarr:
+ 000005AA  BE 00000003		mov esi,3
+ 000005AF  83 3C B5		cmp subflag[esi*type subflag],0
+	   00000184 R 00
+ 000005B7  0F 84 000001EB	je err11
+ 000005BD  BE 000001F0 R	mov esi,offset sub4
+ 000005C2  EB 34		jmp show1
+
+ 000005C4			fivearr:
+ 000005C4  BE 00000004		mov esi,4
+ 000005C9  83 3C B5		cmp subflag[esi*type subflag],0
+	   00000184 R 00
+ 000005D1  0F 84 000001D1	je err11
+ 000005D7  BE 00000204 R	mov esi,offset sub5
+ 000005DC  EB 1A		jmp show1
+
+ 000005DE			sixarr:
+ 000005DE  BE 00000005		mov esi,5
+ 000005E3  83 3C B5		cmp subflag[esi*type subflag],0
+	   00000184 R 00
+ 000005EB  0F 84 000001B7	je err11
+ 000005F1  BE 00000218 R	mov esi,offset sub6
+ 000005F6  EB 00		jmp show1
+
+ 000005F8			show1:
+ 000005F8  56			push esi
+				mwrite <0dh,0ah,"|| Assignment 1 | Assignment 2 |     Mid 1     |     Mid 2     |     Final     ||",0ah,0dh>
+ 00000D2B		     1		.data		
+ 00000D2B 0D 0A 7C 7C 20     1		??0024 BYTE 0dh,0ah,"|| Assignment 1 | Assignment 2 |     Mid 1     |     Mid 2     |     Final     ||",0ah,0dh,0	
+	   41 73 73 69 67
+	   6E 6D 65 6E 74
+	   20 31 20 7C 20
+	   41 73 73 69 67
+	   6E 6D 65 6E 74
+	   20 32 20 7C 20
+	   20 20 20 20 4D
+	   69 64 20 31 20
+	   20 20 20 20 7C
+	   20 20 20 20 20
+	   4D 69 64 20 32
+	   20 20 20 20 20
+	   7C 20 20 20 20
+	   20 46 69 6E 61
+	   6C 20 20 20 20
+	   20 7C 7C 0A 0D
+	   00
+ 000005F9		     1		.code
+ 000005F9  52		     1		push	edx
+ 000005FA  BA 00000D2B R     1		mov	edx,OFFSET ??0024
+ 000005FF  E8 00000000 E     1		call	WriteString
+ 00000604  5A		     1		pop	edx
+ 00000605  B9 00000005		mov ecx,5
+				mwrite <"|">
+ 00000D81		     1		.data		
+ 00000D81 7C 00		     1		??0025 BYTE "|",0	
+ 0000060A		     1		.code
+ 0000060A  52		     1		push	edx
+ 0000060B  BA 00000D81 R     1		mov	edx,OFFSET ??0025
+ 00000610  E8 00000000 E     1		call	WriteString
+ 00000615  5A		     1		pop	edx
+ 00000616			lpp2:
+				mwrite <"|     ">
+ 00000D83		     1		.data		
+ 00000D83 7C 20 20 20 20     1		??0026 BYTE "|     ",0	
+	   20 00
+ 00000616		     1		.code
+ 00000616  52		     1		push	edx
+ 00000617  BA 00000D83 R     1		mov	edx,OFFSET ??0026
+ 0000061C  E8 00000000 E     1		call	WriteString
+ 00000621  5A		     1		pop	edx
+ 00000622  8B 06		mov eax,[esi]
+ 00000624  E8 00000000 E	call writedec
+				mwrite <"        ">
+ 00000D8A		     1		.data		
+ 00000D8A 20 20 20 20 20     1		??0027 BYTE "        ",0	
+	   20 20 20 00
+ 00000629		     1		.code
+ 00000629  52		     1		push	edx
+ 0000062A  BA 00000D8A R     1		mov	edx,OFFSET ??0027
+ 0000062F  E8 00000000 E     1		call	WriteString
+ 00000634  5A		     1		pop	edx
+ 00000635  83 C6 04		add esi,4
+ 00000638  E2 DC		loop lpp2
+				mwrite <"||">
+ 00000D93		     1		.data		
+ 00000D93 7C 7C 00	     1		??0028 BYTE "||",0	
+ 0000063A		     1		.code
+ 0000063A  52		     1		push	edx
+ 0000063B  BA 00000D93 R     1		mov	edx,OFFSET ??0028
+ 00000640  E8 00000000 E     1		call	WriteString
+ 00000645  5A		     1		pop	edx
+ 00000646  5E			pop esi
+
+ 00000647  BB 00000000		mov ebx,0
+				mwrite <0ah,0dh,"Press any key to view weightage breakdown.">
+ 00000D96		     1		.data		
+ 00000D96 0A 0D 50 72 65     1		??0029 BYTE 0ah,0dh,"Press any key to view weightage breakdown.",0	
+	   73 73 20 61 6E
+	   79 20 6B 65 79
+	   20 74 6F 20 76
+	   69 65 77 20 77
+	   65 69 67 68 74
+	   61 67 65 20 62
+	   72 65 61 6B 64
+	   6F 77 6E 2E 00
+ 0000064C		     1		.code
+ 0000064C  52		     1		push	edx
+ 0000064D  BA 00000D96 R     1		mov	edx,OFFSET ??0029
+ 00000652  E8 00000000 E     1		call	WriteString
+ 00000657  5A		     1		pop	edx
+				mwrite <0dh,0ah,"|| Assignment 1 | Assignment 2 |     Mid 1     |     Mid 2     |     Final     ||",0ah,0dh>
+ 00000DC3		     1		.data		
+ 00000DC3 0D 0A 7C 7C 20     1		??002A BYTE 0dh,0ah,"|| Assignment 1 | Assignment 2 |     Mid 1     |     Mid 2     |     Final     ||",0ah,0dh,0	
+	   41 73 73 69 67
+	   6E 6D 65 6E 74
+	   20 31 20 7C 20
+	   41 73 73 69 67
+	   6E 6D 65 6E 74
+	   20 32 20 7C 20
+	   20 20 20 20 4D
+	   69 64 20 31 20
+	   20 20 20 20 7C
+	   20 20 20 20 20
+	   4D 69 64 20 32
+	   20 20 20 20 20
+	   7C 20 20 20 20
+	   20 46 69 6E 61
+	   6C 20 20 20 20
+	   20 7C 7C 0A 0D
+	   00
+ 00000658		     1		.code
+ 00000658  52		     1		push	edx
+ 00000659  BA 00000DC3 R     1		mov	edx,OFFSET ??002A
+ 0000065E  E8 00000000 E     1		call	WriteString
+ 00000663  5A		     1		pop	edx
+ 00000664  E8 00000000 E	call readchar
+ 00000669  8B 06		mov eax,[esi]
+ 0000066B  B9 0000000A		mov ecx,10
+ 00000670  F7 E1		mul ecx
+ 00000672  B9 00000014		mov ecx,20
+ 00000677  99			cdq
+ 00000678  F7 F1		div ecx
+ 0000067A  03 D8		add ebx,eax
+				mwrite <"||     ">
+ 00000E19		     1		.data		
+ 00000E19 7C 7C 20 20 20     1		??002B BYTE "||     ",0	
+	   20 20 00
+ 0000067C		     1		.code
+ 0000067C  52		     1		push	edx
+ 0000067D  BA 00000E19 R     1		mov	edx,OFFSET ??002B
+ 00000682  E8 00000000 E     1		call	WriteString
+ 00000687  5A		     1		pop	edx
+ 00000688  E8 00000000 E	call writedec
+				mwrite <".0 %   ">
+ 00000E21		     1		.data		
+ 00000E21 2E 30 20 25 20     1		??002C BYTE ".0 %   ",0	
+	   20 20 00
+ 0000068D		     1		.code
+ 0000068D  52		     1		push	edx
+ 0000068E  BA 00000E21 R     1		mov	edx,OFFSET ??002C
+ 00000693  E8 00000000 E     1		call	WriteString
+ 00000698  5A		     1		pop	edx
+ 00000699  83 C6 04		add esi,4
+ 0000069C  8B 06		mov eax,[esi]
+ 0000069E  B9 0000000A		mov ecx,10
+ 000006A3  F7 E1		mul ecx
+ 000006A5  B9 00000014		mov ecx,20
+ 000006AA  99			cdq
+ 000006AB  F7 F1		div ecx
+ 000006AD  03 D8		add ebx,eax
+				mwrite <"|     ">
+ 00000E29		     1		.data		
+ 00000E29 7C 20 20 20 20     1		??002D BYTE "|     ",0	
+	   20 00
+ 000006AF		     1		.code
+ 000006AF  52		     1		push	edx
+ 000006B0  BA 00000E29 R     1		mov	edx,OFFSET ??002D
+ 000006B5  E8 00000000 E     1		call	WriteString
+ 000006BA  5A		     1		pop	edx
+ 000006BB  E8 00000000 E	call writedec
+				mwrite <".0 %   ">
+ 00000E30		     1		.data		
+ 00000E30 2E 30 20 25 20     1		??002E BYTE ".0 %   ",0	
+	   20 20 00
+ 000006C0		     1		.code
+ 000006C0  52		     1		push	edx
+ 000006C1  BA 00000E30 R     1		mov	edx,OFFSET ??002E
+ 000006C6  E8 00000000 E     1		call	WriteString
+ 000006CB  5A		     1		pop	edx
+ 000006CC  83 C6 04		add esi,4
+ 000006CF  8B 06		mov eax,[esi]
+ 000006D1  B9 0000000F		mov ecx,15
+ 000006D6  F7 E1		mul ecx
+ 000006D8  B9 00000028		mov ecx,40
+ 000006DD  99			cdq
+ 000006DE  F7 F1		div ecx
+ 000006E0  03 D8		add ebx,eax
+				mwrite <"|     ">
+ 00000E38		     1		.data		
+ 00000E38 7C 20 20 20 20     1		??002F BYTE "|     ",0	
+	   20 00
+ 000006E2		     1		.code
+ 000006E2  52		     1		push	edx
+ 000006E3  BA 00000E38 R     1		mov	edx,OFFSET ??002F
+ 000006E8  E8 00000000 E     1		call	WriteString
+ 000006ED  5A		     1		pop	edx
+ 000006EE  E8 00000000 E	call writedec
+				mwrite <".0 %   ">
+ 00000E3F		     1		.data		
+ 00000E3F 2E 30 20 25 20     1		??0030 BYTE ".0 %   ",0	
+	   20 20 00
+ 000006F3		     1		.code
+ 000006F3  52		     1		push	edx
+ 000006F4  BA 00000E3F R     1		mov	edx,OFFSET ??0030
+ 000006F9  E8 00000000 E     1		call	WriteString
+ 000006FE  5A		     1		pop	edx
+ 000006FF  83 C6 04		add esi,4
+ 00000702  8B 06		mov eax,[esi]
+ 00000704  B9 0000000F		mov ecx,15
+ 00000709  F7 E1		mul ecx
+ 0000070B  B9 00000028		mov ecx,40
+ 00000710  99			cdq
+ 00000711  F7 F1		div ecx
+ 00000713  03 D8		add ebx,eax
+				mwrite <"|     ">
+ 00000E47		     1		.data		
+ 00000E47 7C 20 20 20 20     1		??0031 BYTE "|     ",0	
+	   20 00
+ 00000715		     1		.code
+ 00000715  52		     1		push	edx
+ 00000716  BA 00000E47 R     1		mov	edx,OFFSET ??0031
+ 0000071B  E8 00000000 E     1		call	WriteString
+ 00000720  5A		     1		pop	edx
+ 00000721  E8 00000000 E	call writedec
+				mwrite <".0 %   ">
+ 00000E4E		     1		.data		
+ 00000E4E 2E 30 20 25 20     1		??0032 BYTE ".0 %   ",0	
+	   20 20 00
+ 00000726		     1		.code
+ 00000726  52		     1		push	edx
+ 00000727  BA 00000E4E R     1		mov	edx,OFFSET ??0032
+ 0000072C  E8 00000000 E     1		call	WriteString
+ 00000731  5A		     1		pop	edx
+
+ 00000732  83 C6 04		add esi,4
+ 00000735  8B 06		mov eax,[esi]
+ 00000737  B9 00000032		mov ecx,50
+ 0000073C  F7 E1		mul ecx
+ 0000073E  B9 00000064		mov ecx,100
+ 00000743  99			cdq
+ 00000744  F7 F1		div ecx
+ 00000746  03 D8		add ebx,eax
+				mwrite <"|     ">
+ 00000E56		     1		.data		
+ 00000E56 7C 20 20 20 20     1		??0033 BYTE "|     ",0	
+	   20 00
+ 00000748		     1		.code
+ 00000748  52		     1		push	edx
+ 00000749  BA 00000E56 R     1		mov	edx,OFFSET ??0033
+ 0000074E  E8 00000000 E     1		call	WriteString
+ 00000753  5A		     1		pop	edx
+ 00000754  E8 00000000 E	call writedec
+				mwrite <".0 %   ">
+ 00000E5D		     1		.data		
+ 00000E5D 2E 30 20 25 20     1		??0034 BYTE ".0 %   ",0	
+	   20 20 00
+ 00000759		     1		.code
+ 00000759  52		     1		push	edx
+ 0000075A  BA 00000E5D R     1		mov	edx,OFFSET ??0034
+ 0000075F  E8 00000000 E     1		call	WriteString
+ 00000764  5A		     1		pop	edx
+
+				mwrite <0ah,0dh,"Grand Total for subject ">
+ 00000E65		     1		.data		
+ 00000E65 0A 0D 47 72 61     1		??0035 BYTE 0ah,0dh,"Grand Total for subject ",0	
+	   6E 64 20 54 6F
+	   74 61 6C 20 66
+	   6F 72 20 73 75
+	   62 6A 65 63 74
+	   20 00
+ 00000765		     1		.code
+ 00000765  52		     1		push	edx
+ 00000766  BA 00000E65 R     1		mov	edx,OFFSET ??0035
+ 0000076B  E8 00000000 E     1		call	WriteString
+ 00000770  5A		     1		pop	edx
+ 00000771  8B 75 FC		mov esi,tempcount
+ 00000774  4E			dec esi
+ 00000775  8B 14 B5		mov edx,mysubjects[esi*type mysubjects]
+	   0000016C R
+ 0000077C  E8 00000000 E	call writestring
+				mwrite <" is: ">
+ 00000E80		     1		.data		
+ 00000E80 20 69 73 3A 20     1		??0036 BYTE " is: ",0	
+	   00
+ 00000781		     1		.code
+ 00000781  52		     1		push	edx
+ 00000782  BA 00000E80 R     1		mov	edx,OFFSET ??0036
+ 00000787  E8 00000000 E     1		call	WriteString
+ 0000078C  5A		     1		pop	edx
+ 0000078D  8B C3		mov eax,ebx
+ 0000078F  E8 00000000 E	call writedec
+
+				mwrite <0ah,0dh,"Overall grade:  ">
+ 00000E86		     1		.data		
+ 00000E86 0A 0D 4F 76 65     1		??0037 BYTE 0ah,0dh,"Overall grade:  ",0	
+	   72 61 6C 6C 20
+	   67 72 61 64 65
+	   3A 20 20 00
+ 00000794		     1		.code
+ 00000794  52		     1		push	edx
+ 00000795  BA 00000E86 R     1		mov	edx,OFFSET ??0037
+ 0000079A  E8 00000000 E     1		call	WriteString
+ 0000079F  5A		     1		pop	edx
+ 000007A0  50			push eax
+ 000007A1  E8 00000021		call gradesub
+ 000007A6  EB 0C		jmp succ1
+
+ 000007A8			err11:
+				mwrite <0ah,0dh,"Error: Marks have not been completely entered. Try again later.",0ah,0dh>
+ 00000E99		     1		.data		
+ 00000E99 0A 0D 45 72 72     1		??0038 BYTE 0ah,0dh,"Error: Marks have not been completely entered. Try again later.",0ah,0dh,0	
+	   6F 72 3A 20 4D
+	   61 72 6B 73 20
+	   68 61 76 65 20
+	   6E 6F 74 20 62
+	   65 65 6E 20 63
+	   6F 6D 70 6C 65
+	   74 65 6C 79 20
+	   65 6E 74 65 72
+	   65 64 2E 20 54
+	   72 79 20 61 67
+	   61 69 6E 20 6C
+	   61 74 65 72 2E
+	   0A 0D 00
+ 000007A8		     1		.code
+ 000007A8  52		     1		push	edx
+ 000007A9  BA 00000E99 R     1		mov	edx,OFFSET ??0038
+ 000007AE  E8 00000000 E     1		call	WriteString
+ 000007B3  5A		     1		pop	edx
+
+ 000007B4			succ1:
+				mwrite <0ah,0dh,"Press any key to continue...">
+ 00000EDD		     1		.data		
+ 00000EDD 0A 0D 50 72 65     1		??0039 BYTE 0ah,0dh,"Press any key to continue...",0	
+	   73 73 20 61 6E
+	   79 20 6B 65 79
+	   20 74 6F 20 63
+	   6F 6E 74 69 6E
+	   75 65 2E 2E 2E
+	   00
+ 000007B4		     1		.code
+ 000007B4  52		     1		push	edx
+ 000007B5  BA 00000EDD R     1		mov	edx,OFFSET ??0039
+ 000007BA  E8 00000000 E     1		call	WriteString
+ 000007BF  5A		     1		pop	edx
+ 000007C0  E8 00000000 E	call readchar
+				ret
+ 000007C7			viewrecords endp
+
+ 000007C7			gradesub proc uses eax,
+				varr1:dword
+ 000007CB  8B 45 08		mov eax,varr1
+ 000007CE  83 F8 5A		cmp eax,90
+ 000007D1  73 21		jae aplus
+ 000007D3  83 F8 50		cmp eax,80
+ 000007D6  73 4D		jae aonly
+ 000007D8  83 F8 46		cmp eax,70
+ 000007DB  73 6F		jae bonly
+ 000007DD  83 F8 3C		cmp eax,60
+ 000007E0  0F 83 0000008A	jae conly
+ 000007E6  83 F8 32		cmp eax,50
+ 000007E9  0F 83 000000A5	jae donly
+ 000007EF  E9 000000C4		jmp lowgrade
+
+ 000007F4			aplus:
+ 000007F4  B8 00000041		mov eax,"A"
+ 000007F9  E8 00000000 E	call writechar
+ 000007FE  B8 0000002B		mov eax,"+"
+ 00000803  E8 00000000 E	call writechar
+				mwrite <0ah,0dh,"Subject GPA: 4">
+ 00000EFC		     1		.data		
+ 00000EFC 0A 0D 53 75 62     1		??003A BYTE 0ah,0dh,"Subject GPA: 4",0	
+	   6A 65 63 74 20
+	   47 50 41 3A 20
+	   34 00
+ 00000808		     1		.code
+ 00000808  52		     1		push	edx
+ 00000809  BA 00000EFC R     1		mov	edx,OFFSET ??003A
+ 0000080E  E8 00000000 E     1		call	WriteString
+ 00000813  5A		     1		pop	edx
+ 00000814  B8 00000004		mov eax,4
+ 00000819  89 04 B5		mov subgpa[esi*type subgpa],eax
+	   0000019C R
+ 00000820  E9 000000B7		jmp end1
+
+ 00000825			aonly:
+ 00000825  B8 00000041		mov eax,"A"
+ 0000082A  E8 00000000 E	call writechar
+				mwrite <0ah,0dh,"Subject GPA: 4">
+ 00000F0D		     1		.data		
+ 00000F0D 0A 0D 53 75 62     1		??003B BYTE 0ah,0dh,"Subject GPA: 4",0	
+	   6A 65 63 74 20
+	   47 50 41 3A 20
+	   34 00
+ 0000082F		     1		.code
+ 0000082F  52		     1		push	edx
+ 00000830  BA 00000F0D R     1		mov	edx,OFFSET ??003B
+ 00000835  E8 00000000 E     1		call	WriteString
+ 0000083A  5A		     1		pop	edx
+ 0000083B  B8 00000004		mov eax,4
+ 00000840  89 04 B5		mov subgpa[esi*type subgpa],eax
+	   0000019C R
+ 00000847  E9 00000090		jmp end1
+
+ 0000084C			bonly:
+ 0000084C  B8 00000042		mov eax,"B"
+ 00000851  E8 00000000 E	call writechar
+				mwrite <0ah,0dh,"Subject GPA: 3.66">
+ 00000F1E		     1		.data		
+ 00000F1E 0A 0D 53 75 62     1		??003C BYTE 0ah,0dh,"Subject GPA: 3.66",0	
+	   6A 65 63 74 20
+	   47 50 41 3A 20
+	   33 2E 36 36 00
+ 00000856		     1		.code
+ 00000856  52		     1		push	edx
+ 00000857  BA 00000F1E R     1		mov	edx,OFFSET ??003C
+ 0000085C  E8 00000000 E     1		call	WriteString
+ 00000861  5A		     1		pop	edx
+ 00000862  B8 00000003		mov eax,3
+ 00000867  89 04 B5		mov subgpa[esi*type subgpa],eax
+	   0000019C R
+ 0000086E  EB 6C		jmp end1
+
+ 00000870			conly:
+ 00000870  B8 00000043		mov eax,"C"
+ 00000875  E8 00000000 E	call writechar
+				mwrite <0ah,0dh,"Subject GPA: 3.33">
+ 00000F32		     1		.data		
+ 00000F32 0A 0D 53 75 62     1		??003D BYTE 0ah,0dh,"Subject GPA: 3.33",0	
+	   6A 65 63 74 20
+	   47 50 41 3A 20
+	   33 2E 33 33 00
+ 0000087A		     1		.code
+ 0000087A  52		     1		push	edx
+ 0000087B  BA 00000F32 R     1		mov	edx,OFFSET ??003D
+ 00000880  E8 00000000 E     1		call	WriteString
+ 00000885  5A		     1		pop	edx
+ 00000886  B8 00000003		mov eax,3
+ 0000088B  89 04 B5		mov subgpa[esi*type subgpa],eax
+	   0000019C R
+ 00000892  EB 48		jmp end1
+
+ 00000894			donly:
+ 00000894  B8 00000044		mov eax,"D"
+ 00000899  E8 00000000 E	call writechar
+				mwrite <0ah,0dh,"Subject GPA: 2.66">
+ 00000F46		     1		.data		
+ 00000F46 0A 0D 53 75 62     1		??003E BYTE 0ah,0dh,"Subject GPA: 2.66",0	
+	   6A 65 63 74 20
+	   47 50 41 3A 20
+	   32 2E 36 36 00
+ 0000089E		     1		.code
+ 0000089E  52		     1		push	edx
+ 0000089F  BA 00000F46 R     1		mov	edx,OFFSET ??003E
+ 000008A4  E8 00000000 E     1		call	WriteString
+ 000008A9  5A		     1		pop	edx
+ 000008AA  B8 00000002		mov eax,2
+ 000008AF  89 04 B5		mov subgpa[esi*type subgpa],eax
+	   0000019C R
+ 000008B6  EB 24		jmp end1
+
+ 000008B8			lowgrade:
+ 000008B8  B8 00000046		mov eax,"F"
+ 000008BD  E8 00000000 E	call writechar
+				mwrite <0ah,0dh,"Subject GPA: 1.00">
+ 00000F5A		     1		.data		
+ 00000F5A 0A 0D 53 75 62     1		??003F BYTE 0ah,0dh,"Subject GPA: 1.00",0	
+	   6A 65 63 74 20
+	   47 50 41 3A 20
+	   31 2E 30 30 00
+ 000008C2		     1		.code
+ 000008C2  52		     1		push	edx
+ 000008C3  BA 00000F5A R     1		mov	edx,OFFSET ??003F
+ 000008C8  E8 00000000 E     1		call	WriteString
+ 000008CD  5A		     1		pop	edx
+ 000008CE  B8 00000001		mov eax,1
+ 000008D3  89 04 B5		mov subgpa[esi*type subgpa],eax
+	   0000019C R
+ 000008DA  EB 00		jmp end1
+
+ 000008DC			end1:
+				ret
+ 000008E1			gradesub endp
+
+ 000008E1			setmarks proc uses eax edx ecx ebx esi
+				local ch1:dword
+
+ 000008EC  83 3D 00000120 R	cmp locked1,1
+	   01
+ 000008F3  0F 84 00000856	je invd3
+
+ 000008F9			tryag:
+				mwrite <0ah,0dh,"Select subject whose marks are to be entered: ">
+ 00000F6E		     1		.data		
+ 00000F6E 0A 0D 53 65 6C     1		??0040 BYTE 0ah,0dh,"Select subject whose marks are to be entered: ",0	
+	   65 63 74 20 73
+	   75 62 6A 65 63
+	   74 20 77 68 6F
+	   73 65 20 6D 61
+	   72 6B 73 20 61
+	   72 65 20 74 6F
+	   20 62 65 20 65
+	   6E 74 65 72 65
+	   64 3A 20 00
+ 000008F9		     1		.code
+ 000008F9  52		     1		push	edx
+ 000008FA  BA 00000F6E R     1		mov	edx,OFFSET ??0040
+ 000008FF  E8 00000000 E     1		call	WriteString
+ 00000904  5A		     1		pop	edx
+ 00000905  E8 000008F3		call displaysubs
+				mwrite <0ah,0dh,"Enter choice: ">
+ 00000F9F		     1		.data		
+ 00000F9F 0A 0D 45 6E 74     1		??0041 BYTE 0ah,0dh,"Enter choice: ",0	
+	   65 72 20 63 68
+	   6F 69 63 65 3A
+	   20 00
+ 0000090A		     1		.code
+ 0000090A  52		     1		push	edx
+ 0000090B  BA 00000F9F R     1		mov	edx,OFFSET ??0041
+ 00000910  E8 00000000 E     1		call	WriteString
+ 00000915  5A		     1		pop	edx
+ 00000916  E8 00000000 E	call readint
+
+ 0000091B  83 F8 01		cmp eax,1
+ 0000091E  72 07		jb try2
+ 00000920  83 F8 06		cmp eax,6
+ 00000923  77 02		ja try2
+
+ 00000925  EB 0E		jmp prcd
+
+ 00000927			try2:
+				mwrite <"Invalid choice entered.",0ah,0dh>
+ 00000FB0		     1		.data		
+ 00000FB0 49 6E 76 61 6C     1		??0042 BYTE "Invalid choice entered.",0ah,0dh,0	
+	   69 64 20 63 68
+	   6F 69 63 65 20
+	   65 6E 74 65 72
+	   65 64 2E 0A 0D
+	   00
+ 00000927		     1		.code
+ 00000927  52		     1		push	edx
+ 00000928  BA 00000FB0 R     1		mov	edx,OFFSET ??0042
+ 0000092D  E8 00000000 E     1		call	WriteString
+ 00000932  5A		     1		pop	edx
+ 00000933  EB C4		jmp tryag
+
+ 00000935			prcd:
+ 00000935  8B F0		mov esi,eax
+ 00000937  4E			dec esi
+ 00000938  89 75 FC		mov ch1,esi
+ 0000093B  83 F8 01		cmp eax,1
+ 0000093E  74 2D		je sb1
+ 00000940  83 F8 02		cmp eax,2
+ 00000943  0F 84 0000016C	je sb2
+ 00000949  83 F8 03		cmp eax,3
+ 0000094C  0F 84 000002AB	je sb3
+ 00000952  83 F8 04		cmp eax,4
+ 00000955  0F 84 000003EA	je sb4
+ 0000095B  83 F8 05		cmp eax,5
+ 0000095E  0F 84 00000529	je sb5
+ 00000964  83 F8 06		cmp eax,6
+ 00000967  0F 84 00000668	je sb6
+
+ 0000096D			sb1:
+ 0000096D  8B 75 FC		mov esi,ch1
+ 00000970  B8 00000001		mov eax,1
+ 00000975  39 05 0000013C R	cmp overwrite1,eax
+ 0000097B  74 12		je sb12
+ 0000097D  B8 00000001		mov eax,1
+ 00000982  39 04 B5		cmp subflag[esi*type subflag],eax
+	   00000184 R
+ 00000989  0F 84 0000078B	je er1
+
+ 0000098F			sb12:
+				mwrite <0ah,0dh,"Enter assignment 1 marks: ">
+ 00000FCA		     1		.data		
+ 00000FCA 0A 0D 45 6E 74     1		??0043 BYTE 0ah,0dh,"Enter assignment 1 marks: ",0	
+	   65 72 20 61 73
+	   73 69 67 6E 6D
+	   65 6E 74 20 31
+	   20 6D 61 72 6B
+	   73 3A 20 00
+ 0000098F		     1		.code
+ 0000098F  52		     1		push	edx
+ 00000990  BA 00000FCA R     1		mov	edx,OFFSET ??0043
+ 00000995  E8 00000000 E     1		call	WriteString
+ 0000099A  5A		     1		pop	edx
+ 0000099B  E8 00000000 E	call readint
+ 000009A0  BA 00000001		mov edx,1
+ 000009A5  52			push edx
+ 000009A6  E8 000007D6		call checknum
+ 000009AB  50			push eax
+ 000009AC  B8 00000000		mov eax,0
+ 000009B1  39 05 00000118 R	cmp valid1,eax
+ 000009B7  58			pop eax
+ 000009B8  74 B3		je sb1
+
+ 000009BA  BE 00000000		mov esi,0
+ 000009BF  89 04 B5		mov sub1[esi*type sub1],eax
+	   000001B4 R
+
+				mwrite <0ah,0dh,"Enter assignment 2 marks: ">
+ 00000FE7		     1		.data		
+ 00000FE7 0A 0D 45 6E 74     1		??0044 BYTE 0ah,0dh,"Enter assignment 2 marks: ",0	
+	   65 72 20 61 73
+	   73 69 67 6E 6D
+	   65 6E 74 20 32
+	   20 6D 61 72 6B
+	   73 3A 20 00
+ 000009C6		     1		.code
+ 000009C6  52		     1		push	edx
+ 000009C7  BA 00000FE7 R     1		mov	edx,OFFSET ??0044
+ 000009CC  E8 00000000 E     1		call	WriteString
+ 000009D1  5A		     1		pop	edx
+ 000009D2  E8 00000000 E	call readint
+ 000009D7  BA 00000001		mov edx,1
+ 000009DC  52			push edx
+ 000009DD  E8 0000079F		call checknum
+ 000009E2  50			push eax
+ 000009E3  B8 00000000		mov eax,0
+ 000009E8  39 05 00000118 R	cmp valid1,eax
+ 000009EE  58			pop eax
+ 000009EF  0F 84 FFFFFF78	je sb1
+
+ 000009F5  46			inc esi
+ 000009F6  89 04 B5		mov sub1[esi*type sub1],eax
+	   000001B4 R
+
+				mwrite <0ah,0dh,"Enter Mid 1 marks: ">
+ 00001004		     1		.data		
+ 00001004 0A 0D 45 6E 74     1		??0045 BYTE 0ah,0dh,"Enter Mid 1 marks: ",0	
+	   65 72 20 4D 69
+	   64 20 31 20 6D
+	   61 72 6B 73 3A
+	   20 00
+ 000009FD		     1		.code
+ 000009FD  52		     1		push	edx
+ 000009FE  BA 00001004 R     1		mov	edx,OFFSET ??0045
+ 00000A03  E8 00000000 E     1		call	WriteString
+ 00000A08  5A		     1		pop	edx
+ 00000A09  E8 00000000 E	call readint
+ 00000A0E  BA 00000002		mov edx,2
+ 00000A13  52			push edx
+ 00000A14  E8 00000768		call checknum
+ 00000A19  50			push eax
+ 00000A1A  B8 00000000		mov eax,0
+ 00000A1F  39 05 00000118 R	cmp valid1,eax
+ 00000A25  58			pop eax
+ 00000A26  0F 84 FFFFFF41	je sb1
+
+ 00000A2C  46			inc esi
+ 00000A2D  89 04 B5		mov sub1[esi*type sub1],eax
+	   000001B4 R
+
+				mwrite <0ah,0dh,"Enter Mid 2 marks: ">
+ 0000101A		     1		.data		
+ 0000101A 0A 0D 45 6E 74     1		??0046 BYTE 0ah,0dh,"Enter Mid 2 marks: ",0	
+	   65 72 20 4D 69
+	   64 20 32 20 6D
+	   61 72 6B 73 3A
+	   20 00
+ 00000A34		     1		.code
+ 00000A34  52		     1		push	edx
+ 00000A35  BA 0000101A R     1		mov	edx,OFFSET ??0046
+ 00000A3A  E8 00000000 E     1		call	WriteString
+ 00000A3F  5A		     1		pop	edx
+ 00000A40  E8 00000000 E	call readint
+ 00000A45  BA 00000002		mov edx,2
+ 00000A4A  52			push edx
+ 00000A4B  E8 00000731		call checknum
+ 00000A50  50			push eax
+ 00000A51  B8 00000000		mov eax,0
+ 00000A56  39 05 00000118 R	cmp valid1,eax
+ 00000A5C  58			pop eax
+ 00000A5D  0F 84 FFFFFF0A	je sb1
+
+ 00000A63  46			inc esi
+ 00000A64  89 04 B5		mov sub1[esi*type sub1],eax
+	   000001B4 R
+
+				mwrite <0ah,0dh,"Enter Final Exam marks: ">
+ 00001030		     1		.data		
+ 00001030 0A 0D 45 6E 74     1		??0047 BYTE 0ah,0dh,"Enter Final Exam marks: ",0	
+	   65 72 20 46 69
+	   6E 61 6C 20 45
+	   78 61 6D 20 6D
+	   61 72 6B 73 3A
+	   20 00
+ 00000A6B		     1		.code
+ 00000A6B  52		     1		push	edx
+ 00000A6C  BA 00001030 R     1		mov	edx,OFFSET ??0047
+ 00000A71  E8 00000000 E     1		call	WriteString
+ 00000A76  5A		     1		pop	edx
+ 00000A77  E8 00000000 E	call readint
+ 00000A7C  BA 00000003		mov edx,3
+ 00000A81  52			push edx
+ 00000A82  E8 000006FA		call checknum
+ 00000A87  50			push eax
+ 00000A88  B8 00000000		mov eax,0
+ 00000A8D  39 05 00000118 R	cmp valid1,eax
+ 00000A93  58			pop eax
+ 00000A94  0F 84 FFFFFED3	je sb1
+
+ 00000A9A  46			inc esi
+ 00000A9B  89 04 B5		mov sub1[esi*type sub1],eax
+	   000001B4 R
+ 00000AA2  8B 75 FC		mov esi,ch1
+ 00000AA5  C7 04 B5		mov subflag[esi*type subflag],1
+	   00000184 R
+	   00000001
+ 00000AB0  E9 000006A8		jmp success
+
+ 00000AB5			sb2:
+ 00000AB5  8B 75 FC		mov esi,ch1
+ 00000AB8  B8 00000001		mov eax,1
+ 00000ABD  39 05 0000013C R	cmp overwrite1,eax
+ 00000AC3  74 12		je sb22
+ 00000AC5  B8 00000001		mov eax,1
+ 00000ACA  39 04 B5		cmp subflag[esi*type subflag],eax
+	   00000184 R
+ 00000AD1  0F 84 00000643	je er1
+
+ 00000AD7			sb22:
+				mwrite <0ah,0dh,"Enter assignment 1 marks: ">
+ 0000104B		     1		.data		
+ 0000104B 0A 0D 45 6E 74     1		??0048 BYTE 0ah,0dh,"Enter assignment 1 marks: ",0	
+	   65 72 20 61 73
+	   73 69 67 6E 6D
+	   65 6E 74 20 31
+	   20 6D 61 72 6B
+	   73 3A 20 00
+ 00000AD7		     1		.code
+ 00000AD7  52		     1		push	edx
+ 00000AD8  BA 0000104B R     1		mov	edx,OFFSET ??0048
+ 00000ADD  E8 00000000 E     1		call	WriteString
+ 00000AE2  5A		     1		pop	edx
+ 00000AE3  E8 00000000 E	call readint
+ 00000AE8  BA 00000001		mov edx,1
+ 00000AED  52			push edx
+ 00000AEE  E8 0000068E		call checknum
+ 00000AF3  50			push eax
+ 00000AF4  B8 00000000		mov eax,0
+ 00000AF9  39 05 00000118 R	cmp valid1,eax
+ 00000AFF  58			pop eax
+ 00000B00  74 B3		je sb2
+
+ 00000B02  BE 00000000		mov esi,0
+ 00000B07  89 04 B5		mov sub2[esi*type sub2],eax
+	   000001C8 R
+
+				mwrite <0ah,0dh,"Enter assignment 2 marks: ">
+ 00001068		     1		.data		
+ 00001068 0A 0D 45 6E 74     1		??0049 BYTE 0ah,0dh,"Enter assignment 2 marks: ",0	
+	   65 72 20 61 73
+	   73 69 67 6E 6D
+	   65 6E 74 20 32
+	   20 6D 61 72 6B
+	   73 3A 20 00
+ 00000B0E		     1		.code
+ 00000B0E  52		     1		push	edx
+ 00000B0F  BA 00001068 R     1		mov	edx,OFFSET ??0049
+ 00000B14  E8 00000000 E     1		call	WriteString
+ 00000B19  5A		     1		pop	edx
+ 00000B1A  E8 00000000 E	call readint
+ 00000B1F  BA 00000001		mov edx,1
+ 00000B24  52			push edx
+ 00000B25  E8 00000657		call checknum
+ 00000B2A  50			push eax
+ 00000B2B  B8 00000000		mov eax,0
+ 00000B30  39 05 00000118 R	cmp valid1,eax
+ 00000B36  58			pop eax
+ 00000B37  0F 84 FFFFFF78	je sb2
+
+ 00000B3D  46			inc esi
+ 00000B3E  89 04 B5		mov sub2[esi*type sub2],eax
+	   000001C8 R
+
+				mwrite <0ah,0dh,"Enter Mid 1 marks: ">
+ 00001085		     1		.data		
+ 00001085 0A 0D 45 6E 74     1		??004A BYTE 0ah,0dh,"Enter Mid 1 marks: ",0	
+	   65 72 20 4D 69
+	   64 20 31 20 6D
+	   61 72 6B 73 3A
+	   20 00
+ 00000B45		     1		.code
+ 00000B45  52		     1		push	edx
+ 00000B46  BA 00001085 R     1		mov	edx,OFFSET ??004A
+ 00000B4B  E8 00000000 E     1		call	WriteString
+ 00000B50  5A		     1		pop	edx
+ 00000B51  E8 00000000 E	call readint
+ 00000B56  BA 00000002		mov edx,2
+ 00000B5B  52			push edx
+ 00000B5C  E8 00000620		call checknum
+ 00000B61  50			push eax
+ 00000B62  B8 00000000		mov eax,0
+ 00000B67  39 05 00000118 R	cmp valid1,eax
+ 00000B6D  58			pop eax
+ 00000B6E  0F 84 FFFFFF41	je sb2
+
+ 00000B74  46			inc esi
+ 00000B75  89 04 B5		mov sub2[esi*type sub2],eax
+	   000001C8 R
+
+				mwrite <0ah,0dh,"Enter Mid 2 marks: ">
+ 0000109B		     1		.data		
+ 0000109B 0A 0D 45 6E 74     1		??004B BYTE 0ah,0dh,"Enter Mid 2 marks: ",0	
+	   65 72 20 4D 69
+	   64 20 32 20 6D
+	   61 72 6B 73 3A
+	   20 00
+ 00000B7C		     1		.code
+ 00000B7C  52		     1		push	edx
+ 00000B7D  BA 0000109B R     1		mov	edx,OFFSET ??004B
+ 00000B82  E8 00000000 E     1		call	WriteString
+ 00000B87  5A		     1		pop	edx
+ 00000B88  E8 00000000 E	call readint
+ 00000B8D  BA 00000002		mov edx,2
+ 00000B92  52			push edx
+ 00000B93  E8 000005E9		call checknum
+ 00000B98  50			push eax
+ 00000B99  B8 00000000		mov eax,0
+ 00000B9E  39 05 00000118 R	cmp valid1,eax
+ 00000BA4  58			pop eax
+ 00000BA5  0F 84 FFFFFF0A	je sb2
+
+ 00000BAB  46			inc esi
+ 00000BAC  89 04 B5		mov sub2[esi*type sub2],eax
+	   000001C8 R
+
+				mwrite <0ah,0dh,"Enter Final Exam marks: ">
+ 000010B1		     1		.data		
+ 000010B1 0A 0D 45 6E 74     1		??004C BYTE 0ah,0dh,"Enter Final Exam marks: ",0	
+	   65 72 20 46 69
+	   6E 61 6C 20 45
+	   78 61 6D 20 6D
+	   61 72 6B 73 3A
+	   20 00
+ 00000BB3		     1		.code
+ 00000BB3  52		     1		push	edx
+ 00000BB4  BA 000010B1 R     1		mov	edx,OFFSET ??004C
+ 00000BB9  E8 00000000 E     1		call	WriteString
+ 00000BBE  5A		     1		pop	edx
+ 00000BBF  E8 00000000 E	call readint
+ 00000BC4  BA 00000003		mov edx,3
+ 00000BC9  52			push edx
+ 00000BCA  E8 000005B2		call checknum
+ 00000BCF  50			push eax
+ 00000BD0  B8 00000000		mov eax,0
+ 00000BD5  39 05 00000118 R	cmp valid1,eax
+ 00000BDB  58			pop eax
+ 00000BDC  0F 84 FFFFFED3	je sb2
+
+ 00000BE2  46			inc esi
+ 00000BE3  89 04 B5		mov sub2[esi*type sub2],eax
+	   000001C8 R
+ 00000BEA  8B 75 FC		mov esi,ch1
+ 00000BED  C7 04 B5		mov subflag[esi*type subflag],1
+	   00000184 R
+	   00000001
+ 00000BF8  E9 00000560		jmp success
+
+ 00000BFD			sb3:
+ 00000BFD  8B 75 FC		mov esi,ch1
+ 00000C00  B8 00000001		mov eax,1
+ 00000C05  39 05 0000013C R	cmp overwrite1,eax
+ 00000C0B  74 12		je sb32
+ 00000C0D  B8 00000001		mov eax,1
+ 00000C12  39 04 B5		cmp subflag[esi*type subflag],eax
+	   00000184 R
+ 00000C19  0F 84 000004FB	je er1
+
+ 00000C1F			sb32:
+
+				mwrite <0ah,0dh,"Enter assignment 1 marks: ">
+ 000010CC		     1		.data		
+ 000010CC 0A 0D 45 6E 74     1		??004D BYTE 0ah,0dh,"Enter assignment 1 marks: ",0	
+	   65 72 20 61 73
+	   73 69 67 6E 6D
+	   65 6E 74 20 31
+	   20 6D 61 72 6B
+	   73 3A 20 00
+ 00000C1F		     1		.code
+ 00000C1F  52		     1		push	edx
+ 00000C20  BA 000010CC R     1		mov	edx,OFFSET ??004D
+ 00000C25  E8 00000000 E     1		call	WriteString
+ 00000C2A  5A		     1		pop	edx
+ 00000C2B  E8 00000000 E	call readint
+ 00000C30  BA 00000001		mov edx,1
+ 00000C35  52			push edx
+ 00000C36  E8 00000546		call checknum
+ 00000C3B  50			push eax
+ 00000C3C  B8 00000000		mov eax,0
+ 00000C41  39 05 00000118 R	cmp valid1,eax
+ 00000C47  58			pop eax
+ 00000C48  74 B3		je sb3
+
+ 00000C4A  BE 00000000		mov esi,0
+ 00000C4F  89 04 B5		mov sub3[esi*type sub3],eax
+	   000001DC R
+
+				mwrite <0ah,0dh,"Enter assignment 2 marks: ">
+ 000010E9		     1		.data		
+ 000010E9 0A 0D 45 6E 74     1		??004E BYTE 0ah,0dh,"Enter assignment 2 marks: ",0	
+	   65 72 20 61 73
+	   73 69 67 6E 6D
+	   65 6E 74 20 32
+	   20 6D 61 72 6B
+	   73 3A 20 00
+ 00000C56		     1		.code
+ 00000C56  52		     1		push	edx
+ 00000C57  BA 000010E9 R     1		mov	edx,OFFSET ??004E
+ 00000C5C  E8 00000000 E     1		call	WriteString
+ 00000C61  5A		     1		pop	edx
+ 00000C62  E8 00000000 E	call readint
+ 00000C67  BA 00000001		mov edx,1
+ 00000C6C  52			push edx
+ 00000C6D  E8 0000050F		call checknum
+ 00000C72  50			push eax
+ 00000C73  B8 00000000		mov eax,0
+ 00000C78  39 05 00000118 R	cmp valid1,eax
+ 00000C7E  58			pop eax
+ 00000C7F  0F 84 FFFFFF78	je sb3
+
+ 00000C85  46			inc esi
+ 00000C86  89 04 B5		mov sub3[esi*type sub3],eax
+	   000001DC R
+
+				mwrite <0ah,0dh,"Enter Mid 1 marks: ">
+ 00001106		     1		.data		
+ 00001106 0A 0D 45 6E 74     1		??004F BYTE 0ah,0dh,"Enter Mid 1 marks: ",0	
+	   65 72 20 4D 69
+	   64 20 31 20 6D
+	   61 72 6B 73 3A
+	   20 00
+ 00000C8D		     1		.code
+ 00000C8D  52		     1		push	edx
+ 00000C8E  BA 00001106 R     1		mov	edx,OFFSET ??004F
+ 00000C93  E8 00000000 E     1		call	WriteString
+ 00000C98  5A		     1		pop	edx
+ 00000C99  E8 00000000 E	call readint
+ 00000C9E  BA 00000002		mov edx,2
+ 00000CA3  52			push edx
+ 00000CA4  E8 000004D8		call checknum
+ 00000CA9  50			push eax
+ 00000CAA  B8 00000000		mov eax,0
+ 00000CAF  39 05 00000118 R	cmp valid1,eax
+ 00000CB5  58			pop eax
+ 00000CB6  0F 84 FFFFFF41	je sb3
+
+ 00000CBC  46			inc esi
+ 00000CBD  89 04 B5		mov sub3[esi*type sub3],eax
+	   000001DC R
+
+				mwrite <0ah,0dh,"Enter Mid 2 marks: ">
+ 0000111C		     1		.data		
+ 0000111C 0A 0D 45 6E 74     1		??0050 BYTE 0ah,0dh,"Enter Mid 2 marks: ",0	
+	   65 72 20 4D 69
+	   64 20 32 20 6D
+	   61 72 6B 73 3A
+	   20 00
+ 00000CC4		     1		.code
+ 00000CC4  52		     1		push	edx
+ 00000CC5  BA 0000111C R     1		mov	edx,OFFSET ??0050
+ 00000CCA  E8 00000000 E     1		call	WriteString
+ 00000CCF  5A		     1		pop	edx
+ 00000CD0  E8 00000000 E	call readint
+ 00000CD5  BA 00000002		mov edx,2
+ 00000CDA  52			push edx
+ 00000CDB  E8 000004A1		call checknum
+ 00000CE0  50			push eax
+ 00000CE1  B8 00000000		mov eax,0
+ 00000CE6  39 05 00000118 R	cmp valid1,eax
+ 00000CEC  58			pop eax
+ 00000CED  0F 84 FFFFFF0A	je sb3
+
+ 00000CF3  46			inc esi
+ 00000CF4  89 04 B5		mov sub3[esi*type sub3],eax
+	   000001DC R
+
+				mwrite <0ah,0dh,"Enter Final Exam marks: ">
+ 00001132		     1		.data		
+ 00001132 0A 0D 45 6E 74     1		??0051 BYTE 0ah,0dh,"Enter Final Exam marks: ",0	
+	   65 72 20 46 69
+	   6E 61 6C 20 45
+	   78 61 6D 20 6D
+	   61 72 6B 73 3A
+	   20 00
+ 00000CFB		     1		.code
+ 00000CFB  52		     1		push	edx
+ 00000CFC  BA 00001132 R     1		mov	edx,OFFSET ??0051
+ 00000D01  E8 00000000 E     1		call	WriteString
+ 00000D06  5A		     1		pop	edx
+ 00000D07  E8 00000000 E	call readint
+ 00000D0C  BA 00000003		mov edx,3
+ 00000D11  52			push edx
+ 00000D12  E8 0000046A		call checknum
+ 00000D17  50			push eax
+ 00000D18  B8 00000000		mov eax,0
+ 00000D1D  39 05 00000118 R	cmp valid1,eax
+ 00000D23  58			pop eax
+ 00000D24  0F 84 FFFFFED3	je sb3
+
+ 00000D2A  46			inc esi
+ 00000D2B  89 04 B5		mov sub3[esi*type sub3],eax
+	   000001DC R
+ 00000D32  8B 75 FC		mov esi,ch1
+ 00000D35  C7 04 B5		mov subflag[esi*type subflag],1
+	   00000184 R
+	   00000001
+ 00000D40  E9 00000418		jmp success
+
+ 00000D45			sb4:
+ 00000D45  8B 75 FC		mov esi,ch1
+ 00000D48  B8 00000001		mov eax,1
+ 00000D4D  39 05 0000013C R	cmp overwrite1,eax
+ 00000D53  74 12		je sb42
+ 00000D55  B8 00000001		mov eax,1
+ 00000D5A  39 04 B5		cmp subflag[esi*type subflag],eax
+	   00000184 R
+ 00000D61  0F 84 000003B3	je er1
+
+ 00000D67			sb42:
+
+				mwrite <0ah,0dh,"Enter assignment 1 marks: ">
+ 0000114D		     1		.data		
+ 0000114D 0A 0D 45 6E 74     1		??0052 BYTE 0ah,0dh,"Enter assignment 1 marks: ",0	
+	   65 72 20 61 73
+	   73 69 67 6E 6D
+	   65 6E 74 20 31
+	   20 6D 61 72 6B
+	   73 3A 20 00
+ 00000D67		     1		.code
+ 00000D67  52		     1		push	edx
+ 00000D68  BA 0000114D R     1		mov	edx,OFFSET ??0052
+ 00000D6D  E8 00000000 E     1		call	WriteString
+ 00000D72  5A		     1		pop	edx
+ 00000D73  E8 00000000 E	call readint
+ 00000D78  BA 00000001		mov edx,1
+ 00000D7D  52			push edx
+ 00000D7E  E8 000003FE		call checknum
+ 00000D83  50			push eax
+ 00000D84  B8 00000000		mov eax,0
+ 00000D89  39 05 00000118 R	cmp valid1,eax
+ 00000D8F  58			pop eax
+ 00000D90  74 B3		je sb4
+
+ 00000D92  BE 00000000		mov esi,0
+ 00000D97  89 04 B5		mov sub4[esi*type sub4],eax
+	   000001F0 R
+
+				mwrite <0ah,0dh,"Enter assignment 2 marks: ">
+ 0000116A		     1		.data		
+ 0000116A 0A 0D 45 6E 74     1		??0053 BYTE 0ah,0dh,"Enter assignment 2 marks: ",0	
+	   65 72 20 61 73
+	   73 69 67 6E 6D
+	   65 6E 74 20 32
+	   20 6D 61 72 6B
+	   73 3A 20 00
+ 00000D9E		     1		.code
+ 00000D9E  52		     1		push	edx
+ 00000D9F  BA 0000116A R     1		mov	edx,OFFSET ??0053
+ 00000DA4  E8 00000000 E     1		call	WriteString
+ 00000DA9  5A		     1		pop	edx
+ 00000DAA  E8 00000000 E	call readint
+ 00000DAF  BA 00000001		mov edx,1
+ 00000DB4  52			push edx
+ 00000DB5  E8 000003C7		call checknum
+ 00000DBA  50			push eax
+ 00000DBB  B8 00000000		mov eax,0
+ 00000DC0  39 05 00000118 R	cmp valid1,eax
+ 00000DC6  58			pop eax
+ 00000DC7  0F 84 FFFFFF78	je sb4
+
+ 00000DCD  46			inc esi
+ 00000DCE  89 04 B5		mov sub4[esi*type sub4],eax
+	   000001F0 R
+
+				mwrite <0ah,0dh,"Enter Mid 1 marks: ">
+ 00001187		     1		.data		
+ 00001187 0A 0D 45 6E 74     1		??0054 BYTE 0ah,0dh,"Enter Mid 1 marks: ",0	
+	   65 72 20 4D 69
+	   64 20 31 20 6D
+	   61 72 6B 73 3A
+	   20 00
+ 00000DD5		     1		.code
+ 00000DD5  52		     1		push	edx
+ 00000DD6  BA 00001187 R     1		mov	edx,OFFSET ??0054
+ 00000DDB  E8 00000000 E     1		call	WriteString
+ 00000DE0  5A		     1		pop	edx
+ 00000DE1  E8 00000000 E	call readint
+ 00000DE6  BA 00000002		mov edx,2
+ 00000DEB  52			push edx
+ 00000DEC  E8 00000390		call checknum
+ 00000DF1  50			push eax
+ 00000DF2  B8 00000000		mov eax,0
+ 00000DF7  39 05 00000118 R	cmp valid1,eax
+ 00000DFD  58			pop eax
+ 00000DFE  0F 84 FFFFFF41	je sb4
+
+ 00000E04  46			inc esi
+ 00000E05  89 04 B5		mov sub4[esi*type sub4],eax
+	   000001F0 R
+
+				mwrite <0ah,0dh,"Enter Mid 2 marks: ">
+ 0000119D		     1		.data		
+ 0000119D 0A 0D 45 6E 74     1		??0055 BYTE 0ah,0dh,"Enter Mid 2 marks: ",0	
+	   65 72 20 4D 69
+	   64 20 32 20 6D
+	   61 72 6B 73 3A
+	   20 00
+ 00000E0C		     1		.code
+ 00000E0C  52		     1		push	edx
+ 00000E0D  BA 0000119D R     1		mov	edx,OFFSET ??0055
+ 00000E12  E8 00000000 E     1		call	WriteString
+ 00000E17  5A		     1		pop	edx
+ 00000E18  E8 00000000 E	call readint
+ 00000E1D  BA 00000002		mov edx,2
+ 00000E22  52			push edx
+ 00000E23  E8 00000359		call checknum
+ 00000E28  50			push eax
+ 00000E29  B8 00000000		mov eax,0
+ 00000E2E  39 05 00000118 R	cmp valid1,eax
+ 00000E34  58			pop eax
+ 00000E35  0F 84 FFFFFF0A	je sb4
+
+ 00000E3B  46			inc esi
+ 00000E3C  89 04 B5		mov sub4[esi*type sub4],eax
+	   000001F0 R
+
+				mwrite <0ah,0dh,"Enter Final Exam marks: ">
+ 000011B3		     1		.data		
+ 000011B3 0A 0D 45 6E 74     1		??0056 BYTE 0ah,0dh,"Enter Final Exam marks: ",0	
+	   65 72 20 46 69
+	   6E 61 6C 20 45
+	   78 61 6D 20 6D
+	   61 72 6B 73 3A
+	   20 00
+ 00000E43		     1		.code
+ 00000E43  52		     1		push	edx
+ 00000E44  BA 000011B3 R     1		mov	edx,OFFSET ??0056
+ 00000E49  E8 00000000 E     1		call	WriteString
+ 00000E4E  5A		     1		pop	edx
+ 00000E4F  E8 00000000 E	call readint
+ 00000E54  BA 00000003		mov edx,3
+ 00000E59  52			push edx
+ 00000E5A  E8 00000322		call checknum
+ 00000E5F  50			push eax
+ 00000E60  B8 00000000		mov eax,0
+ 00000E65  39 05 00000118 R	cmp valid1,eax
+ 00000E6B  58			pop eax
+ 00000E6C  0F 84 FFFFFED3	je sb4
+
+ 00000E72  46			inc esi
+ 00000E73  89 04 B5		mov sub4[esi*type sub4],eax
+	   000001F0 R
+ 00000E7A  8B 75 FC		mov esi,ch1
+ 00000E7D  C7 04 B5		mov subflag[esi*type subflag],1
+	   00000184 R
+	   00000001
+ 00000E88  E9 000002D0		jmp success
+
+ 00000E8D			sb5:
+ 00000E8D  8B 75 FC		mov esi,ch1
+ 00000E90  B8 00000001		mov eax,1
+ 00000E95  39 05 0000013C R	cmp overwrite1,eax
+ 00000E9B  74 12		je sb52
+ 00000E9D  B8 00000001		mov eax,1
+ 00000EA2  39 04 B5		cmp subflag[esi*type subflag],eax
+	   00000184 R
+ 00000EA9  0F 84 0000026B	je er1
+
+ 00000EAF			sb52:
+
+				mwrite <0ah,0dh,"Enter assignment 1 marks: ">
+ 000011CE		     1		.data		
+ 000011CE 0A 0D 45 6E 74     1		??0057 BYTE 0ah,0dh,"Enter assignment 1 marks: ",0	
+	   65 72 20 61 73
+	   73 69 67 6E 6D
+	   65 6E 74 20 31
+	   20 6D 61 72 6B
+	   73 3A 20 00
+ 00000EAF		     1		.code
+ 00000EAF  52		     1		push	edx
+ 00000EB0  BA 000011CE R     1		mov	edx,OFFSET ??0057
+ 00000EB5  E8 00000000 E     1		call	WriteString
+ 00000EBA  5A		     1		pop	edx
+ 00000EBB  E8 00000000 E	call readint
+ 00000EC0  BA 00000001		mov edx,1
+ 00000EC5  52			push edx
+ 00000EC6  E8 000002B6		call checknum
+ 00000ECB  50			push eax
+ 00000ECC  B8 00000000		mov eax,0
+ 00000ED1  39 05 00000118 R	cmp valid1,eax
+ 00000ED7  58			pop eax
+ 00000ED8  74 B3		je sb5
+
+ 00000EDA  BE 00000000		mov esi,0
+ 00000EDF  89 04 B5		mov sub5[esi*type sub5],eax
+	   00000204 R
+
+				mwrite <0ah,0dh,"Enter assignment 2 marks: ">
+ 000011EB		     1		.data		
+ 000011EB 0A 0D 45 6E 74     1		??0058 BYTE 0ah,0dh,"Enter assignment 2 marks: ",0	
+	   65 72 20 61 73
+	   73 69 67 6E 6D
+	   65 6E 74 20 32
+	   20 6D 61 72 6B
+	   73 3A 20 00
+ 00000EE6		     1		.code
+ 00000EE6  52		     1		push	edx
+ 00000EE7  BA 000011EB R     1		mov	edx,OFFSET ??0058
+ 00000EEC  E8 00000000 E     1		call	WriteString
+ 00000EF1  5A		     1		pop	edx
+ 00000EF2  E8 00000000 E	call readint
+ 00000EF7  BA 00000001		mov edx,1
+ 00000EFC  52			push edx
+ 00000EFD  E8 0000027F		call checknum
+ 00000F02  50			push eax
+ 00000F03  B8 00000000		mov eax,0
+ 00000F08  39 05 00000118 R	cmp valid1,eax
+ 00000F0E  58			pop eax
+ 00000F0F  0F 84 FFFFFF78	je sb5
+
+ 00000F15  46			inc esi
+ 00000F16  89 04 B5		mov sub5[esi*type sub5],eax
+	   00000204 R
+
+				mwrite <0ah,0dh,"Enter Mid 1 marks: ">
+ 00001208		     1		.data		
+ 00001208 0A 0D 45 6E 74     1		??0059 BYTE 0ah,0dh,"Enter Mid 1 marks: ",0	
+	   65 72 20 4D 69
+	   64 20 31 20 6D
+	   61 72 6B 73 3A
+	   20 00
+ 00000F1D		     1		.code
+ 00000F1D  52		     1		push	edx
+ 00000F1E  BA 00001208 R     1		mov	edx,OFFSET ??0059
+ 00000F23  E8 00000000 E     1		call	WriteString
+ 00000F28  5A		     1		pop	edx
+ 00000F29  E8 00000000 E	call readint
+ 00000F2E  BA 00000002		mov edx,2
+ 00000F33  52			push edx
+ 00000F34  E8 00000248		call checknum
+ 00000F39  50			push eax
+ 00000F3A  B8 00000000		mov eax,0
+ 00000F3F  39 05 00000118 R	cmp valid1,eax
+ 00000F45  58			pop eax
+ 00000F46  0F 84 FFFFFF41	je sb5
+
+ 00000F4C  46			inc esi
+ 00000F4D  89 04 B5		mov sub5[esi*type sub5],eax
+	   00000204 R
+
+				mwrite <0ah,0dh,"Enter Mid 2 marks: ">
+ 0000121E		     1		.data		
+ 0000121E 0A 0D 45 6E 74     1		??005A BYTE 0ah,0dh,"Enter Mid 2 marks: ",0	
+	   65 72 20 4D 69
+	   64 20 32 20 6D
+	   61 72 6B 73 3A
+	   20 00
+ 00000F54		     1		.code
+ 00000F54  52		     1		push	edx
+ 00000F55  BA 0000121E R     1		mov	edx,OFFSET ??005A
+ 00000F5A  E8 00000000 E     1		call	WriteString
+ 00000F5F  5A		     1		pop	edx
+ 00000F60  E8 00000000 E	call readint
+ 00000F65  BA 00000002		mov edx,2
+ 00000F6A  52			push edx
+ 00000F6B  E8 00000211		call checknum
+ 00000F70  50			push eax
+ 00000F71  B8 00000000		mov eax,0
+ 00000F76  39 05 00000118 R	cmp valid1,eax
+ 00000F7C  58			pop eax
+ 00000F7D  0F 84 FFFFFF0A	je sb5
+
+ 00000F83  46			inc esi
+ 00000F84  89 04 B5		mov sub5[esi*type sub5],eax
+	   00000204 R
+
+				mwrite <0ah,0dh,"Enter Final Exam marks: ">
+ 00001234		     1		.data		
+ 00001234 0A 0D 45 6E 74     1		??005B BYTE 0ah,0dh,"Enter Final Exam marks: ",0	
+	   65 72 20 46 69
+	   6E 61 6C 20 45
+	   78 61 6D 20 6D
+	   61 72 6B 73 3A
+	   20 00
+ 00000F8B		     1		.code
+ 00000F8B  52		     1		push	edx
+ 00000F8C  BA 00001234 R     1		mov	edx,OFFSET ??005B
+ 00000F91  E8 00000000 E     1		call	WriteString
+ 00000F96  5A		     1		pop	edx
+ 00000F97  E8 00000000 E	call readint
+ 00000F9C  BA 00000003		mov edx,3
+ 00000FA1  52			push edx
+ 00000FA2  E8 000001DA		call checknum
+ 00000FA7  50			push eax
+ 00000FA8  B8 00000000		mov eax,0
+ 00000FAD  39 05 00000118 R	cmp valid1,eax
+ 00000FB3  58			pop eax
+ 00000FB4  0F 84 FFFFFED3	je sb5
+
+ 00000FBA  46			inc esi
+ 00000FBB  89 04 B5		mov sub5[esi*type sub5],eax
+	   00000204 R
+ 00000FC2  8B 75 FC		mov esi,ch1
+ 00000FC5  C7 04 B5		mov subflag[esi*type subflag],1
+	   00000184 R
+	   00000001
+
+ 00000FD0  E9 00000188		jmp success
+
+ 00000FD5			sb6:
+ 00000FD5  8B 75 FC		mov esi,ch1
+ 00000FD8  B8 00000001		mov eax,1
+ 00000FDD  39 05 0000013C R	cmp overwrite1,eax
+ 00000FE3  74 12		je sb62
+ 00000FE5  B8 00000001		mov eax,1
+ 00000FEA  39 04 B5		cmp subflag[esi*type subflag],eax
+	   00000184 R
+ 00000FF1  0F 84 00000123	je er1
+
+ 00000FF7			sb62:
+
+				mwrite <0ah,0dh,"Enter assignment 1 marks: ">
+ 0000124F		     1		.data		
+ 0000124F 0A 0D 45 6E 74     1		??005C BYTE 0ah,0dh,"Enter assignment 1 marks: ",0	
+	   65 72 20 61 73
+	   73 69 67 6E 6D
+	   65 6E 74 20 31
+	   20 6D 61 72 6B
+	   73 3A 20 00
+ 00000FF7		     1		.code
+ 00000FF7  52		     1		push	edx
+ 00000FF8  BA 0000124F R     1		mov	edx,OFFSET ??005C
+ 00000FFD  E8 00000000 E     1		call	WriteString
+ 00001002  5A		     1		pop	edx
+ 00001003  E8 00000000 E	call readint
+ 00001008  BA 00000001		mov edx,1
+ 0000100D  52			push edx
+ 0000100E  E8 0000016E		call checknum
+ 00001013  50			push eax
+ 00001014  B8 00000000		mov eax,0
+ 00001019  39 05 00000118 R	cmp valid1,eax
+ 0000101F  58			pop eax
+ 00001020  74 B3		je sb6
+
+ 00001022  BE 00000000		mov esi,0
+ 00001027  89 04 B5		mov sub6[esi*type sub6],eax
+	   00000218 R
+
+				mwrite <0ah,0dh,"Enter assignment 2 marks: ">
+ 0000126C		     1		.data		
+ 0000126C 0A 0D 45 6E 74     1		??005D BYTE 0ah,0dh,"Enter assignment 2 marks: ",0	
+	   65 72 20 61 73
+	   73 69 67 6E 6D
+	   65 6E 74 20 32
+	   20 6D 61 72 6B
+	   73 3A 20 00
+ 0000102E		     1		.code
+ 0000102E  52		     1		push	edx
+ 0000102F  BA 0000126C R     1		mov	edx,OFFSET ??005D
+ 00001034  E8 00000000 E     1		call	WriteString
+ 00001039  5A		     1		pop	edx
+ 0000103A  E8 00000000 E	call readint
+ 0000103F  BA 00000001		mov edx,1
+ 00001044  52			push edx
+ 00001045  E8 00000137		call checknum
+ 0000104A  50			push eax
+ 0000104B  B8 00000000		mov eax,0
+ 00001050  39 05 00000118 R	cmp valid1,eax
+ 00001056  58			pop eax
+ 00001057  0F 84 FFFFFF78	je sb6
+
+ 0000105D  46			inc esi
+ 0000105E  89 04 B5		mov sub6[esi*type sub6],eax
+	   00000218 R
+
+				mwrite <0ah,0dh,"Enter Mid 1 marks: ">
+ 00001289		     1		.data		
+ 00001289 0A 0D 45 6E 74     1		??005E BYTE 0ah,0dh,"Enter Mid 1 marks: ",0	
+	   65 72 20 4D 69
+	   64 20 31 20 6D
+	   61 72 6B 73 3A
+	   20 00
+ 00001065		     1		.code
+ 00001065  52		     1		push	edx
+ 00001066  BA 00001289 R     1		mov	edx,OFFSET ??005E
+ 0000106B  E8 00000000 E     1		call	WriteString
+ 00001070  5A		     1		pop	edx
+ 00001071  E8 00000000 E	call readint
+ 00001076  BA 00000002		mov edx,2
+ 0000107B  52			push edx
+ 0000107C  E8 00000100		call checknum
+ 00001081  50			push eax
+ 00001082  B8 00000000		mov eax,0
+ 00001087  39 05 00000118 R	cmp valid1,eax
+ 0000108D  58			pop eax
+ 0000108E  0F 84 FFFFFF41	je sb6
+
+ 00001094  46			inc esi
+ 00001095  89 04 B5		mov sub6[esi*type sub6],eax
+	   00000218 R
+
+				mwrite <0ah,0dh,"Enter Mid 2 marks: ">
+ 0000129F		     1		.data		
+ 0000129F 0A 0D 45 6E 74     1		??005F BYTE 0ah,0dh,"Enter Mid 2 marks: ",0	
+	   65 72 20 4D 69
+	   64 20 32 20 6D
+	   61 72 6B 73 3A
+	   20 00
+ 0000109C		     1		.code
+ 0000109C  52		     1		push	edx
+ 0000109D  BA 0000129F R     1		mov	edx,OFFSET ??005F
+ 000010A2  E8 00000000 E     1		call	WriteString
+ 000010A7  5A		     1		pop	edx
+ 000010A8  E8 00000000 E	call readint
+ 000010AD  BA 00000002		mov edx,2
+ 000010B2  52			push edx
+ 000010B3  E8 000000C9		call checknum
+ 000010B8  50			push eax
+ 000010B9  B8 00000000		mov eax,0
+ 000010BE  39 05 00000118 R	cmp valid1,eax
+ 000010C4  58			pop eax
+ 000010C5  0F 84 FFFFFF0A	je sb6
+
+ 000010CB  46			inc esi
+ 000010CC  89 04 B5		mov sub6[esi*type sub6],eax
+	   00000218 R
+
+				mwrite <0ah,0dh,"Enter Final Exam marks: ">
+ 000012B5		     1		.data		
+ 000012B5 0A 0D 45 6E 74     1		??0060 BYTE 0ah,0dh,"Enter Final Exam marks: ",0	
+	   65 72 20 46 69
+	   6E 61 6C 20 45
+	   78 61 6D 20 6D
+	   61 72 6B 73 3A
+	   20 00
+ 000010D3		     1		.code
+ 000010D3  52		     1		push	edx
+ 000010D4  BA 000012B5 R     1		mov	edx,OFFSET ??0060
+ 000010D9  E8 00000000 E     1		call	WriteString
+ 000010DE  5A		     1		pop	edx
+ 000010DF  E8 00000000 E	call readint
+ 000010E4  BA 00000003		mov edx,3
+ 000010E9  52			push edx
+ 000010EA  E8 00000092		call checknum
+ 000010EF  50			push eax
+ 000010F0  B8 00000000		mov eax,0
+ 000010F5  39 05 00000118 R	cmp valid1,eax
+ 000010FB  58			pop eax
+ 000010FC  0F 84 FFFFFED3	je sb6
+
+ 00001102  46			inc esi
+ 00001103  89 04 B5		mov sub6[esi*type sub6],eax
+	   00000218 R
+ 0000110A  8B 75 FC		mov esi,ch1
+ 0000110D  C7 04 B5		mov subflag[esi*type subflag],1
+	   00000184 R
+	   00000001
+
+ 00001118  EB 43		jmp success
+
+ 0000111A			er1:
+				mwrite <0ah,0dh,"Chosen subject's marks have already been entered. ">
+ 000012D0		     1		.data		
+ 000012D0 0A 0D 43 68 6F     1		??0061 BYTE 0ah,0dh,"Chosen subject's marks have already been entered. ",0	
+	   73 65 6E 20 73
+	   75 62 6A 65 63
+	   74 27 73 20 6D
+	   61 72 6B 73 20
+	   68 61 76 65 20
+	   61 6C 72 65 61
+	   64 79 20 62 65
+	   65 6E 20 65 6E
+	   74 65 72 65 64
+	   2E 20 00
+ 0000111A		     1		.code
+ 0000111A  52		     1		push	edx
+ 0000111B  BA 000012D0 R     1		mov	edx,OFFSET ??0061
+ 00001120  E8 00000000 E     1		call	WriteString
+ 00001125  5A		     1		pop	edx
+				mwrite <0ah,0dh,"Do you wish to overwrite subject marks? Enter 1 if yes, else for no: ">
+ 00001305		     1		.data		
+ 00001305 0A 0D 44 6F 20     1		??0062 BYTE 0ah,0dh,"Do you wish to overwrite subject marks? Enter 1 if yes, else for no: ",0	
+	   79 6F 75 20 77
+	   69 73 68 20 74
+	   6F 20 6F 76 65
+	   72 77 72 69 74
+	   65 20 73 75 62
+	   6A 65 63 74 20
+	   6D 61 72 6B 73
+	   3F 20 45 6E 74
+	   65 72 20 31 20
+	   69 66 20 79 65
+	   73 2C 20 65 6C
+	   73 65 20 66 6F
+	   72 20 6E 6F 3A
+	   20 00
+ 00001126		     1		.code
+ 00001126  52		     1		push	edx
+ 00001127  BA 00001305 R     1		mov	edx,OFFSET ??0062
+ 0000112C  E8 00000000 E     1		call	WriteString
+ 00001131  5A		     1		pop	edx
+ 00001132  E8 00000000 E	call readint
+ 00001137  83 F8 01		cmp eax,1
+ 0000113A  74 02		je trr1
+ 0000113C  EB 2B		jmp ex1
+ 0000113E			trr1:
+ 0000113E  C7 05 0000013C R	mov overwrite1,1
+	   00000001
+ 00001148  E9 FFFFF7AC		jmp tryag
+ 0000114D  EB 1A		jmp ex1
+
+ 0000114F			invd3:
+				mwrite <0ah,0dh,"Marks have now been locked in the system. Can not proceed">
+ 0000134D		     1		.data		
+ 0000134D 0A 0D 4D 61 72     1		??0063 BYTE 0ah,0dh,"Marks have now been locked in the system. Can not proceed",0	
+	   6B 73 20 68 61
+	   76 65 20 6E 6F
+	   77 20 62 65 65
+	   6E 20 6C 6F 63
+	   6B 65 64 20 69
+	   6E 20 74 68 65
+	   20 73 79 73 74
+	   65 6D 2E 20 43
+	   61 6E 20 6E 6F
+	   74 20 70 72 6F
+	   63 65 65 64 00
+ 0000114F		     1		.code
+ 0000114F  52		     1		push	edx
+ 00001150  BA 0000134D R     1		mov	edx,OFFSET ??0063
+ 00001155  E8 00000000 E     1		call	WriteString
+ 0000115A  5A		     1		pop	edx
+ 0000115B  EB 0C		jmp ex1
+
+ 0000115D			success:
+				mwrite <0ah,0dh,"Chosen subject's marks successfuly entered.">
+ 00001389		     1		.data		
+ 00001389 0A 0D 43 68 6F     1		??0064 BYTE 0ah,0dh,"Chosen subject's marks successfuly entered.",0	
+	   73 65 6E 20 73
+	   75 62 6A 65 63
+	   74 27 73 20 6D
+	   61 72 6B 73 20
+	   73 75 63 63 65
+	   73 73 66 75 6C
+	   79 20 65 6E 74
+	   65 72 65 64 2E
+	   00
+ 0000115D		     1		.code
+ 0000115D  52		     1		push	edx
+ 0000115E  BA 00001389 R     1		mov	edx,OFFSET ??0064
+ 00001163  E8 00000000 E     1		call	WriteString
+ 00001168  5A		     1		pop	edx
+
+ 00001169			ex1:
+				mwrite <0ah,0dh,"Press any key to continue.">
+ 000013B7		     1		.data		
+ 000013B7 0A 0D 50 72 65     1		??0065 BYTE 0ah,0dh,"Press any key to continue.",0	
+	   73 73 20 61 6E
+	   79 20 6B 65 79
+	   20 74 6F 20 63
+	   6F 6E 74 69 6E
+	   75 65 2E 00
+ 00001169		     1		.code
+ 00001169  52		     1		push	edx
+ 0000116A  BA 000013B7 R     1		mov	edx,OFFSET ??0065
+ 0000116F  E8 00000000 E     1		call	WriteString
+ 00001174  5A		     1		pop	edx
+ 00001175  E8 00000000 E	call readchar
+				ret
+ 00001181			setmarks endp
+
+ 00001181			checknum proc uses edx eax,
+				var1:dword
+				local lcount:dword
+
+ 00001189  B9 00000001		mov ecx,1
+ 0000118E  39 4D 08		cmp var1,ecx
+ 00001191  74 0C		je checkas
+ 00001193  41			inc ecx
+ 00001194  39 4D 08		cmp var1,ecx
+ 00001197  74 1C		je checkmid
+ 00001199  41			inc ecx
+ 0000119A  39 4D 08		cmp var1,ecx
+ 0000119D  74 2C		je checkf
+
+ 0000119F			checkas:
+ 0000119F  83 F8 00		cmp eax,0
+ 000011A2  72 3D		jb invalid2
+ 000011A4  83 F8 14		cmp eax,20
+ 000011A7  77 38		ja invalid2
+ 000011A9  C7 05 00000118 R	mov valid1,1
+	   00000001
+ 000011B3  EB 42		jmp scc
+
+ 000011B5			checkmid:
+ 000011B5  83 F8 00		cmp eax,0
+ 000011B8  72 27		jb invalid2
+ 000011BA  83 F8 28		cmp eax,40
+ 000011BD  77 22		ja invalid2
+ 000011BF  C7 05 00000118 R	mov valid1,1
+	   00000001
+ 000011C9  EB 2C		jmp scc
+
+ 000011CB			checkf:
+ 000011CB  83 F8 00		cmp eax,0
+ 000011CE  72 11		jb invalid2
+ 000011D0  83 F8 64		cmp eax,100
+ 000011D3  77 0C		ja invalid2
+ 000011D5  C7 05 00000118 R	mov valid1,1
+	   00000001
+ 000011DF  EB 16		jmp scc
+
+ 000011E1			invalid2:
+ 000011E1  C7 05 00000118 R	mov valid1,0
+	   00000000
+				mwrite <0ah,0dh,"Incorrect entry. Please enter marks again.",0ah,0dh>
+ 000013D4		     1		.data		
+ 000013D4 0A 0D 49 6E 63     1		??0066 BYTE 0ah,0dh,"Incorrect entry. Please enter marks again.",0ah,0dh,0	
+	   6F 72 72 65 63
+	   74 20 65 6E 74
+	   72 79 2E 20 50
+	   6C 65 61 73 65
+	   20 65 6E 74 65
+	   72 20 6D 61 72
+	   6B 73 20 61 67
+	   61 69 6E 2E 0A
+	   0D 00
+ 000011EB		     1		.code
+ 000011EB  52		     1		push	edx
+ 000011EC  BA 000013D4 R     1		mov	edx,OFFSET ??0066
+ 000011F1  E8 00000000 E     1		call	WriteString
+ 000011F6  5A		     1		pop	edx
+ 000011F7			scc:
+				ret
+ 000011FD			checknum endp
+Text.asm(1319) : warning A6004:procedure argument or local not referenced : lcount
+
+ 000011FD			displaysubs proc uses esi eax ecx edx
+				local count1:dword
+ 00001207  C7 45 FC		mov count1,0
+	   00000000
+ 0000120E  B9 00000006		mov ecx,lengthof mysubjects
+ 00001213  BE 00000000		mov esi,0
+ 00001218  E8 00000000 E	call crlf
+ 0000121D			inlp:
+ 0000121D  FF 45 FC		inc count1
+ 00001220  8B 45 FC		mov eax,count1
+ 00001223  E8 00000000 E	call writedec
+				mwrite ". "
+ 00001403		     1		.data		
+ 00001403 2E 20 00	     1		??0067 BYTE ". ",0	
+ 00001228		     1		.code
+ 00001228  52		     1		push	edx
+ 00001229  BA 00001403 R     1		mov	edx,OFFSET ??0067
+ 0000122E  E8 00000000 E     1		call	WriteString
+ 00001233  5A		     1		pop	edx
+ 00001234  8B 14 B5		mov edx,mysubjects[esi*type mysubjects]
+	   0000016C R
+ 0000123B  E8 00000000 E	call writestring
+ 00001240  E8 00000000 E	call crlf
+ 00001245  46			inc esi
+ 00001246  E2 D5		loop inlp
+				;mwrite <"Press any key to continue...">
+				;call readchar
+				ret
+ 0000124E			displaysubs endp
+
+ 0000124E			setsubjects proc uses eax ecx edx ebx esi,
+				var1:ptr dword
+				local countvar: dword
+				;call clrscr
+ 00001259  C7 45 FC		mov countvar,0
+	   00000000
+ 00001260  8B 75 08		mov esi,var1
+ 00001263  BF 00000000		mov edi,0
+
+ 00001268			lp1:
+				mwrite <0ah,0dh,"Please select which year you are in: ">
+ 00001406		     1		.data		
+ 00001406 0A 0D 50 6C 65     1		??0068 BYTE 0ah,0dh,"Please select which year you are in: ",0	
+	   61 73 65 20 73
+	   65 6C 65 63 74
+	   20 77 68 69 63
+	   68 20 79 65 61
+	   72 20 79 6F 75
+	   20 61 72 65 20
+	   69 6E 3A 20 00
+ 00001268		     1		.code
+ 00001268  52		     1		push	edx
+ 00001269  BA 00001406 R     1		mov	edx,OFFSET ??0068
+ 0000126E  E8 00000000 E     1		call	WriteString
+ 00001273  5A		     1		pop	edx
+				mwrite <0ah,0dh,"1. First">
+ 0000142E		     1		.data		
+ 0000142E 0A 0D 31 2E 20     1		??0069 BYTE 0ah,0dh,"1. First",0	
+	   46 69 72 73 74
+	   00
+ 00001274		     1		.code
+ 00001274  52		     1		push	edx
+ 00001275  BA 0000142E R     1		mov	edx,OFFSET ??0069
+ 0000127A  E8 00000000 E     1		call	WriteString
+ 0000127F  5A		     1		pop	edx
+				mwrite <0ah,0dh,"2. Second">
+ 00001439		     1		.data		
+ 00001439 0A 0D 32 2E 20     1		??006A BYTE 0ah,0dh,"2. Second",0	
+	   53 65 63 6F 6E
+	   64 00
+ 00001280		     1		.code
+ 00001280  52		     1		push	edx
+ 00001281  BA 00001439 R     1		mov	edx,OFFSET ??006A
+ 00001286  E8 00000000 E     1		call	WriteString
+ 0000128B  5A		     1		pop	edx
+				mwrite <0ah,0dh,"3. Third">
+ 00001445		     1		.data		
+ 00001445 0A 0D 33 2E 20     1		??006B BYTE 0ah,0dh,"3. Third",0	
+	   54 68 69 72 64
+	   00
+ 0000128C		     1		.code
+ 0000128C  52		     1		push	edx
+ 0000128D  BA 00001445 R     1		mov	edx,OFFSET ??006B
+ 00001292  E8 00000000 E     1		call	WriteString
+ 00001297  5A		     1		pop	edx
+				mwrite <0ah,0dh,"4. Fourth">
+ 00001450		     1		.data		
+ 00001450 0A 0D 34 2E 20     1		??006C BYTE 0ah,0dh,"4. Fourth",0	
+	   46 6F 75 72 74
+	   68 00
+ 00001298		     1		.code
+ 00001298  52		     1		push	edx
+ 00001299  BA 00001450 R     1		mov	edx,OFFSET ??006C
+ 0000129E  E8 00000000 E     1		call	WriteString
+ 000012A3  5A		     1		pop	edx
+				mwrite <0ah,0dh,"Enter choice: ">
+ 0000145C		     1		.data		
+ 0000145C 0A 0D 45 6E 74     1		??006D BYTE 0ah,0dh,"Enter choice: ",0	
+	   65 72 20 63 68
+	   6F 69 63 65 3A
+	   20 00
+ 000012A4		     1		.code
+ 000012A4  52		     1		push	edx
+ 000012A5  BA 0000145C R     1		mov	edx,OFFSET ??006D
+ 000012AA  E8 00000000 E     1		call	WriteString
+ 000012AF  5A		     1		pop	edx
+ 000012B0  E8 00000000 E	call readint
+ 000012B5  A3 0000011C R	mov yearchoice,eax
+ 000012BA  83 F8 01		cmp eax,1
+ 000012BD  74 1D		je year1
+ 000012BF  83 F8 02		cmp eax,2
+ 000012C2  74 29		je year2
+ 000012C4  83 F8 03		cmp eax,3
+ 000012C7  74 35		je year3
+ 000012C9  83 F8 04		cmp eax,4
+ 000012CC  74 41		je year4
+				mwrite <0ah,0dh,"Invalid entry, try again: ">
+ 0000146D		     1		.data		
+ 0000146D 0A 0D 49 6E 76     1		??006E BYTE 0ah,0dh,"Invalid entry, try again: ",0	
+	   61 6C 69 64 20
+	   65 6E 74 72 79
+	   2C 20 74 72 79
+	   20 61 67 61 69
+	   6E 3A 20 00
+ 000012CE		     1		.code
+ 000012CE  52		     1		push	edx
+ 000012CF  BA 0000146D R     1		mov	edx,OFFSET ??006E
+ 000012D4  E8 00000000 E     1		call	WriteString
+ 000012D9  5A		     1		pop	edx
+ 000012DA  EB 8C		jmp lp1
+
+ 000012DC			year1:
+ 000012DC  BB 0000022C R	mov ebx, offset first
+ 000012E1  B8 00000028		mov eax,firstrowsize
+ 000012E6  A3 000000FC R	mov size1,eax
+ 000012EB  EB 31		jmp set
+ 000012ED			year2:
+ 000012ED  BB 000003E4 R	mov ebx, offset second
+ 000012F2  B8 00000025		mov eax,secondrowsize
+ 000012F7  A3 000000FC R	mov size1,eax
+ 000012FC  EB 20		jmp set
+ 000012FE			year3:
+ 000012FE  BB 0000057B R	mov ebx, offset third
+ 00001303  B8 00000025		mov eax,thirdrowsize
+ 00001308  A3 000000FC R	mov size1,eax
+ 0000130D  EB 0F		jmp set
+ 0000130F			year4:
+ 0000130F  BB 00000712 R	mov ebx, offset fourth
+ 00001314  B8 00000025		mov eax,fourthrowsize
+ 00001319  A3 000000FC R	mov size1,eax
+
+ 0000131E			set:
+				mwrite <0ah,0dh,"Please select any 6 subjects: ",0ah,0dh>
+ 0000148A		     1		.data		
+ 0000148A 0A 0D 50 6C 65     1		??006F BYTE 0ah,0dh,"Please select any 6 subjects: ",0ah,0dh,0	
+	   61 73 65 20 73
+	   65 6C 65 63 74
+	   20 61 6E 79 20
+	   36 20 73 75 62
+	   6A 65 63 74 73
+	   3A 20 0A 0D 00
+ 0000131E		     1		.code
+ 0000131E  52		     1		push	edx
+ 0000131F  BA 0000148A R     1		mov	edx,OFFSET ??006F
+ 00001324  E8 00000000 E     1		call	WriteString
+ 00001329  5A		     1		pop	edx
+
+ 0000132A  B9 0000000B		mov ecx,firstsize
+ 0000132F  B8 00000000		mov eax,0
+
+ 00001334  53			push ebx
+ 00001335			lp2:
+ 00001335  40			inc eax
+ 00001336  E8 00000000 E	call writedec
+				mwrite ". "
+ 000014AD		     1		.data		
+ 000014AD 2E 20 00	     1		??0070 BYTE ". ",0	
+ 0000133B		     1		.code
+ 0000133B  52		     1		push	edx
+ 0000133C  BA 000014AD R     1		mov	edx,OFFSET ??0070
+ 00001341  E8 00000000 E     1		call	WriteString
+ 00001346  5A		     1		pop	edx
+ 00001347  8B D3		mov edx,ebx
+ 00001349  E8 00000000 E	call writestring
+ 0000134E  03 1D 000000FC R	add ebx,size1
+ 00001354  E8 00000000 E	call crlf
+ 00001359  E2 DA		loop lp2
+ 0000135B  5B			pop ebx
+
+ 0000135C			try:
+ 0000135C  B8 00000006		mov eax,6
+ 00001361  39 45 FC		cmp countvar,eax
+ 00001364  74 74		je outofloop1
+ 00001366  FF 45 FC		inc countvar
+ 00001369  8B D7		mov edx,edi
+ 0000136B			tryone:
+				mwrite <0ah,0dh,"Enter your choice: ">
+ 000014B0		     1		.data		
+ 000014B0 0A 0D 45 6E 74     1		??0071 BYTE 0ah,0dh,"Enter your choice: ",0	
+	   65 72 20 79 6F
+	   75 72 20 63 68
+	   6F 69 63 65 3A
+	   20 00
+ 0000136B		     1		.code
+ 0000136B  52		     1		push	edx
+ 0000136C  BA 000014B0 R     1		mov	edx,OFFSET ??0071
+ 00001371  E8 00000000 E     1		call	WriteString
+ 00001376  5A		     1		pop	edx
+ 00001377  E8 00000000 E	call readint
+ 0000137C  83 F8 0B		cmp eax,11
+ 0000137F  77 07		ja nvd3
+ 00001381  83 F8 00		cmp eax,0
+ 00001384  76 02		jbe nvd3
+ 00001386  EB 0E		jmp fine11
+
+ 00001388			nvd3:
+				mwrite <"Invalid choice entered.">
+ 000014C6		     1		.data		
+ 000014C6 49 6E 76 61 6C     1		??0072 BYTE "Invalid choice entered.",0	
+	   69 64 20 63 68
+	   6F 69 63 65 20
+	   65 6E 74 65 72
+	   65 64 2E 00
+ 00001388		     1		.code
+ 00001388  52		     1		push	edx
+ 00001389  BA 000014C6 R     1		mov	edx,OFFSET ??0072
+ 0000138E  E8 00000000 E     1		call	WriteString
+ 00001393  5A		     1		pop	edx
+ 00001394  EB D5		jmp tryone
+
+ 00001396			fine11:
+
+ 00001396  8B 4D FC		mov ecx,countvar
+ 00001399  49			dec ecx
+ 0000139A  83 F9 00		cmp ecx,0
+ 0000139D  74 13		je moveon
+
+
+ 0000139F  BF 00000000		mov edi,0
+ 000013A4			checkingl:
+ 000013A4  3B 04 BD		cmp eax,duplicate[edi*type duplicate]
+	   00000100 R
+ 000013AB  74 DB		je nvd3
+ 000013AD  47			inc edi
+ 000013AE  E2 F4		loop checkingl
+ 000013B0  8B FA		mov edi,edx
+
+ 000013B2			moveon:
+ 000013B2  89 04 BD		mov duplicate[edi*type duplicate],eax
+	   00000100 R
+ 000013B9  47			inc edi
+
+ 000013BA  B9 0000000B		mov ecx,firstsize
+ 000013BF  BA 00000000		mov edx,0
+ 000013C4  53			push ebx
+
+ 000013C5			lp3:
+ 000013C5  42			inc edx
+ 000013C6  3B D0		cmp edx,eax
+ 000013C8  74 08		je outofloop
+ 000013CA  03 1D 000000FC R	add ebx,size1
+ 000013D0  E2 F3		loop lp3
+
+ 000013D2			outofloop:
+ 000013D2  89 1E		mov [esi],ebx;offset of string stored in mysubjects array
+ 000013D4  83 C6 04		add esi,4
+
+ 000013D7  5B			pop ebx
+ 000013D8  EB 82		jmp try
+
+ 000013DA			outofloop1:
+				mwrite <0ah,0dh,"Subjects successfully stored. You have chosen: ",0ah,0dh>
+
+ 000014DE		     1		.data		
+ 000014DE 0A 0D 53 75 62     1		??0073 BYTE 0ah,0dh,"Subjects successfully stored. You have chosen: ",0ah,0dh,0	
+	   6A 65 63 74 73
+	   20 73 75 63 63
+	   65 73 73 66 75
+	   6C 6C 79 20 73
+	   74 6F 72 65 64
+	   2E 20 59 6F 75
+	   20 68 61 76 65
+	   20 63 68 6F 73
+	   65 6E 3A 20 0A
+	   0D 00
+ 000013DA		     1		.code
+ 000013DA  52		     1		push	edx
+ 000013DB  BA 000014DE R     1		mov	edx,OFFSET ??0073
+ 000013E0  E8 00000000 E     1		call	WriteString
+ 000013E5  5A		     1		pop	edx
+ 000013E6  8B 75 08		mov esi,var1
+ 000013E9  B9 00000006		mov ecx,6
+ 000013EE  C7 45 FC		mov countvar,0
+	   00000000
+ 000013F5			dploop:
+ 000013F5  FF 45 FC		inc countvar
+ 000013F8  8B 45 FC		mov eax,countvar
+ 000013FB  E8 00000000 E	call writedec
+				mwrite ". "
+ 00001512		     1		.data		
+ 00001512 2E 20 00	     1		??0074 BYTE ". ",0	
+ 00001400		     1		.code
+ 00001400  52		     1		push	edx
+ 00001401  BA 00001512 R     1		mov	edx,OFFSET ??0074
+ 00001406  E8 00000000 E     1		call	WriteString
+ 0000140B  5A		     1		pop	edx
+ 0000140C  8B 16		mov edx,[esi]
+ 0000140E  E8 00000000 E	call writestring
+ 00001413  E8 00000000 E	call crlf
+ 00001418  83 C6 04		add esi,4
+ 0000141B  E2 D8		loop dploop
+
+				ret
+ 00001426			setsubjects endp
+
+ 00001426			displaymenu proc
+				mwrite <"Please select one of the following: ",0ah,0dh>
+ 00001515		     1		.data		
+ 00001515 50 6C 65 61 73     1		??0075 BYTE "Please select one of the following: ",0ah,0dh,0	
+	   65 20 73 65 6C
+	   65 63 74 20 6F
+	   6E 65 20 6F 66
+	   20 74 68 65 20
+	   66 6F 6C 6C 6F
+	   77 69 6E 67 3A
+	   20 0A 0D 00
+ 00001426		     1		.code
+ 00001426  52		     1		push	edx
+ 00001427  BA 00001515 R     1		mov	edx,OFFSET ??0075
+ 0000142C  E8 00000000 E     1		call	WriteString
+ 00001431  5A		     1		pop	edx
+				mwrite <"1. Display selected subjects",0ah,0dh>
+ 0000153C		     1		.data		
+ 0000153C 31 2E 20 44 69     1		??0076 BYTE "1. Display selected subjects",0ah,0dh,0	
+	   73 70 6C 61 79
+	   20 73 65 6C 65
+	   63 74 65 64 20
+	   73 75 62 6A 65
+	   63 74 73 0A 0D
+	   00
+ 00001432		     1		.code
+ 00001432  52		     1		push	edx
+ 00001433  BA 0000153C R     1		mov	edx,OFFSET ??0076
+ 00001438  E8 00000000 E     1		call	WriteString
+ 0000143D  5A		     1		pop	edx
+				mwrite <"2. Enter marks for a subject",0ah,0dh>
+ 0000155B		     1		.data		
+ 0000155B 32 2E 20 45 6E     1		??0077 BYTE "2. Enter marks for a subject",0ah,0dh,0	
+	   74 65 72 20 6D
+	   61 72 6B 73 20
+	   66 6F 72 20 61
+	   20 73 75 62 6A
+	   65 63 74 0A 0D
+	   00
+ 0000143E		     1		.code
+ 0000143E  52		     1		push	edx
+ 0000143F  BA 0000155B R     1		mov	edx,OFFSET ??0077
+ 00001444  E8 00000000 E     1		call	WriteString
+ 00001449  5A		     1		pop	edx
+				mwrite <"3. View academic progress",0ah,0dh>
+ 0000157A		     1		.data		
+ 0000157A 33 2E 20 56 69     1		??0078 BYTE "3. View academic progress",0ah,0dh,0	
+	   65 77 20 61 63
+	   61 64 65 6D 69
+	   63 20 70 72 6F
+	   67 72 65 73 73
+	   0A 0D 00
+ 0000144A		     1		.code
+ 0000144A  52		     1		push	edx
+ 0000144B  BA 0000157A R     1		mov	edx,OFFSET ??0078
+ 00001450  E8 00000000 E     1		call	WriteString
+ 00001455  5A		     1		pop	edx
+				mwrite <"4. Generate Fee Challan",0ah,0dh>
+ 00001596		     1		.data		
+ 00001596 34 2E 20 47 65     1		??0079 BYTE "4. Generate Fee Challan",0ah,0dh,0	
+	   6E 65 72 61 74
+	   65 20 46 65 65
+	   20 43 68 61 6C
+	   6C 61 6E 0A 0D
+	   00
+ 00001456		     1		.code
+ 00001456  52		     1		push	edx
+ 00001457  BA 00001596 R     1		mov	edx,OFFSET ??0079
+ 0000145C  E8 00000000 E     1		call	WriteString
+ 00001461  5A		     1		pop	edx
+				mwrite <"5. Generate Transcript",0ah,0dh>;manage marks
+ 000015B0		     1		.data		
+ 000015B0 35 2E 20 47 65     1		??007A BYTE "5. Generate Transcript",0ah,0dh,0	
+	   6E 65 72 61 74
+	   65 20 54 72 61
+	   6E 73 63 72 69
+	   70 74 0A 0D 00
+ 00001462		     1		.code
+ 00001462  52		     1		push	edx
+ 00001463  BA 000015B0 R     1		mov	edx,OFFSET ??007A
+ 00001468  E8 00000000 E     1		call	WriteString
+ 0000146D  5A		     1		pop	edx
+				mwrite <"6. Set timetable",0ah,0dh>
+ 000015C9		     1		.data		
+ 000015C9 36 2E 20 53 65     1		??007B BYTE "6. Set timetable",0ah,0dh,0	
+	   74 20 74 69 6D
+	   65 74 61 62 6C
+	   65 0A 0D 00
+ 0000146E		     1		.code
+ 0000146E  52		     1		push	edx
+ 0000146F  BA 000015C9 R     1		mov	edx,OFFSET ??007B
+ 00001474  E8 00000000 E     1		call	WriteString
+ 00001479  5A		     1		pop	edx
+				mwrite <"7. View timetable",0ah,0dh>
+ 000015DC		     1		.data		
+ 000015DC 37 2E 20 56 69     1		??007C BYTE "7. View timetable",0ah,0dh,0	
+	   65 77 20 74 69
+	   6D 65 74 61 62
+	   6C 65 0A 0D 00
+ 0000147A		     1		.code
+ 0000147A  52		     1		push	edx
+ 0000147B  BA 000015DC R     1		mov	edx,OFFSET ??007C
+ 00001480  E8 00000000 E     1		call	WriteString
+ 00001485  5A		     1		pop	edx
+				mwrite <"8. Logout",0ah,0dh>
+ 000015F0		     1		.data		
+ 000015F0 38 2E 20 4C 6F     1		??007D BYTE "8. Logout",0ah,0dh,0	
+	   67 6F 75 74 0A
+	   0D 00
+ 00001486		     1		.code
+ 00001486  52		     1		push	edx
+ 00001487  BA 000015F0 R     1		mov	edx,OFFSET ??007D
+ 0000148C  E8 00000000 E     1		call	WriteString
+ 00001491  5A		     1		pop	edx
+ 00001492  C3			ret
+ 00001493			displaymenu endp
+
+ 00001493			login proc,
+				var1:ptr byte
+				mwrite "Enter student ID to proceed: "
+ 000015FC		     1		.data		
+ 000015FC 45 6E 74 65 72     1		??007E BYTE "Enter student ID to proceed: ",0	
+	   20 73 74 75 64
+	   65 6E 74 20 49
+	   44 20 74 6F 20
+	   70 72 6F 63 65
+	   65 64 3A 20 00
+ 00001496		     1		.code
+ 00001496  52		     1		push	edx
+ 00001497  BA 000015FC R     1		mov	edx,OFFSET ??007E
+ 0000149C  E8 00000000 E     1		call	WriteString
+ 000014A1  5A		     1		pop	edx
+ 000014A2  8B 55 08		mov edx,var1
+ 000014A5  B9 00000032		mov ecx,50
+ 000014AA  E8 00000000 E	call readstring
+ 000014AF  50			push eax
+ 000014B0  FF 75 08		push var1
+ 000014B3  E8 00000004		call checkID
+				ret
+ 000014BC			login endp
+
+ 000014BC			checkID proc,
+				stra:ptr byte,
+				sz:dword
+ 000014BF  8B 45 0C		mov eax,sz
+ 000014C2  83 F8 07		cmp eax,7
+ 000014C5  75 5A		jne bad
+ 000014C7  8B 75 08		mov esi,stra
+
+ 000014CA  B3 30		mov bl,48
+ 000014CC  38 1E		cmp [esi],bl
+ 000014CE  72 51		jb bad
+ 000014D0  38 5E 01		cmp [esi+1],bl
+ 000014D3  72 4C		jb bad
+
+
+ 000014D5  B3 39		mov bl,57
+ 000014D7  38 1E		cmp [esi],bl
+ 000014D9  77 46		ja bad
+ 000014DB  38 5E 01		cmp [esi+1],bl
+ 000014DE  77 41		ja bad
+
+ 000014E0  B3 61		mov bl,97
+ 000014E2  38 5E 02		cmp [esi+2],bl
+ 000014E5  72 09		jb c1
+ 000014E7  B3 7A		mov bl,122
+ 000014E9  38 5E 02		cmp [esi+2],bl
+ 000014EC  77 33		ja bad
+ 000014EE  EB 0E		jmp c2
+ 000014F0			c1:
+ 000014F0  B3 41		mov bl,65
+ 000014F2  38 5E 02		cmp [esi+2],bl
+ 000014F5  72 2A		jb bad
+ 000014F7  B3 5A		mov bl,90
+ 000014F9  38 5E 02		cmp [esi+2],bl
+ 000014FC  77 23		ja bad
+ 000014FE			c2:
+ 000014FE  83 C6 03		add esi,3
+ 00001501  B9 00000004		mov ecx,4
+ 00001506			l5:
+ 00001506  B0 30		mov al,48
+ 00001508  38 06		cmp [esi],al
+ 0000150A  72 15		jb bad
+ 0000150C  B0 39		mov al,57
+ 0000150E  38 06		cmp [esi],al
+ 00001510  77 0F		ja bad
+ 00001512  46			inc esi
+ 00001513  E2 F1		loop l5
+ 00001515  C7 05 000000EE R	mov valid,1
+	   00000001
+ 0000151F  EB 0A		jmp e1
+ 00001521			bad:
+ 00001521  C7 05 000000EE R	mov valid,0
+	   00000000
+ 0000152B			e1:ret
+ 0000152F			checkID endp
+
+
+
+ 0000152F			settable proc uses esi eax ecx edx ebx edi,
+				ad1:ptr dword,
+				ad2:ptr dword
+				local count1:dword,count2:dword,subcount[6]:dword,mcc1:dword,mcc2:dword
+ 0000153B  C7 45 FC		mov count1,0
+	   00000000
+ 00001542  C7 45 F8		mov count2,0
+	   00000000
+ 00001549  BA 000000A0 R	mov edx,offset days
+ 0000154E  8B 75 0C		mov esi,ad2
+ 00001551  8B 5D 08		mov ebx,ad1
+ 00001554  BF 00000000		mov edi,0
+
+ 00001559  B9 00000005		mov ecx,5
+ 0000155E  C7 45 D8		mov mcc2,5
+	   00000005
+ 00001565			inloop:
+ 00001565  8B 5D 08		mov ebx,ad1
+
+ 00001568  51			push ecx
+ 00001569  B9 00000006		mov ecx,6
+ 0000156E  BE 00000000		mov esi,0
+ 00001573			tlp:
+ 00001573  C7 44 B5 E0 00	mov subcount[esi*type subcount],0
+	   22000000
+ 0000157B  46			inc esi
+ 0000157C  E2 F5		loop tlp
+ 0000157E  59			pop ecx
+
+ 0000157F  E8 00000000 E	call clrscr
+				mwrite <0ah,0dh,"Schedule for ">
+ 0000161A		     1		.data		
+ 0000161A 0A 0D 53 63 68     1		??007F BYTE 0ah,0dh,"Schedule for ",0	
+	   65 64 75 6C 65
+	   20 66 6F 72 20
+	   00
+ 00001584		     1		.code
+ 00001584  52		     1		push	edx
+ 00001585  BA 0000161A R     1		mov	edx,OFFSET ??007F
+ 0000158A  E8 00000000 E     1		call	WriteString
+ 0000158F  5A		     1		pop	edx
+ 00001590  E8 00000000 E	call writestring
+				mwrite <": ",0ah,0dh,0ah,0dh>
+ 0000162A		     1		.data		
+ 0000162A 3A 20 0A 0D 0A     1		??0080 BYTE ": ",0ah,0dh,0ah,0dh,0	
+	   0D 00
+ 00001595		     1		.code
+ 00001595  52		     1		push	edx
+ 00001596  BA 0000162A R     1		mov	edx,OFFSET ??0080
+ 0000159B  E8 00000000 E     1		call	WriteString
+ 000015A0  5A		     1		pop	edx
+ 000015A1  E8 00000000 E	call readchar
+
+ 000015A6  51			push ecx
+ 000015A7  B9 00000008		mov ecx,8
+ 000015AC  C7 45 DC		mov mcc1,8
+	   00000008
+ 000015B3  C7 45 FC		mov count1,0
+	   00000000
+ 000015BA  C7 45 F8		mov count2,0
+	   00000000
+ 000015C1			ilp2:
+
+				mwrite <0ah,0dh,"Choosing for slot ">
+ 00001631		     1		.data		
+ 00001631 0A 0D 43 68 6F     1		??0081 BYTE 0ah,0dh,"Choosing for slot ",0	
+	   6F 73 69 6E 67
+	   20 66 6F 72 20
+	   73 6C 6F 74 20
+	   00
+ 000015C1		     1		.code
+ 000015C1  52		     1		push	edx
+ 000015C2  BA 00001631 R     1		mov	edx,OFFSET ??0081
+ 000015C7  E8 00000000 E     1		call	WriteString
+ 000015CC  5A		     1		pop	edx
+ 000015CD  FF 45 FC		inc count1
+ 000015D0  8B 45 FC		mov eax,count1
+ 000015D3  E8 00000000 E	call writedec
+				mwrite <": ",0ah,0dh>
+ 00001646		     1		.data		
+ 00001646 3A 20 0A 0D 00     1		??0082 BYTE ": ",0ah,0dh,0	
+ 000015D8		     1		.code
+ 000015D8  52		     1		push	edx
+ 000015D9  BA 00001646 R     1		mov	edx,OFFSET ??0082
+ 000015DE  E8 00000000 E     1		call	WriteString
+ 000015E3  5A		     1		pop	edx
+ 000015E4  E8 00000000 E	call crlf
+
+ 000015E9			tr1:
+				mwrite <"1. Class",0ah,0dh,"2. Break",0ah,0dh>
+ 0000164B		     1		.data		
+ 0000164B 31 2E 20 43 6C     1		??0083 BYTE "1. Class",0ah,0dh,"2. Break",0ah,0dh,0	
+	   61 73 73 0A 0D
+	   32 2E 20 42 72
+	   65 61 6B 0A 0D
+	   00
+ 000015E9		     1		.code
+ 000015E9  52		     1		push	edx
+ 000015EA  BA 0000164B R     1		mov	edx,OFFSET ??0083
+ 000015EF  E8 00000000 E     1		call	WriteString
+ 000015F4  5A		     1		pop	edx
+				mwrite <"Enter your choice: ">
+ 00001660		     1		.data		
+ 00001660 45 6E 74 65 72     1		??0084 BYTE "Enter your choice: ",0	
+	   20 79 6F 75 72
+	   20 63 68 6F 69
+	   63 65 3A 20 00
+ 000015F5		     1		.code
+ 000015F5  52		     1		push	edx
+ 000015F6  BA 00001660 R     1		mov	edx,OFFSET ??0084
+ 000015FB  E8 00000000 E     1		call	WriteString
+ 00001600  5A		     1		pop	edx
+ 00001601  E8 00000000 E	call readint
+ 00001606  83 F8 02		cmp eax,2
+ 00001609  74 31		je  break1
+
+ 0000160B  E8 FFFFFBED		call displaysubs
+ 00001610  E8 00000000 E	call crlf
+				mwrite <"Enter your choice: ">
+ 00001674		     1		.data		
+ 00001674 45 6E 74 65 72     1		??0085 BYTE "Enter your choice: ",0	
+	   20 79 6F 75 72
+	   20 63 68 6F 69
+	   63 65 3A 20 00
+ 00001615		     1		.code
+ 00001615  52		     1		push	edx
+ 00001616  BA 00001674 R     1		mov	edx,OFFSET ??0085
+ 0000161B  E8 00000000 E     1		call	WriteString
+ 00001620  5A		     1		pop	edx
+ 00001621  E8 00000000 E	call readint
+ 00001626  48			dec eax
+ 00001627  BE 00000003		mov esi,3
+ 0000162C  39 74 85 E0		cmp subcount[eax*type subcount],esi
+ 00001630  74 21		je ivd1
+ 00001632  83 44 85 E0 01	add subcount[eax*type subcount],1
+ 00001637  89 04 3B		mov [ebx+edi],eax
+ 0000163A  EB 4D		jmp cont1
+
+ 0000163C			break1:
+ 0000163C  B8 00000003		mov eax,3
+ 00001641  39 45 F8		cmp count2,eax
+ 00001644  74 28		je invldd1
+ 00001646  FF 45 F8		inc count2
+ 00001649  B8 00000006		mov eax,6
+ 0000164E  89 04 3B		mov [ebx+edi],eax ;break stored
+ 00001651  EB 36		jmp cont1
+
+ 00001653			ivd1:
+				mwrite <"Subject already entered 3 times! Try again",0ah,0dh>
+ 00001688		     1		.data		
+ 00001688 53 75 62 6A 65     1		??0086 BYTE "Subject already entered 3 times! Try again",0ah,0dh,0	
+	   63 74 20 61 6C
+	   72 65 61 64 79
+	   20 65 6E 74 65
+	   72 65 64 20 33
+	   20 74 69 6D 65
+	   73 21 20 54 72
+	   79 20 61 67 61
+	   69 6E 0A 0D 00
+ 00001653		     1		.code
+ 00001653  52		     1		push	edx
+ 00001654  BA 00001688 R     1		mov	edx,OFFSET ??0086
+ 00001659  E8 00000000 E     1		call	WriteString
+ 0000165E  5A		     1		pop	edx
+ 0000165F  E8 00000000 E	call crlf
+ 00001664  E8 00000000 E	call readchar
+ 00001669  E9 FFFFFF7B		jmp tr1
+
+ 0000166E			invldd1:
+				mwrite <0ah,0dh,"Maximum number of breaks reached! Please try again",0ah,0dh>
+ 000016B5		     1		.data		
+ 000016B5 0A 0D 4D 61 78     1		??0087 BYTE 0ah,0dh,"Maximum number of breaks reached! Please try again",0ah,0dh,0	
+	   69 6D 75 6D 20
+	   6E 75 6D 62 65
+	   72 20 6F 66 20
+	   62 72 65 61 6B
+	   73 20 72 65 61
+	   63 68 65 64 21
+	   20 50 6C 65 61
+	   73 65 20 74 72
+	   79 20 61 67 61
+	   69 6E 0A 0D 00
+ 0000166E		     1		.code
+ 0000166E  52		     1		push	edx
+ 0000166F  BA 000016B5 R     1		mov	edx,OFFSET ??0087
+ 00001674  E8 00000000 E     1		call	WriteString
+ 00001679  5A		     1		pop	edx
+ 0000167A  E8 00000000 E	call crlf
+ 0000167F  E8 00000000 E	call readchar
+ 00001684  E9 FFFFFF60		jmp tr1
+
+ 00001689			cont1:
+				mwrite <0ah,0dh,"Entry stored successfully",0ah,0dh>
+ 000016EC		     1		.data		
+ 000016EC 0A 0D 45 6E 74     1		??0088 BYTE 0ah,0dh,"Entry stored successfully",0ah,0dh,0	
+	   72 79 20 73 74
+	   6F 72 65 64 20
+	   73 75 63 63 65
+	   73 73 66 75 6C
+	   6C 79 0A 0D 00
+ 00001689		     1		.code
+ 00001689  52		     1		push	edx
+ 0000168A  BA 000016EC R     1		mov	edx,OFFSET ??0088
+ 0000168F  E8 00000000 E     1		call	WriteString
+ 00001694  5A		     1		pop	edx
+ 00001695  B8 000000FA		mov eax,250
+ 0000169A  E8 00000000 E	call delay
+ 0000169F  81 C3 00000014	add ebx,rowsize
+ 000016A5  83 6D DC 01		sub mcc1,1
+ 000016A9  0F 85 FFFFFF12	jnz ilp2
+ 000016AF  59			pop ecx
+
+ 000016B0  83 C7 04		add edi,4 
+ 000016B3  81 C2 0000000A	add edx,daysize
+ 000016B9  83 6D D8 01		sub mcc2,1
+ 000016BD  0F 85 FFFFFEA2	jnz inloop
+
+ 000016C3  E8 00000000 E	call crlf
+ 000016C8  E8 00000000 E	call crlf
+				mwrite "TimeTable has been successfully set! Press any key to continue."
+ 0000170A		     1		.data		
+ 0000170A 54 69 6D 65 54     1		??0089 BYTE "TimeTable has been successfully set! Press any key to continue.",0	
+	   61 62 6C 65 20
+	   68 61 73 20 62
+	   65 65 6E 20 73
+	   75 63 63 65 73
+	   73 66 75 6C 6C
+	   79 20 73 65 74
+	   21 20 50 72 65
+	   73 73 20 61 6E
+	   79 20 6B 65 79
+	   20 74 6F 20 63
+	   6F 6E 74 69 6E
+	   75 65 2E 00
+ 000016CD		     1		.code
+ 000016CD  52		     1		push	edx
+ 000016CE  BA 0000170A R     1		mov	edx,OFFSET ??0089
+ 000016D3  E8 00000000 E     1		call	WriteString
+ 000016D8  5A		     1		pop	edx
+ 000016D9  E8 00000000 E	call readchar
+				ret
+ 000016E8			settable endp
+
+ 000016E8			viewcurrent proc
+				local rowi:dword,coli:dword,sechalf:dword
+ 000016EE  C7 45 F4		mov sechalf,0
+	   00000000
+
+				invoke GetLocalTime, ADDR localt
+ 000016FF  E8 00000000 E	call clrscr
+ 00001704  0F B7 05		movzx eax,localt.wdayofweek
+	   000000E0 R
+ 0000170B  89 45 F8		mov coli,eax
+ 0000170E  B8 00000005		mov eax,5
+ 00001713  39 45 F8		cmp coli,eax
+ 00001716  0F 87 000000CD	ja frday
+
+ 0000171C  0F B7 05		movzx eax,localt.whour
+	   000000E4 R
+ 00001723  83 F8 10		cmp eax,16
+ 00001726  0F 87 0000009C	ja badtime
+ 0000172C  83 F8 08		cmp eax,8
+ 0000172F  0F 82 00000093	jb badtime
+
+ 00001735  83 E8 08		sub eax,8
+ 00001738  89 45 FC		mov rowi,eax
+ 0000173B  BB 00000000 R	mov ebx,offset arr1
+ 00001740  B8 00000014		mov eax,rowsize
+ 00001745  F7 65 FC		mul rowi
+ 00001748  03 D8		add ebx,eax
+ 0000174A  83 6D F8 01		sub coli,1
+ 0000174E  8B 75 F8		mov esi,coli
+ 00001751  8B 04 B3		mov eax,[ebx+esi*type arr1]
+ 00001754  83 F8 06		cmp eax,6
+ 00001757  75 37		jne fine1
+ 00001759  8B 45 FC		mov eax,rowi
+ 0000175C  40			inc eax
+				mwrite <"Slot # ">
+ 0000174A		     1		.data		
+ 0000174A 53 6C 6F 74 20     1		??008A BYTE "Slot # ",0	
+	   23 20 00
+ 0000175D		     1		.code
+ 0000175D  52		     1		push	edx
+ 0000175E  BA 0000174A R     1		mov	edx,OFFSET ??008A
+ 00001763  E8 00000000 E     1		call	WriteString
+ 00001768  5A		     1		pop	edx
+ 00001769  E8 00000000 E	call writedec
+				mwrite <" ===>">
+ 00001752		     1		.data		
+ 00001752 20 3D 3D 3D 3E     1		??008B BYTE " ===>",0	
+	   00
+ 0000176E		     1		.code
+ 0000176E  52		     1		push	edx
+ 0000176F  BA 00001752 R     1		mov	edx,OFFSET ??008B
+ 00001774  E8 00000000 E     1		call	WriteString
+ 00001779  5A		     1		pop	edx
+				mwrite <0ah,0dh," FREE - YOU DO NOT HAVE ANY CLASSES AT THE MOMENT",0ah,0dh>
+ 00001758		     1		.data		
+ 00001758 0A 0D 20 46 52     1		??008C BYTE 0ah,0dh," FREE - YOU DO NOT HAVE ANY CLASSES AT THE MOMENT",0ah,0dh,0	
+	   45 45 20 2D 20
+	   59 4F 55 20 44
+	   4F 20 4E 4F 54
+	   20 48 41 56 45
+	   20 41 4E 59 20
+	   43 4C 41 53 53
+	   45 53 20 41 54
+	   20 54 48 45 20
+	   4D 4F 4D 45 4E
+	   54 0A 0D 00
+ 0000177A		     1		.code
+ 0000177A  52		     1		push	edx
+ 0000177B  BA 00001758 R     1		mov	edx,OFFSET ??008C
+ 00001780  E8 00000000 E     1		call	WriteString
+ 00001785  5A		     1		pop	edx
+ 00001786  E8 00000000 E	call crlf
+ 0000178B  E9 00000095		jmp scc4
+ 00001790			fine1:
+ 00001790  50			push eax
+ 00001791  8B 45 FC		mov eax,rowi
+ 00001794  40			inc eax
+				mwrite <"Slot # ">
+ 0000178E		     1		.data		
+ 0000178E 53 6C 6F 74 20     1		??008D BYTE "Slot # ",0	
+	   23 20 00
+ 00001795		     1		.code
+ 00001795  52		     1		push	edx
+ 00001796  BA 0000178E R     1		mov	edx,OFFSET ??008D
+ 0000179B  E8 00000000 E     1		call	WriteString
+ 000017A0  5A		     1		pop	edx
+ 000017A1  E8 00000000 E	call writedec
+				mwrite <" ===>">
+ 00001796		     1		.data		
+ 00001796 20 3D 3D 3D 3E     1		??008E BYTE " ===>",0	
+	   00
+ 000017A6		     1		.code
+ 000017A6  52		     1		push	edx
+ 000017A7  BA 00001796 R     1		mov	edx,OFFSET ??008E
+ 000017AC  E8 00000000 E     1		call	WriteString
+ 000017B1  5A		     1		pop	edx
+ 000017B2  58			pop eax
+ 000017B3  8B F8		mov edi,eax
+ 000017B5  8B 14 BD		mov edx,mysubjects[edi*type mysubjects]
+	   0000016C R
+ 000017BC  E8 00000000 E	call writestring
+ 000017C1  E8 00000000 E	call crlf
+ 000017C6  EB 5D		jmp scc4
+
+ 000017C8			badtime:
+ 000017C8  83 F8 0C		cmp eax,12
+ 000017CB  76 0E		jna e1
+				mwrite <0ah,0dh,"It is past 04:00 PM. The university is now closed.",0ah,0dh>
+ 0000179C		     1		.data		
+ 0000179C 0A 0D 49 74 20     1		??008F BYTE 0ah,0dh,"It is past 04:00 PM. The university is now closed.",0ah,0dh,0	
+	   69 73 20 70 61
+	   73 74 20 30 34
+	   3A 30 30 20 50
+	   4D 2E 20 54 68
+	   65 20 75 6E 69
+	   76 65 72 73 69
+	   74 79 20 69 73
+	   20 6E 6F 77 20
+	   63 6C 6F 73 65
+	   64 2E 0A 0D 00
+ 000017CD		     1		.code
+ 000017CD  52		     1		push	edx
+ 000017CE  BA 0000179C R     1		mov	edx,OFFSET ??008F
+ 000017D3  E8 00000000 E     1		call	WriteString
+ 000017D8  5A		     1		pop	edx
+ 000017D9  EB 4A		jmp scc4
+ 000017DB			e1:
+				mwrite <0ah,0dh,"Too early for class! Classes don't start until 08:00 AM",0ah,0dh>
+ 000017D3		     1		.data		
+ 000017D3 0A 0D 54 6F 6F     1		??0090 BYTE 0ah,0dh,"Too early for class! Classes don't start until 08:00 AM",0ah,0dh,0	
+	   20 65 61 72 6C
+	   79 20 66 6F 72
+	   20 63 6C 61 73
+	   73 21 20 43 6C
+	   61 73 73 65 73
+	   20 64 6F 6E 27
+	   74 20 73 74 61
+	   72 74 20 75 6E
+	   74 69 6C 20 30
+	   38 3A 30 30 20
+	   41 4D 0A 0D 00
+ 000017DB		     1		.code
+ 000017DB  52		     1		push	edx
+ 000017DC  BA 000017D3 R     1		mov	edx,OFFSET ??0090
+ 000017E1  E8 00000000 E     1		call	WriteString
+ 000017E6  5A		     1		pop	edx
+ 000017E7  EB 3C		jmp scc4
+
+ 000017E9			frday:
+				mwrite <0ah,0dh,"Today is ">
+ 0000180F		     1		.data		
+ 0000180F 0A 0D 54 6F 64     1		??0091 BYTE 0ah,0dh,"Today is ",0	
+	   61 79 20 69 73
+	   20 00
+ 000017E9		     1		.code
+ 000017E9  52		     1		push	edx
+ 000017EA  BA 0000180F R     1		mov	edx,OFFSET ??0091
+ 000017EF  E8 00000000 E     1		call	WriteString
+ 000017F4  5A		     1		pop	edx
+ 000017F5  B8 00000006		mov eax,6
+ 000017FA  39 45 F8		cmp coli,eax
+ 000017FD  74 0E		je satday
+				mwrite <"Sunday">
+ 0000181B		     1		.data		
+ 0000181B 53 75 6E 64 61     1		??0092 BYTE "Sunday",0	
+	   79 00
+ 000017FF		     1		.code
+ 000017FF  52		     1		push	edx
+ 00001800  BA 0000181B R     1		mov	edx,OFFSET ??0092
+ 00001805  E8 00000000 E     1		call	WriteString
+ 0000180A  5A		     1		pop	edx
+ 0000180B  EB 0C		jmp contin1
+ 0000180D			satday:
+				mwrite <"Saturday">
+ 00001822		     1		.data		
+ 00001822 53 61 74 75 72     1		??0093 BYTE "Saturday",0	
+	   64 61 79 00
+ 0000180D		     1		.code
+ 0000180D  52		     1		push	edx
+ 0000180E  BA 00001822 R     1		mov	edx,OFFSET ??0093
+ 00001813  E8 00000000 E     1		call	WriteString
+ 00001818  5A		     1		pop	edx
+ 00001819			contin1:
+				mwrite <0ah,0dh,"No classes today.">
+ 0000182B		     1		.data		
+ 0000182B 0A 0D 4E 6F 20     1		??0094 BYTE 0ah,0dh,"No classes today.",0	
+	   63 6C 61 73 73
+	   65 73 20 74 6F
+	   64 61 79 2E 00
+ 00001819		     1		.code
+ 00001819  52		     1		push	edx
+ 0000181A  BA 0000182B R     1		mov	edx,OFFSET ??0094
+ 0000181F  E8 00000000 E     1		call	WriteString
+ 00001824  5A		     1		pop	edx
+ 00001825			scc4:mwrite <0ah,0dh,"Press any key to continue...">
+ 0000183F		     1		.data		
+ 0000183F 0A 0D 50 72 65     1		??0095 BYTE 0ah,0dh,"Press any key to continue...",0	
+	   73 73 20 61 6E
+	   79 20 6B 65 79
+	   20 74 6F 20 63
+	   6F 6E 74 69 6E
+	   75 65 2E 2E 2E
+	   00
+ 00001825		     1		.code
+ 00001825  52		     1		push	edx
+ 00001826  BA 0000183F R     1		mov	edx,OFFSET ??0095
+ 0000182B  E8 00000000 E     1		call	WriteString
+ 00001830  5A		     1		pop	edx
+ 00001831  E8 00000000 E	call readchar
+
+				ret
+ 00001838			viewcurrent endp
+
+ 00001838			viewtable proc uses eax edx ecx ebx esi edi
+				local co1:dword,co2:dword ,mc1:dword
+ 00001844  C7 45 FC		mov co1,8
+	   00000008
+ 0000184B  C7 45 F8		mov co2,9
+	   00000009
+
+				mwrite <"Do you wish to view: ",0ah,0dh,"1. WHOLE TIMETABLE",0ah,0dh,"2. CURRENT CLASS? ">
+ 0000185E		     1		.data		
+ 0000185E 44 6F 20 79 6F     1		??0096 BYTE "Do you wish to view: ",0ah,0dh,"1. WHOLE TIMETABLE",0ah,0dh,"2. CURRENT CLASS? ",0	
+	   75 20 77 69 73
+	   68 20 74 6F 20
+	   76 69 65 77 3A
+	   20 0A 0D 31 2E
+	   20 57 48 4F 4C
+	   45 20 54 49 4D
+	   45 54 41 42 4C
+	   45 0A 0D 32 2E
+	   20 43 55 52 52
+	   45 4E 54 20 43
+	   4C 41 53 53 3F
+	   20 00
+ 00001852		     1		.code
+ 00001852  52		     1		push	edx
+ 00001853  BA 0000185E R     1		mov	edx,OFFSET ??0096
+ 00001858  E8 00000000 E     1		call	WriteString
+ 0000185D  5A		     1		pop	edx
+ 0000185E  E8 00000000 E	call crlf
+ 00001863  E8 00000000 E	call crlf
+				mwrite <"Enter choice: ">
+ 0000189C		     1		.data		
+ 0000189C 45 6E 74 65 72     1		??0097 BYTE "Enter choice: ",0	
+	   20 63 68 6F 69
+	   63 65 3A 20 00
+ 00001868		     1		.code
+ 00001868  52		     1		push	edx
+ 00001869  BA 0000189C R     1		mov	edx,OFFSET ??0097
+ 0000186E  E8 00000000 E     1		call	WriteString
+ 00001873  5A		     1		pop	edx
+ 00001874  E8 00000000 E	call readint
+ 00001879  83 F8 02		cmp eax,2
+ 0000187C  75 0C		jne proceedp
+ 0000187E  60			pushad
+ 0000187F  E8 FFFFFE64		call viewcurrent
+ 00001884  61			popad
+ 00001885  E9 00000122		jmp scc3
+
+ 0000188A			proceedp:
+ 0000188A  E8 00000000 E	call clrscr
+ 0000188F  BA 000000A0 R	mov edx,offset days
+ 00001894  B9 00000005		mov ecx,5
+ 00001899  BE 00000000		mov esi,0
+
+ 0000189E  E8 00000000 E	call crlf
+				mwrite <"| SLOTS ||  ">
+ 000018AB		     1		.data		
+ 000018AB 7C 20 53 4C 4F     1		??0098 BYTE "| SLOTS ||  ",0	
+	   54 53 20 7C 7C
+	   20 20 00
+ 000018A3		     1		.code
+ 000018A3  52		     1		push	edx
+ 000018A4  BA 000018AB R     1		mov	edx,OFFSET ??0098
+ 000018A9  E8 00000000 E     1		call	WriteString
+ 000018AE  5A		     1		pop	edx
+ 000018AF			tr2:
+ 000018AF  E8 00000000 E	call writestring
+				mwrite <" | ">
+ 000018B8		     1		.data		
+ 000018B8 20 7C 20 00	     1		??0099 BYTE " | ",0	
+ 000018B4		     1		.code
+ 000018B4  52		     1		push	edx
+ 000018B5  BA 000018B8 R     1		mov	edx,OFFSET ??0099
+ 000018BA  E8 00000000 E     1		call	WriteString
+ 000018BF  5A		     1		pop	edx
+ 000018C0  81 C2 0000000A	add edx,daysize
+ 000018C6  E2 E7		loop tr2
+
+ 000018C8  E8 00000000 E	call crlf
+ 000018CD  B9 00000008		mov ecx,8
+ 000018D2  BB 00000000 R	mov ebx,offset arr1
+ 000018D7  C7 45 F4		mov mc1,8
+	   00000008
+ 000018DE			olp1:
+
+ 000018DE  B8 0000000C		mov eax,12
+ 000018E3  39 45 F8		cmp co2,eax
+ 000018E6  76 09		jna chk1
+ 000018E8  C7 45 F8		mov co2,1
+	   00000001
+ 000018EF  EB 00		jmp chk1
+
+ 000018F1			chk1:
+ 000018F1  39 45 FC		cmp co1,eax
+ 000018F4  76 07		jna prc1
+ 000018F6  C7 45 FC		mov co1,1
+	   00000001
+
+ 000018FD			prc1:
+				mwrite <"| ">
+ 000018BC		     1		.data		
+ 000018BC 7C 20 00	     1		??009A BYTE "| ",0	
+ 000018FD		     1		.code
+ 000018FD  52		     1		push	edx
+ 000018FE  BA 000018BC R     1		mov	edx,OFFSET ??009A
+ 00001903  E8 00000000 E     1		call	WriteString
+ 00001908  5A		     1		pop	edx
+ 00001909  8B 45 FC		mov eax,co1
+ 0000190C  E8 00000000 E	call writedec
+				mwrite <" - ">
+ 000018BF		     1		.data		
+ 000018BF 20 2D 20 00	     1		??009B BYTE " - ",0	
+ 00001911		     1		.code
+ 00001911  52		     1		push	edx
+ 00001912  BA 000018BF R     1		mov	edx,OFFSET ??009B
+ 00001917  E8 00000000 E     1		call	WriteString
+ 0000191C  5A		     1		pop	edx
+ 0000191D  8B 45 F8		mov eax,co2
+ 00001920  E8 00000000 E	call writedec
+				mwrite "||"
+ 000018C3		     1		.data		
+ 000018C3 7C 7C 00	     1		??009C BYTE "||",0	
+ 00001925		     1		.code
+ 00001925  52		     1		push	edx
+ 00001926  BA 000018C3 R     1		mov	edx,OFFSET ??009C
+ 0000192B  E8 00000000 E     1		call	WriteString
+ 00001930  5A		     1		pop	edx
+ 00001931  FF 45 F8		inc co2
+ 00001934  FF 45 FC		inc co1
+
+ 00001937  BE 00000000		mov esi,0
+ 0000193C  51			push ecx
+ 0000193D  B9 00000005		mov ecx,5
+ 00001942			olp2:
+ 00001942  8B 3C 33		mov edi,[ebx+esi]
+ 00001945  B8 00000006		mov eax,6
+ 0000194A  3B F8		cmp edi,eax
+ 0000194C  72 0E		jb moveon
+				mwrite " FREE "
+ 000018C6		     1		.data		
+ 000018C6 20 46 52 45 45     1		??009D BYTE " FREE ",0	
+	   20 00
+ 0000194E		     1		.code
+ 0000194E  52		     1		push	edx
+ 0000194F  BA 000018C6 R     1		mov	edx,OFFSET ??009D
+ 00001954  E8 00000000 E     1		call	WriteString
+ 00001959  5A		     1		pop	edx
+ 0000195A  EB 24		jmp cnt1
+ 0000195C			moveon:
+ 0000195C  8B 14 BD		mov edx,mysubjects[edi*type mysubjects]
+	   0000016C R
+ 00001963  56			push esi
+ 00001964  8B F2		mov esi,edx
+ 00001966  BF 000000D2 R	mov edi,offset tempstr
+ 0000196B  51			push ecx
+ 0000196C  B9 00000005		mov ecx,5
+ 00001971  FC			cld
+ 00001972  F3/ A5		rep movsd
+ 00001974  59			pop ecx
+ 00001975  5E			pop esi
+ 00001976  BA 000000D2 R	mov edx,offset tempstr
+ 0000197B  E8 00000000 E	call writestring
+ 00001980			cnt1:
+				mwrite ".    | "
+ 000018CD		     1		.data		
+ 000018CD 2E 20 20 20 20     1		??009E BYTE ".    | ",0	
+	   7C 20 00
+ 00001980		     1		.code
+ 00001980  52		     1		push	edx
+ 00001981  BA 000018CD R     1		mov	edx,OFFSET ??009E
+ 00001986  E8 00000000 E     1		call	WriteString
+ 0000198B  5A		     1		pop	edx
+ 0000198C  83 C6 04		add esi,4
+ 0000198F  E2 B1		loop olp2
+
+ 00001991  59			pop ecx
+ 00001992  81 C3 00000014	add ebx,rowsize
+ 00001998  E8 00000000 E	call crlf
+ 0000199D  E8 00000000 E	call crlf
+ 000019A2  83 6D F4 01		sub mc1,1
+ 000019A6  0F 85 FFFFFF32	jnz olp1
+ 000019AC			scc3:
+ 000019AC  E8 00000000 E	call crlf
+				mwrite <0ah,0dh,"Press any key to continue..">
+ 000018D5		     1		.data		
+ 000018D5 0A 0D 50 72 65     1		??009F BYTE 0ah,0dh,"Press any key to continue..",0	
+	   73 73 20 61 6E
+	   79 20 6B 65 79
+	   20 74 6F 20 63
+	   6F 6E 74 69 6E
+	   75 65 2E 2E 00
+ 000019B1		     1		.code
+ 000019B1  52		     1		push	edx
+ 000019B2  BA 000018D5 R     1		mov	edx,OFFSET ??009F
+ 000019B7  E8 00000000 E     1		call	WriteString
+ 000019BC  5A		     1		pop	edx
+ 000019BD  E8 00000000 E	call readchar
+				ret
+ 000019CA			viewtable endp
+
+
+
+				End main
+Microsoft (R) Macro Assembler Version 14.29.30133.0	    02/10/22 17:14:10
+Text.asm						     Symbols 2 - 1
+
+
+
+
+Macros:
+
+                N a m e                 Type
+
+IsDefined  . . . . . . . . . . .	Func
+Startup  . . . . . . . . . . . .	Proc
+mDumpMem . . . . . . . . . . . .	Proc
+mDump  . . . . . . . . . . . . .	Proc
+mGotoxy  . . . . . . . . . . . .	Proc
+mReadString  . . . . . . . . . .	Proc
+mShowRegister  . . . . . . . . .	Proc
+mShow  . . . . . . . . . . . . .	Proc
+mWriteLn . . . . . . . . . . . .	Proc
+mWriteSpace  . . . . . . . . . .	Proc
+mWriteString . . . . . . . . . .	Proc
+mWrite . . . . . . . . . . . . .	Proc
+
+
+Structures and Unions:
+
+                N a m e                  Size
+                                         Offset      Type
+
+CONSOLE_CURSOR_INFO  . . . . . .	 00000008
+  dwSize . . . . . . . . . . . .	 00000000	 DWord
+  bVisible . . . . . . . . . . .	 00000004	 DWord
+CONSOLE_SCREEN_BUFFER_INFO . . .	 00000016
+  dwSize . . . . . . . . . . . .	 00000000	 DWord
+  dwCursorPosition . . . . . . .	 00000004	 DWord
+  wAttributes  . . . . . . . . .	 00000008	 Word
+  srWindow . . . . . . . . . . .	 0000000A	 QWord
+  dwMaximumWindowSize  . . . . .	 00000012	 DWord
+COORD  . . . . . . . . . . . . .	 00000004
+  X  . . . . . . . . . . . . . .	 00000000	 Word
+  Y  . . . . . . . . . . . . . .	 00000002	 Word
+FILETIME . . . . . . . . . . . .	 00000008
+  loDateTime . . . . . . . . . .	 00000000	 DWord
+  hiDateTime . . . . . . . . . .	 00000004	 DWord
+FOCUS_EVENT_RECORD . . . . . . .	 00000004
+  bSetFocus  . . . . . . . . . .	 00000000	 DWord
+FPU_ENVIRON  . . . . . . . . . .	 0000001C
+  controlWord  . . . . . . . . .	 00000000	 Word
+  statusWord . . . . . . . . . .	 00000004	 Word
+  tagWord  . . . . . . . . . . .	 00000008	 Word
+  instrPointerOffset . . . . . .	 0000000C	 DWord
+  instrPointerSelector . . . . .	 00000010	 DWord
+  operandPointerOffset . . . . .	 00000014	 DWord
+  operandPointerSelector . . . .	 00000018	 Word
+INPUT_RECORD . . . . . . . . . .	 00000014
+  EventType  . . . . . . . . . .	 00000000	 Word
+  Event  . . . . . . . . . . . .	 00000004	 XmmWord
+  bKeyDown . . . . . . . . . . .	 00000000	 DWord
+  wRepeatCount . . . . . . . . .	 00000004	 Word
+  wVirtualKeyCode  . . . . . . .	 00000006	 Word
+  wVirtualScanCode . . . . . . .	 00000008	 Word
+  uChar  . . . . . . . . . . . .	 0000000A	 Word
+  UnicodeChar  . . . . . . . . .	 00000000	 Word
+  AsciiChar  . . . . . . . . . .	 00000000	 Byte
+  dwControlKeyState  . . . . . .	 0000000C	 DWord
+  dwMousePosition  . . . . . . .	 00000000	 DWord
+  dwButtonState  . . . . . . . .	 00000004	 DWord
+  dwMouseControlKeyState . . . .	 00000008	 DWord
+  dwEventFlags . . . . . . . . .	 0000000C	 DWord
+  dwSize . . . . . . . . . . . .	 00000000	 DWord
+  dwCommandId  . . . . . . . . .	 00000000	 DWord
+  bSetFocus  . . . . . . . . . .	 00000000	 DWord
+KEY_EVENT_RECORD . . . . . . . .	 00000010
+  bKeyDown . . . . . . . . . . .	 00000000	 DWord
+  wRepeatCount . . . . . . . . .	 00000004	 Word
+  wVirtualKeyCode  . . . . . . .	 00000006	 Word
+  wVirtualScanCode . . . . . . .	 00000008	 Word
+  uChar  . . . . . . . . . . . .	 0000000A	 Word
+  UnicodeChar  . . . . . . . . .	 00000000	 Word
+  AsciiChar  . . . . . . . . . .	 00000000	 Byte
+  dwControlKeyState  . . . . . .	 0000000C	 DWord
+LPSYSTEMTIME . . . . . . . . . .	 00000012
+  wYear  . . . . . . . . . . . .	 00000000	 Word
+  wMonth . . . . . . . . . . . .	 00000002	 Word
+  wDayOfWeek . . . . . . . . . .	 00000004	 Word
+  wDay . . . . . . . . . . . . .	 00000006	 Word
+  wHour  . . . . . . . . . . . .	 00000008	 Word
+  wMinute  . . . . . . . . . . .	 0000000A	 Word
+  wSecond  . . . . . . . . . . .	 0000000C	 Word
+  wMilliseconds  . . . . . . . .	 0000000E	 Word
+  wDate  . . . . . . . . . . . .	 00000010	 Word
+MENU_EVENT_RECORD  . . . . . . .	 00000004
+  dwCommandId  . . . . . . . . .	 00000000	 DWord
+MOUSE_EVENT_RECORD . . . . . . .	 00000010
+  dwMousePosition  . . . . . . .	 00000000	 DWord
+  dwButtonState  . . . . . . . .	 00000004	 DWord
+  dwMouseControlKeyState . . . .	 00000008	 DWord
+  dwEventFlags . . . . . . . . .	 0000000C	 DWord
+SMALL_RECT . . . . . . . . . . .	 00000008
+  Left . . . . . . . . . . . . .	 00000000	 Word
+  Top  . . . . . . . . . . . . .	 00000002	 Word
+  Right  . . . . . . . . . . . .	 00000004	 Word
+  Bottom . . . . . . . . . . . .	 00000006	 Word
+SYSTEMTIME . . . . . . . . . . .	 00000010
+  wYear  . . . . . . . . . . . .	 00000000	 Word
+  wMonth . . . . . . . . . . . .	 00000002	 Word
+  wDayOfWeek . . . . . . . . . .	 00000004	 Word
+  wDay . . . . . . . . . . . . .	 00000006	 Word
+  wHour  . . . . . . . . . . . .	 00000008	 Word
+  wMinute  . . . . . . . . . . .	 0000000A	 Word
+  wSecond  . . . . . . . . . . .	 0000000C	 Word
+  wMilliseconds  . . . . . . . .	 0000000E	 Word
+WINDOW_BUFFER_SIZE_RECORD  . . .	 00000004
+  dwSize . . . . . . . . . . . .	 00000000	 DWord
+
+
+Segments and Groups:
+
+                N a m e                 Size     Length   Align   Combine Class
+
+FLAT . . . . . . . . . . . . . .	GROUP
+STACK  . . . . . . . . . . . . .	32 Bit	 00001000 Para	  Stack	  'STACK'	 
+_DATA  . . . . . . . . . . . . .	32 Bit	 000018F3 Para	  Public  'DATA'	
+_TEXT  . . . . . . . . . . . . .	32 Bit	 000019CA Para	  Public  'CODE'	
+
+
+Procedures, parameters, and locals:
+
+                N a m e                 Type     Value    Attr
+
+CloseFile  . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+CloseHandle  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+Clrscr . . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+CreateFileA  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+CreateOutputFile . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+Crlf . . . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+Delay  . . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+DumpMem  . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+DumpRegs . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+ExitProcess  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+FileTimeToDosDateTime  . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+FileTimeToSystemTime . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+FlushConsoleInputBuffer  . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+FormatMessageA . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+GetCommandLineA  . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+GetCommandTail . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+GetConsoleCP . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+GetConsoleCursorInfo . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+GetConsoleMode . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+GetConsoleScreenBufferInfo . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+GetDateTime  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+GetFileTime  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+GetKeyState  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+GetLastError . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+GetLocalTime . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+GetMaxXY . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+GetMseconds  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+GetNumberOfConsoleInputEvents  .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+GetProcessHeap . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+GetStdHandle . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+GetSystemTime  . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+GetTextColor . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+GetTickCount . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+Gotoxy . . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+HeapAlloc  . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+HeapCreate . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+HeapDestroy  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+HeapFree . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+HeapSize . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+IsDigit  . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+LocalFree  . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+MessageBoxA  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+MsgBoxAsk  . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+MsgBox . . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+OpenInputFile  . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+ParseDecimal32 . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+ParseInteger32 . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+PeekConsoleInputA  . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+Random32 . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+RandomRange  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+Randomize  . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+ReadChar . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+ReadConsoleA . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+ReadConsoleInputA  . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+ReadDec  . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+ReadFile . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+ReadFloat  . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+ReadFromFile . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+ReadHex  . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+ReadInt  . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+ReadKeyFlush . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+ReadKey  . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+ReadString . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+SetConsoleCursorInfo . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+SetConsoleCursorPosition . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+SetConsoleMode . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+SetConsoleScreenBufferSize . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+SetConsoleTextAttribute  . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+SetConsoleTitleA . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+SetConsoleWindowInfo . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+SetFilePointer . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+SetLocalTime . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+SetTextColor . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+ShowFPUStack . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+Sleep  . . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+StrLength  . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+Str_compare  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+Str_copy . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+Str_length . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+Str_trim . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+Str_ucase  . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+SystemTimeToFileTime . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+WaitMsg  . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+WriteBinB  . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+WriteBin . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+WriteChar  . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+WriteConsoleA  . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+WriteConsoleOutputAttribute  . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+WriteConsoleOutputCharacterA . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+WriteDec . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+WriteFile  . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+WriteFloat . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+WriteHexB  . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+WriteHex . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+WriteInt . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+WriteStackFrameName  . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+WriteStackFrame  . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+WriteString  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+WriteToFile  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+WriteWindowsMsg  . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+checkID  . . . . . . . . . . . .	P Near	 000014BC _TEXT	Length= 00000073 Public STDCALL
+  stra . . . . . . . . . . . . .	DWord	 bp + 00000008
+  sz . . . . . . . . . . . . . .	DWord	 bp + 0000000C
+  c1 . . . . . . . . . . . . . .	L Near	 000014F0 _TEXT	
+  c2 . . . . . . . . . . . . . .	L Near	 000014FE _TEXT	
+  l5 . . . . . . . . . . . . . .	L Near	 00001506 _TEXT	
+  bad  . . . . . . . . . . . . .	L Near	 00001521 _TEXT	
+  e1 . . . . . . . . . . . . . .	L Near	 0000152B _TEXT	
+checknum . . . . . . . . . . . .	P Near	 00001181 _TEXT	Length= 0000007C Public STDCALL
+  var1 . . . . . . . . . . . . .	DWord	 bp + 00000008
+  lcount . . . . . . . . . . . .	DWord	 bp - 00000004
+  checkas  . . . . . . . . . . .	L Near	 0000119F _TEXT	
+  checkmid . . . . . . . . . . .	L Near	 000011B5 _TEXT	
+  checkf . . . . . . . . . . . .	L Near	 000011CB _TEXT	
+  invalid2 . . . . . . . . . . .	L Near	 000011E1 _TEXT	
+  scc  . . . . . . . . . . . . .	L Near	 000011F7 _TEXT	
+displaymenu  . . . . . . . . . .	P Near	 00001426 _TEXT	Length= 0000006D Public STDCALL
+displaysubs  . . . . . . . . . .	P Near	 000011FD _TEXT	Length= 00000051 Public STDCALL
+  count1 . . . . . . . . . . . .	DWord	 bp - 00000004
+  inlp . . . . . . . . . . . . .	L Near	 0000121D _TEXT	
+getchallan . . . . . . . . . . .	P Near	 00000360 _TEXT	Length= 0000015B Public STDCALL
+  stotal . . . . . . . . . . . .	DWord	 bp - 00000004
+  la1  . . . . . . . . . . . . .	L Near	 00000388 _TEXT	
+  lla2 . . . . . . . . . . . . .	L Near	 00000417 _TEXT	
+getcreditcost  . . . . . . . . .	P Near	 000004BB _TEXT	Length= 00000047 Public STDCALL
+  yr1  . . . . . . . . . . . . .	L Near	 000004E4 _TEXT	
+  yr2  . . . . . . . . . . . . .	L Near	 000004EB _TEXT	
+  yr3  . . . . . . . . . . . . .	L Near	 000004F2 _TEXT	
+  yr4  . . . . . . . . . . . . .	L Near	 000004F9 _TEXT	
+  r1 . . . . . . . . . . . . . .	L Near	 00000500 _TEXT	
+getsgpa  . . . . . . . . . . . .	P Near	 000002FF _TEXT	Length= 00000061 Public STDCALL
+  onecount . . . . . . . . . . .	DWord	 bp - 00000004
+  twocount . . . . . . . . . . .	DWord	 bp - 00000008
+  ulp1 . . . . . . . . . . . . .	L Near	 0000031F _TEXT	
+gettranscript  . . . . . . . . .	P Near	 0000013A _TEXT	Length= 000001C5 Public STDCALL
+  loo1 . . . . . . . . . . . . .	L Near	 00000156 _TEXT	
+  itlp1  . . . . . . . . . . . .	L Near	 00000222 _TEXT	
+  apluss . . . . . . . . . . . .	L Near	 00000272 _TEXT	
+  ab1  . . . . . . . . . . . . .	L Near	 00000280 _TEXT	
+  cd1  . . . . . . . . . . . . .	L Near	 0000028E _TEXT	
+  fa1  . . . . . . . . . . . . .	L Near	 0000029C _TEXT	
+  sdf1 . . . . . . . . . . . . .	L Near	 000002AA _TEXT	
+  breaklp  . . . . . . . . . . .	L Near	 000002B4 _TEXT	
+  invld  . . . . . . . . . . . .	L Near	 000002DB _TEXT	
+  scc  . . . . . . . . . . . . .	L Near	 000002E9 _TEXT	
+gradesub . . . . . . . . . . . .	P Near	 000007C7 _TEXT	Length= 0000011A Public STDCALL
+  varr1  . . . . . . . . . . . .	DWord	 bp + 00000008
+  aplus  . . . . . . . . . . . .	L Near	 000007F4 _TEXT	
+  aonly  . . . . . . . . . . . .	L Near	 00000825 _TEXT	
+  bonly  . . . . . . . . . . . .	L Near	 0000084C _TEXT	
+  conly  . . . . . . . . . . . .	L Near	 00000870 _TEXT	
+  donly  . . . . . . . . . . . .	L Near	 00000894 _TEXT	
+  lowgrade . . . . . . . . . . .	L Near	 000008B8 _TEXT	
+  end1 . . . . . . . . . . . . .	L Near	 000008DC _TEXT	
+login  . . . . . . . . . . . . .	P Near	 00001493 _TEXT	Length= 00000029 Public STDCALL
+  var1 . . . . . . . . . . . . .	DWord	 bp + 00000008
+main . . . . . . . . . . . . . .	P Near	 00000000 _TEXT	Length= 0000013A Public STDCALL
+  o1 . . . . . . . . . . . . . .	L Near	 00000000 _TEXT	
+  out1 . . . . . . . . . . . . .	L Near	 0000003D _TEXT	
+  kl1  . . . . . . . . . . . . .	L Near	 00000075 _TEXT	
+  case1  . . . . . . . . . . . .	L Near	 000000B0 _TEXT	
+  case2  . . . . . . . . . . . .	L Near	 000000C8 _TEXT	
+  case3  . . . . . . . . . . . .	L Near	 000000D9 _TEXT	
+  case4  . . . . . . . . . . . .	L Near	 000000E0 _TEXT	
+  case5  . . . . . . . . . . . .	L Near	 000000E7 _TEXT	
+  case6  . . . . . . . . . . . .	L Near	 000000EE _TEXT	
+  case7  . . . . . . . . . . . .	L Near	 00000102 _TEXT	
+  e2 . . . . . . . . . . . . . .	L Near	 00000122 _TEXT	
+printf . . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External C
+scanf  . . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External C
+setmarks . . . . . . . . . . . .	P Near	 000008E1 _TEXT	Length= 000008A0 Public STDCALL
+  ch1  . . . . . . . . . . . . .	DWord	 bp - 00000004
+  tryag  . . . . . . . . . . . .	L Near	 000008F9 _TEXT	
+  try2 . . . . . . . . . . . . .	L Near	 00000927 _TEXT	
+  prcd . . . . . . . . . . . . .	L Near	 00000935 _TEXT	
+  sb1  . . . . . . . . . . . . .	L Near	 0000096D _TEXT	
+  sb12 . . . . . . . . . . . . .	L Near	 0000098F _TEXT	
+  sb2  . . . . . . . . . . . . .	L Near	 00000AB5 _TEXT	
+  sb22 . . . . . . . . . . . . .	L Near	 00000AD7 _TEXT	
+  sb3  . . . . . . . . . . . . .	L Near	 00000BFD _TEXT	
+  sb32 . . . . . . . . . . . . .	L Near	 00000C1F _TEXT	
+  sb4  . . . . . . . . . . . . .	L Near	 00000D45 _TEXT	
+  sb42 . . . . . . . . . . . . .	L Near	 00000D67 _TEXT	
+  sb5  . . . . . . . . . . . . .	L Near	 00000E8D _TEXT	
+  sb52 . . . . . . . . . . . . .	L Near	 00000EAF _TEXT	
+  sb6  . . . . . . . . . . . . .	L Near	 00000FD5 _TEXT	
+  sb62 . . . . . . . . . . . . .	L Near	 00000FF7 _TEXT	
+  er1  . . . . . . . . . . . . .	L Near	 0000111A _TEXT	
+  trr1 . . . . . . . . . . . . .	L Near	 0000113E _TEXT	
+  invd3  . . . . . . . . . . . .	L Near	 0000114F _TEXT	
+  success  . . . . . . . . . . .	L Near	 0000115D _TEXT	
+  ex1  . . . . . . . . . . . . .	L Near	 00001169 _TEXT	
+setsubjects  . . . . . . . . . .	P Near	 0000124E _TEXT	Length= 000001D8 Public STDCALL
+  var1 . . . . . . . . . . . . .	DWord	 bp + 00000008
+  countvar . . . . . . . . . . .	DWord	 bp - 00000004
+  lp1  . . . . . . . . . . . . .	L Near	 00001268 _TEXT	
+  year1  . . . . . . . . . . . .	L Near	 000012DC _TEXT	
+  year2  . . . . . . . . . . . .	L Near	 000012ED _TEXT	
+  year3  . . . . . . . . . . . .	L Near	 000012FE _TEXT	
+  year4  . . . . . . . . . . . .	L Near	 0000130F _TEXT	
+  set  . . . . . . . . . . . . .	L Near	 0000131E _TEXT	
+  lp2  . . . . . . . . . . . . .	L Near	 00001335 _TEXT	
+  try  . . . . . . . . . . . . .	L Near	 0000135C _TEXT	
+  tryone . . . . . . . . . . . .	L Near	 0000136B _TEXT	
+  nvd3 . . . . . . . . . . . . .	L Near	 00001388 _TEXT	
+  fine11 . . . . . . . . . . . .	L Near	 00001396 _TEXT	
+  checkingl  . . . . . . . . . .	L Near	 000013A4 _TEXT	
+  moveon . . . . . . . . . . . .	L Near	 000013B2 _TEXT	
+  lp3  . . . . . . . . . . . . .	L Near	 000013C5 _TEXT	
+  outofloop  . . . . . . . . . .	L Near	 000013D2 _TEXT	
+  outofloop1 . . . . . . . . . .	L Near	 000013DA _TEXT	
+  dploop . . . . . . . . . . . .	L Near	 000013F5 _TEXT	
+settable . . . . . . . . . . . .	P Near	 0000152F _TEXT	Length= 000001B9 Public STDCALL
+  ad1  . . . . . . . . . . . . .	DWord	 bp + 00000008
+  ad2  . . . . . . . . . . . . .	DWord	 bp + 0000000C
+  count1 . . . . . . . . . . . .	DWord	 bp - 00000004
+  count2 . . . . . . . . . . . .	DWord	 bp - 00000008
+  subcount . . . . . . . . . . .	DWord	 bp - 00000020
+  mcc1 . . . . . . . . . . . . .	DWord	 bp - 00000024
+  mcc2 . . . . . . . . . . . . .	DWord	 bp - 00000028
+  inloop . . . . . . . . . . . .	L Near	 00001565 _TEXT	
+  tlp  . . . . . . . . . . . . .	L Near	 00001573 _TEXT	
+  ilp2 . . . . . . . . . . . . .	L Near	 000015C1 _TEXT	
+  tr1  . . . . . . . . . . . . .	L Near	 000015E9 _TEXT	
+  break1 . . . . . . . . . . . .	L Near	 0000163C _TEXT	
+  ivd1 . . . . . . . . . . . . .	L Near	 00001653 _TEXT	
+  invldd1  . . . . . . . . . . .	L Near	 0000166E _TEXT	
+  cont1  . . . . . . . . . . . .	L Near	 00001689 _TEXT	
+viewcurrent  . . . . . . . . . .	P Near	 000016E8 _TEXT	Length= 00000150 Public STDCALL
+  rowi . . . . . . . . . . . . .	DWord	 bp - 00000004
+  coli . . . . . . . . . . . . .	DWord	 bp - 00000008
+  sechalf  . . . . . . . . . . .	DWord	 bp - 0000000C
+  fine1  . . . . . . . . . . . .	L Near	 00001790 _TEXT	
+  badtime  . . . . . . . . . . .	L Near	 000017C8 _TEXT	
+  e1 . . . . . . . . . . . . . .	L Near	 000017DB _TEXT	
+  frday  . . . . . . . . . . . .	L Near	 000017E9 _TEXT	
+  satday . . . . . . . . . . . .	L Near	 0000180D _TEXT	
+  contin1  . . . . . . . . . . .	L Near	 00001819 _TEXT	
+  scc4 . . . . . . . . . . . . .	L Near	 00001825 _TEXT	
+viewrecords  . . . . . . . . . .	P Near	 00000502 _TEXT	Length= 000002C5 Public STDCALL
+  tempcount  . . . . . . . . . .	DWord	 bp - 00000004
+  retry1 . . . . . . . . . . . .	L Near	 00000508 _TEXT	
+  onearr . . . . . . . . . . . .	L Near	 00000559 _TEXT	
+  twoarr . . . . . . . . . . . .	L Near	 00000576 _TEXT	
+  threearr . . . . . . . . . . .	L Near	 00000590 _TEXT	
+  fourarr  . . . . . . . . . . .	L Near	 000005AA _TEXT	
+  fivearr  . . . . . . . . . . .	L Near	 000005C4 _TEXT	
+  sixarr . . . . . . . . . . . .	L Near	 000005DE _TEXT	
+  show1  . . . . . . . . . . . .	L Near	 000005F8 _TEXT	
+  lpp2 . . . . . . . . . . . . .	L Near	 00000616 _TEXT	
+  err11  . . . . . . . . . . . .	L Near	 000007A8 _TEXT	
+  succ1  . . . . . . . . . . . .	L Near	 000007B4 _TEXT	
+viewtable  . . . . . . . . . . .	P Near	 00001838 _TEXT	Length= 00000192 Public STDCALL
+  co1  . . . . . . . . . . . . .	DWord	 bp - 00000004
+  co2  . . . . . . . . . . . . .	DWord	 bp - 00000008
+  mc1  . . . . . . . . . . . . .	DWord	 bp - 0000000C
+  proceedp . . . . . . . . . . .	L Near	 0000188A _TEXT	
+  tr2  . . . . . . . . . . . . .	L Near	 000018AF _TEXT	
+  olp1 . . . . . . . . . . . . .	L Near	 000018DE _TEXT	
+  chk1 . . . . . . . . . . . . .	L Near	 000018F1 _TEXT	
+  prc1 . . . . . . . . . . . . .	L Near	 000018FD _TEXT	
+  olp2 . . . . . . . . . . . . .	L Near	 00001942 _TEXT	
+  moveon . . . . . . . . . . . .	L Near	 0000195C _TEXT	
+  cnt1 . . . . . . . . . . . . .	L Near	 00001980 _TEXT	
+  scc3 . . . . . . . . . . . . .	L Near	 000019AC _TEXT	
+wsprintfA  . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External C
+
+
+Symbols:
+
+                N a m e                 Type     Value    Attr
+
+??0000 . . . . . . . . . . . . .	Byte	 000008A9 _DATA	
+??0001 . . . . . . . . . . . . .	Byte	 000008E5 _DATA	
+??0002 . . . . . . . . . . . . .	Byte	 000008F3 _DATA	
+??0003 . . . . . . . . . . . . .	Byte	 00000911 _DATA	
+??0004 . . . . . . . . . . . . .	Byte	 0000092E _DATA	
+??0005 . . . . . . . . . . . . .	Byte	 0000093E _DATA	
+??0006 . . . . . . . . . . . . .	Byte	 0000094D _DATA	
+??0007 . . . . . . . . . . . . .	Byte	 000009C2 _DATA	
+??0008 . . . . . . . . . . . . .	Byte	 000009E6 _DATA	
+??0009 . . . . . . . . . . . . .	Byte	 00000A00 _DATA	
+??000A . . . . . . . . . . . . .	Byte	 00000A08 _DATA	
+??000B . . . . . . . . . . . . .	Byte	 00000A48 _DATA	
+??000C . . . . . . . . . . . . .	Byte	 00000A4B _DATA	
+??000D . . . . . . . . . . . . .	Byte	 00000A4E _DATA	
+??000E . . . . . . . . . . . . .	Byte	 00000A56 _DATA	
+??000F . . . . . . . . . . . . .	Byte	 00000A5C _DATA	
+??0010 . . . . . . . . . . . . .	Byte	 00000A62 _DATA	
+??0011 . . . . . . . . . . . . .	Byte	 00000A68 _DATA	
+??0012 . . . . . . . . . . . . .	Byte	 00000A6C _DATA	
+??0013 . . . . . . . . . . . . .	Byte	 00000A82 _DATA	
+??0014 . . . . . . . . . . . . .	Byte	 00000AFE _DATA	
+??0015 . . . . . . . . . . . . .	Byte	 00000B1D _DATA	
+??0016 . . . . . . . . . . . . .	Byte	 00000B4B _DATA	
+??0017 . . . . . . . . . . . . .	Byte	 00000B65 _DATA	
+??0018 . . . . . . . . . . . . .	Byte	 00000B68 _DATA	
+??0019 . . . . . . . . . . . . .	Byte	 00000B84 _DATA	
+??001A . . . . . . . . . . . . .	Byte	 00000BBB _DATA	
+??001B . . . . . . . . . . . . .	Byte	 00000BDD _DATA	
+??001C . . . . . . . . . . . . .	Byte	 00000BE4 _DATA	
+??001D . . . . . . . . . . . . .	Byte	 00000BE9 _DATA	
+??001E . . . . . . . . . . . . .	Byte	 00000BF8 _DATA	
+??001F . . . . . . . . . . . . .	Byte	 00000C15 _DATA	
+??0020 . . . . . . . . . . . . .	Byte	 00000C58 _DATA	
+??0021 . . . . . . . . . . . . .	Byte	 00000CCC _DATA	
+??0022 . . . . . . . . . . . . .	Byte	 00000CE9 _DATA	
+??0023 . . . . . . . . . . . . .	Byte	 00000D1A _DATA	
+??0024 . . . . . . . . . . . . .	Byte	 00000D2B _DATA	
+??0025 . . . . . . . . . . . . .	Byte	 00000D81 _DATA	
+??0026 . . . . . . . . . . . . .	Byte	 00000D83 _DATA	
+??0027 . . . . . . . . . . . . .	Byte	 00000D8A _DATA	
+??0028 . . . . . . . . . . . . .	Byte	 00000D93 _DATA	
+??0029 . . . . . . . . . . . . .	Byte	 00000D96 _DATA	
+??002A . . . . . . . . . . . . .	Byte	 00000DC3 _DATA	
+??002B . . . . . . . . . . . . .	Byte	 00000E19 _DATA	
+??002C . . . . . . . . . . . . .	Byte	 00000E21 _DATA	
+??002D . . . . . . . . . . . . .	Byte	 00000E29 _DATA	
+??002E . . . . . . . . . . . . .	Byte	 00000E30 _DATA	
+??002F . . . . . . . . . . . . .	Byte	 00000E38 _DATA	
+??0030 . . . . . . . . . . . . .	Byte	 00000E3F _DATA	
+??0031 . . . . . . . . . . . . .	Byte	 00000E47 _DATA	
+??0032 . . . . . . . . . . . . .	Byte	 00000E4E _DATA	
+??0033 . . . . . . . . . . . . .	Byte	 00000E56 _DATA	
+??0034 . . . . . . . . . . . . .	Byte	 00000E5D _DATA	
+??0035 . . . . . . . . . . . . .	Byte	 00000E65 _DATA	
+??0036 . . . . . . . . . . . . .	Byte	 00000E80 _DATA	
+??0037 . . . . . . . . . . . . .	Byte	 00000E86 _DATA	
+??0038 . . . . . . . . . . . . .	Byte	 00000E99 _DATA	
+??0039 . . . . . . . . . . . . .	Byte	 00000EDD _DATA	
+??003A . . . . . . . . . . . . .	Byte	 00000EFC _DATA	
+??003B . . . . . . . . . . . . .	Byte	 00000F0D _DATA	
+??003C . . . . . . . . . . . . .	Byte	 00000F1E _DATA	
+??003D . . . . . . . . . . . . .	Byte	 00000F32 _DATA	
+??003E . . . . . . . . . . . . .	Byte	 00000F46 _DATA	
+??003F . . . . . . . . . . . . .	Byte	 00000F5A _DATA	
+??0040 . . . . . . . . . . . . .	Byte	 00000F6E _DATA	
+??0041 . . . . . . . . . . . . .	Byte	 00000F9F _DATA	
+??0042 . . . . . . . . . . . . .	Byte	 00000FB0 _DATA	
+??0043 . . . . . . . . . . . . .	Byte	 00000FCA _DATA	
+??0044 . . . . . . . . . . . . .	Byte	 00000FE7 _DATA	
+??0045 . . . . . . . . . . . . .	Byte	 00001004 _DATA	
+??0046 . . . . . . . . . . . . .	Byte	 0000101A _DATA	
+??0047 . . . . . . . . . . . . .	Byte	 00001030 _DATA	
+??0048 . . . . . . . . . . . . .	Byte	 0000104B _DATA	
+??0049 . . . . . . . . . . . . .	Byte	 00001068 _DATA	
+??004A . . . . . . . . . . . . .	Byte	 00001085 _DATA	
+??004B . . . . . . . . . . . . .	Byte	 0000109B _DATA	
+??004C . . . . . . . . . . . . .	Byte	 000010B1 _DATA	
+??004D . . . . . . . . . . . . .	Byte	 000010CC _DATA	
+??004E . . . . . . . . . . . . .	Byte	 000010E9 _DATA	
+??004F . . . . . . . . . . . . .	Byte	 00001106 _DATA	
+??0050 . . . . . . . . . . . . .	Byte	 0000111C _DATA	
+??0051 . . . . . . . . . . . . .	Byte	 00001132 _DATA	
+??0052 . . . . . . . . . . . . .	Byte	 0000114D _DATA	
+??0053 . . . . . . . . . . . . .	Byte	 0000116A _DATA	
+??0054 . . . . . . . . . . . . .	Byte	 00001187 _DATA	
+??0055 . . . . . . . . . . . . .	Byte	 0000119D _DATA	
+??0056 . . . . . . . . . . . . .	Byte	 000011B3 _DATA	
+??0057 . . . . . . . . . . . . .	Byte	 000011CE _DATA	
+??0058 . . . . . . . . . . . . .	Byte	 000011EB _DATA	
+??0059 . . . . . . . . . . . . .	Byte	 00001208 _DATA	
+??005A . . . . . . . . . . . . .	Byte	 0000121E _DATA	
+??005B . . . . . . . . . . . . .	Byte	 00001234 _DATA	
+??005C . . . . . . . . . . . . .	Byte	 0000124F _DATA	
+??005D . . . . . . . . . . . . .	Byte	 0000126C _DATA	
+??005E . . . . . . . . . . . . .	Byte	 00001289 _DATA	
+??005F . . . . . . . . . . . . .	Byte	 0000129F _DATA	
+??0060 . . . . . . . . . . . . .	Byte	 000012B5 _DATA	
+??0061 . . . . . . . . . . . . .	Byte	 000012D0 _DATA	
+??0062 . . . . . . . . . . . . .	Byte	 00001305 _DATA	
+??0063 . . . . . . . . . . . . .	Byte	 0000134D _DATA	
+??0064 . . . . . . . . . . . . .	Byte	 00001389 _DATA	
+??0065 . . . . . . . . . . . . .	Byte	 000013B7 _DATA	
+??0066 . . . . . . . . . . . . .	Byte	 000013D4 _DATA	
+??0067 . . . . . . . . . . . . .	Byte	 00001403 _DATA	
+??0068 . . . . . . . . . . . . .	Byte	 00001406 _DATA	
+??0069 . . . . . . . . . . . . .	Byte	 0000142E _DATA	
+??006A . . . . . . . . . . . . .	Byte	 00001439 _DATA	
+??006B . . . . . . . . . . . . .	Byte	 00001445 _DATA	
+??006C . . . . . . . . . . . . .	Byte	 00001450 _DATA	
+??006D . . . . . . . . . . . . .	Byte	 0000145C _DATA	
+??006E . . . . . . . . . . . . .	Byte	 0000146D _DATA	
+??006F . . . . . . . . . . . . .	Byte	 0000148A _DATA	
+??0070 . . . . . . . . . . . . .	Byte	 000014AD _DATA	
+??0071 . . . . . . . . . . . . .	Byte	 000014B0 _DATA	
+??0072 . . . . . . . . . . . . .	Byte	 000014C6 _DATA	
+??0073 . . . . . . . . . . . . .	Byte	 000014DE _DATA	
+??0074 . . . . . . . . . . . . .	Byte	 00001512 _DATA	
+??0075 . . . . . . . . . . . . .	Byte	 00001515 _DATA	
+??0076 . . . . . . . . . . . . .	Byte	 0000153C _DATA	
+??0077 . . . . . . . . . . . . .	Byte	 0000155B _DATA	
+??0078 . . . . . . . . . . . . .	Byte	 0000157A _DATA	
+??0079 . . . . . . . . . . . . .	Byte	 00001596 _DATA	
+??007A . . . . . . . . . . . . .	Byte	 000015B0 _DATA	
+??007B . . . . . . . . . . . . .	Byte	 000015C9 _DATA	
+??007C . . . . . . . . . . . . .	Byte	 000015DC _DATA	
+??007D . . . . . . . . . . . . .	Byte	 000015F0 _DATA	
+??007E . . . . . . . . . . . . .	Byte	 000015FC _DATA	
+??007F . . . . . . . . . . . . .	Byte	 0000161A _DATA	
+??0080 . . . . . . . . . . . . .	Byte	 0000162A _DATA	
+??0081 . . . . . . . . . . . . .	Byte	 00001631 _DATA	
+??0082 . . . . . . . . . . . . .	Byte	 00001646 _DATA	
+??0083 . . . . . . . . . . . . .	Byte	 0000164B _DATA	
+??0084 . . . . . . . . . . . . .	Byte	 00001660 _DATA	
+??0085 . . . . . . . . . . . . .	Byte	 00001674 _DATA	
+??0086 . . . . . . . . . . . . .	Byte	 00001688 _DATA	
+??0087 . . . . . . . . . . . . .	Byte	 000016B5 _DATA	
+??0088 . . . . . . . . . . . . .	Byte	 000016EC _DATA	
+??0089 . . . . . . . . . . . . .	Byte	 0000170A _DATA	
+??008A . . . . . . . . . . . . .	Byte	 0000174A _DATA	
+??008B . . . . . . . . . . . . .	Byte	 00001752 _DATA	
+??008C . . . . . . . . . . . . .	Byte	 00001758 _DATA	
+??008D . . . . . . . . . . . . .	Byte	 0000178E _DATA	
+??008E . . . . . . . . . . . . .	Byte	 00001796 _DATA	
+??008F . . . . . . . . . . . . .	Byte	 0000179C _DATA	
+??0090 . . . . . . . . . . . . .	Byte	 000017D3 _DATA	
+??0091 . . . . . . . . . . . . .	Byte	 0000180F _DATA	
+??0092 . . . . . . . . . . . . .	Byte	 0000181B _DATA	
+??0093 . . . . . . . . . . . . .	Byte	 00001822 _DATA	
+??0094 . . . . . . . . . . . . .	Byte	 0000182B _DATA	
+??0095 . . . . . . . . . . . . .	Byte	 0000183F _DATA	
+??0096 . . . . . . . . . . . . .	Byte	 0000185E _DATA	
+??0097 . . . . . . . . . . . . .	Byte	 0000189C _DATA	
+??0098 . . . . . . . . . . . . .	Byte	 000018AB _DATA	
+??0099 . . . . . . . . . . . . .	Byte	 000018B8 _DATA	
+??009A . . . . . . . . . . . . .	Byte	 000018BC _DATA	
+??009B . . . . . . . . . . . . .	Byte	 000018BF _DATA	
+??009C . . . . . . . . . . . . .	Byte	 000018C3 _DATA	
+??009D . . . . . . . . . . . . .	Byte	 000018C6 _DATA	
+??009E . . . . . . . . . . . . .	Byte	 000018CD _DATA	
+??009F . . . . . . . . . . . . .	Byte	 000018D5 _DATA	
+@CodeSize  . . . . . . . . . . .	Number	 00000000h   
+@DataSize  . . . . . . . . . . .	Number	 00000000h   
+@Interface . . . . . . . . . . .	Number	 00000003h   
+@Model . . . . . . . . . . . . .	Number	 00000007h   
+@code  . . . . . . . . . . . . .	Text   	 _TEXT
+@data  . . . . . . . . . . . . .	Text   	 FLAT
+@fardata?  . . . . . . . . . . .	Text   	 FLAT
+@fardata . . . . . . . . . . . .	Text   	 FLAT
+@stack . . . . . . . . . . . . .	Text   	 FLAT
+ALT_MASK . . . . . . . . . . . .	Number	 00000003h   
+CAPSLOCK_ON  . . . . . . . . . .	Number	 00000080h   
+CREATE_ALWAYS  . . . . . . . . .	Number	 00000002h   
+CREATE_NEW . . . . . . . . . . .	Number	 00000001h   
+CTRL_MASK  . . . . . . . . . . .	Number	 0000000Ch   
+CreateFile . . . . . . . . . . .	Text   	 CreateFileA
+DO_NOT_SHARE . . . . . . . . . .	Number	 00000000h   
+ENABLE_ECHO_INPUT  . . . . . . .	Number	 00000004h   
+ENABLE_LINE_INPUT  . . . . . . .	Number	 00000002h   
+ENABLE_MOUSE_INPUT . . . . . . .	Number	 00000010h   
+ENABLE_PROCESSED_INPUT . . . . .	Number	 00000001h   
+ENABLE_PROCESSED_OUTPUT  . . . .	Number	 00000001h   
+ENABLE_WINDOW_INPUT  . . . . . .	Number	 00000008h   
+ENABLE_WRAP_AT_EOL_OUTPUT  . . .	Number	 00000002h   
+ENHANCED_KEY . . . . . . . . . .	Number	 00000100h   
+FALSE  . . . . . . . . . . . . .	Number	 00000000h   
+FILE_APPEND_DATA . . . . . . . .	Number	 00000004h   
+FILE_ATTRIBUTE_ARCHIVE . . . . .	Number	 00000020h   
+FILE_ATTRIBUTE_COMPRESSED  . . .	Number	 00000800h   
+FILE_ATTRIBUTE_DEVICE  . . . . .	Number	 00000040h   
+FILE_ATTRIBUTE_DIRECTORY . . . .	Number	 00000010h   
+FILE_ATTRIBUTE_ENCRYPTED . . . .	Number	 00004000h   
+FILE_ATTRIBUTE_HIDDEN  . . . . .	Number	 00000002h   
+FILE_ATTRIBUTE_NORMAL  . . . . .	Number	 00000080h   
+FILE_ATTRIBUTE_NOT_CONTENT_INDEXED .	Number	 00002000h   
+FILE_ATTRIBUTE_OFFLINE . . . . .	Number	 00001000h   
+FILE_ATTRIBUTE_READONLY  . . . .	Number	 00000001h   
+FILE_ATTRIBUTE_REPARSE_POINT . .	Number	 00000400h   
+FILE_ATTRIBUTE_SPARSE_FILE . . .	Number	 00000200h   
+FILE_ATTRIBUTE_SYSTEM  . . . . .	Number	 00000004h   
+FILE_ATTRIBUTE_TEMPORARY . . . .	Number	 00000100h   
+FILE_BEGIN . . . . . . . . . . .	Number	 00000000h   
+FILE_CURRENT . . . . . . . . . .	Number	 00000001h   
+FILE_DELETE_CHILD  . . . . . . .	Number	 00000040h   
+FILE_END . . . . . . . . . . . .	Number	 00000002h   
+FILE_READ_DATA . . . . . . . . .	Number	 00000001h   
+FILE_SHARE_DELETE  . . . . . . .	Number	 00000004h   
+FILE_SHARE_READ  . . . . . . . .	Number	 00000001h   
+FILE_SHARE_WRITE . . . . . . . .	Number	 00000002h   
+FILE_WRITE_DATA  . . . . . . . .	Number	 00000002h   
+FOCUS_EVENT  . . . . . . . . . .	Number	 00000010h   
+FORMAT_MESSAGE_ALLOCATE_BUFFER .	Number	 00000100h   
+FORMAT_MESSAGE_FROM_SYSTEM . . .	Number	 00001000h   
+FormatMessage  . . . . . . . . .	Text   	 FormatMessageA
+GENERIC_ALL  . . . . . . . . . .	Number	 10000000h   
+GENERIC_EXECUTE  . . . . . . . .	Number	 20000000h   
+GENERIC_READ . . . . . . . . . .	Number	 -80000000h   
+GENERIC_WRITE  . . . . . . . . .	Number	 40000000h   
+GetCommandLine . . . . . . . . .	Text   	 GetCommandLineA
+HANDLE . . . . . . . . . . . . .	Text   	 DWORD
+HEAP_GENERATE_EXCEPTIONS . . . .	Number	 00000004h   
+HEAP_GROWABLE  . . . . . . . . .	Number	 00000002h   
+HEAP_NO_SERIALIZE  . . . . . . .	Number	 00000001h   
+HEAP_REALLOC_IN_PLACE_ONLY . . .	Number	 00000010h   
+HEAP_ZERO_MEMORY . . . . . . . .	Number	 00000008h   
+IDABORT  . . . . . . . . . . . .	Number	 00000003h   
+IDCANCEL . . . . . . . . . . . .	Number	 00000002h   
+IDCLOSE  . . . . . . . . . . . .	Number	 00000008h   
+IDCONTINUE . . . . . . . . . . .	Number	 0000000Bh   
+IDHELP . . . . . . . . . . . . .	Number	 00000009h   
+IDIGNORE . . . . . . . . . . . .	Number	 00000005h   
+IDNO . . . . . . . . . . . . . .	Number	 00000007h   
+IDOK . . . . . . . . . . . . . .	Number	 00000001h   
+IDRETRY  . . . . . . . . . . . .	Number	 00000004h   
+IDTIMEOUT  . . . . . . . . . . .	Number	 00007D00h   
+IDTRYAGAIN . . . . . . . . . . .	Number	 0000000Ah   
+IDYES  . . . . . . . . . . . . .	Number	 00000006h   
+INVALID_HANDLE_VALUE . . . . . .	Number	 -00000001h   
+KBDOWN_FLAG  . . . . . . . . . .	Number	 00000001h   
+KEY_EVENT  . . . . . . . . . . .	Number	 00000001h   
+KEY_MASKS  . . . . . . . . . . .	Number	 0000001Fh   
+LEFT_ALT_PRESSED . . . . . . . .	Number	 00000002h   
+LEFT_CTRL_PRESSED  . . . . . . .	Number	 00000008h   
+MB_ABORTRETRYIGNORE  . . . . . .	Number	 00000002h   
+MB_APPLMODAL . . . . . . . . . .	Number	 00000000h   
+MB_CANCELTRYCONTINUE . . . . . .	Number	 00000006h   
+MB_DEFBUTTON1  . . . . . . . . .	Number	 00000000h   
+MB_DEFBUTTON2  . . . . . . . . .	Number	 00000100h   
+MB_DEFBUTTON3  . . . . . . . . .	Number	 00000200h   
+MB_DEFBUTTON4  . . . . . . . . .	Number	 00000300h   
+MB_HELP  . . . . . . . . . . . .	Number	 00004000h   
+MB_ICONASTERISK  . . . . . . . .	Number	 00000040h   
+MB_ICONERROR . . . . . . . . . .	Number	 00000010h   
+MB_ICONEXCLAMATION . . . . . . .	Number	 00000030h   
+MB_ICONHAND  . . . . . . . . . .	Number	 00000010h   
+MB_ICONINFORMATION . . . . . . .	Number	 00000040h   
+MB_ICONQUESTION  . . . . . . . .	Number	 00000020h   
+MB_ICONSTOP  . . . . . . . . . .	Number	 00000010h   
+MB_ICONWARNING . . . . . . . . .	Number	 00000030h   
+MB_OKCANCEL  . . . . . . . . . .	Number	 00000001h   
+MB_OK  . . . . . . . . . . . . .	Number	 00000000h   
+MB_RETRYCANCEL . . . . . . . . .	Number	 00000005h   
+MB_SYSTEMMODAL . . . . . . . . .	Number	 00001000h   
+MB_TASKMODAL . . . . . . . . . .	Number	 00002000h   
+MB_USERICON  . . . . . . . . . .	Number	 00000080h   
+MB_YESNOCANCEL . . . . . . . . .	Number	 00000003h   
+MB_YESNO . . . . . . . . . . . .	Number	 00000004h   
+MENU_EVENT . . . . . . . . . . .	Number	 00000008h   
+MOUSE_EVENT  . . . . . . . . . .	Number	 00000002h   
+MessageBox . . . . . . . . . . .	Text   	 MessageBoxA
+NULL . . . . . . . . . . . . . .	Number	 00000000h   
+NUMLOCK_ON . . . . . . . . . . .	Number	 00000020h   
+OPEN_ALWAYS  . . . . . . . . . .	Number	 00000004h   
+OPEN_EXISTING  . . . . . . . . .	Number	 00000003h   
+PeekConsoleInput . . . . . . . .	Text   	 PeekConsoleInputA
+RIGHT_ALT_PRESSED  . . . . . . .	Number	 00000001h   
+RIGHT_CTRL_PRESSED . . . . . . .	Number	 00000004h   
+ReadConsoleInput . . . . . . . .	Text   	 ReadConsoleInputA
+ReadConsole  . . . . . . . . . .	Text   	 ReadConsoleA
+SCROLLLOCK_ON  . . . . . . . . .	Number	 00000040h   
+SHIFT_MASK . . . . . . . . . . .	Number	 00000010h   
+SHIFT_PRESSED  . . . . . . . . .	Number	 00000010h   
+STD_ERROR_HANDLE . . . . . . . .	Number	 -0000000Ch   
+STD_INPUT_HANDLE . . . . . . . .	Number	 -0000000Ah   
+STD_OUTPUT_HANDLE  . . . . . . .	Number	 -0000000Bh   
+SetConsoleTitle  . . . . . . . .	Text   	 SetConsoleTitleA
+TAB  . . . . . . . . . . . . . .	Number	 00000009h   
+TRUE . . . . . . . . . . . . . .	Number	 00000001h   
+TRUNCATE_EXISTING  . . . . . . .	Number	 00000005h   
+VK_11  . . . . . . . . . . . . .	Number	 000000BDh   
+VK_12  . . . . . . . . . . . . .	Number	 000000BBh   
+VK_ADD . . . . . . . . . . . . .	Number	 0000006Bh   
+VK_BACK  . . . . . . . . . . . .	Number	 00000008h   
+VK_CANCEL  . . . . . . . . . . .	Number	 00000003h   
+VK_CAPITAL . . . . . . . . . . .	Number	 00000014h   
+VK_CLEAR . . . . . . . . . . . .	Number	 0000000Ch   
+VK_CONTROL . . . . . . . . . . .	Number	 00000011h   
+VK_DECIMAL . . . . . . . . . . .	Number	 0000006Eh   
+VK_DELETE  . . . . . . . . . . .	Number	 0000002Eh   
+VK_DIVIDE  . . . . . . . . . . .	Number	 0000006Fh   
+VK_DOWN  . . . . . . . . . . . .	Number	 00000028h   
+VK_END . . . . . . . . . . . . .	Number	 00000023h   
+VK_ESCAPE  . . . . . . . . . . .	Number	 0000001Bh   
+VK_EXECUTE . . . . . . . . . . .	Number	 0000002Bh   
+VK_F10 . . . . . . . . . . . . .	Number	 00000079h   
+VK_F11 . . . . . . . . . . . . .	Number	 0000007Ah   
+VK_F12 . . . . . . . . . . . . .	Number	 0000007Bh   
+VK_F13 . . . . . . . . . . . . .	Number	 0000007Ch   
+VK_F14 . . . . . . . . . . . . .	Number	 0000007Dh   
+VK_F15 . . . . . . . . . . . . .	Number	 0000007Eh   
+VK_F16 . . . . . . . . . . . . .	Number	 0000007Fh   
+VK_F17 . . . . . . . . . . . . .	Number	 00000080h   
+VK_F18 . . . . . . . . . . . . .	Number	 00000081h   
+VK_F19 . . . . . . . . . . . . .	Number	 00000082h   
+VK_F1  . . . . . . . . . . . . .	Number	 00000070h   
+VK_F20 . . . . . . . . . . . . .	Number	 00000083h   
+VK_F21 . . . . . . . . . . . . .	Number	 00000084h   
+VK_F22 . . . . . . . . . . . . .	Number	 00000085h   
+VK_F23 . . . . . . . . . . . . .	Number	 00000086h   
+VK_F24 . . . . . . . . . . . . .	Number	 00000087h   
+VK_F2  . . . . . . . . . . . . .	Number	 00000071h   
+VK_F3  . . . . . . . . . . . . .	Number	 00000072h   
+VK_F4  . . . . . . . . . . . . .	Number	 00000073h   
+VK_F5  . . . . . . . . . . . . .	Number	 00000074h   
+VK_F6  . . . . . . . . . . . . .	Number	 00000075h   
+VK_F7  . . . . . . . . . . . . .	Number	 00000076h   
+VK_F8  . . . . . . . . . . . . .	Number	 00000077h   
+VK_F9  . . . . . . . . . . . . .	Number	 00000078h   
+VK_HELP  . . . . . . . . . . . .	Number	 0000002Fh   
+VK_HOME  . . . . . . . . . . . .	Number	 00000024h   
+VK_INSERT  . . . . . . . . . . .	Number	 0000002Dh   
+VK_LBUTTON . . . . . . . . . . .	Number	 00000001h   
+VK_LCONTROL  . . . . . . . . . .	Number	 000000A2h   
+VK_LEFT  . . . . . . . . . . . .	Number	 00000025h   
+VK_LMENU . . . . . . . . . . . .	Number	 000000A4h   
+VK_LSHIFT  . . . . . . . . . . .	Number	 000000A0h   
+VK_MENU  . . . . . . . . . . . .	Number	 00000012h   
+VK_MULTIPLY  . . . . . . . . . .	Number	 0000006Ah   
+VK_NEXT  . . . . . . . . . . . .	Number	 00000022h   
+VK_NUMLOCK . . . . . . . . . . .	Number	 00000090h   
+VK_NUMPAD0 . . . . . . . . . . .	Number	 00000060h   
+VK_NUMPAD1 . . . . . . . . . . .	Number	 00000061h   
+VK_NUMPAD2 . . . . . . . . . . .	Number	 00000062h   
+VK_NUMPAD3 . . . . . . . . . . .	Number	 00000063h   
+VK_NUMPAD4 . . . . . . . . . . .	Number	 00000064h   
+VK_NUMPAD5 . . . . . . . . . . .	Number	 00000065h   
+VK_NUMPAD6 . . . . . . . . . . .	Number	 00000066h   
+VK_NUMPAD7 . . . . . . . . . . .	Number	 00000067h   
+VK_NUMPAD8 . . . . . . . . . . .	Number	 00000068h   
+VK_NUMPAD9 . . . . . . . . . . .	Number	 00000069h   
+VK_PAUSE . . . . . . . . . . . .	Number	 00000013h   
+VK_PRINT . . . . . . . . . . . .	Number	 0000002Ah   
+VK_PRIOR . . . . . . . . . . . .	Number	 00000021h   
+VK_RBUTTON . . . . . . . . . . .	Number	 00000002h   
+VK_RCONTROL  . . . . . . . . . .	Number	 000000A3h   
+VK_RETURN  . . . . . . . . . . .	Number	 0000000Dh   
+VK_RIGHT . . . . . . . . . . . .	Number	 00000027h   
+VK_RMENU . . . . . . . . . . . .	Number	 000000A5h   
+VK_RSHIFT  . . . . . . . . . . .	Number	 000000A1h   
+VK_SCROLL  . . . . . . . . . . .	Number	 00000091h   
+VK_SEPARATER . . . . . . . . . .	Number	 0000006Ch   
+VK_SHIFT . . . . . . . . . . . .	Number	 00000010h   
+VK_SNAPSHOT  . . . . . . . . . .	Number	 0000002Ch   
+VK_SPACE . . . . . . . . . . . .	Number	 00000020h   
+VK_SUBTRACT  . . . . . . . . . .	Number	 0000006Dh   
+VK_TAB . . . . . . . . . . . . .	Number	 00000009h   
+VK_UP  . . . . . . . . . . . . .	Number	 00000026h   
+WINDOW_BUFFER_SIZE_EVENT . . . .	Number	 00000004h   
+WriteConsoleOutputCharacter  . .	Text   	 WriteConsoleOutputCharacterA
+WriteConsole . . . . . . . . . .	Text   	 WriteConsoleA
+arr1 . . . . . . . . . . . . . .	DWord	 00000000 _DATA	
+black  . . . . . . . . . . . . .	Number	 00000000h   
+blue . . . . . . . . . . . . . .	Number	 00000001h   
+brown  . . . . . . . . . . . . .	Number	 00000006h   
+colsize  . . . . . . . . . . . .	Number	 00000005h   
+crarr  . . . . . . . . . . . . .	DWord	 00000124 _DATA	
+cyan . . . . . . . . . . . . . .	Number	 00000003h   
+daysize  . . . . . . . . . . . .	Number	 0000000Ah   
+days . . . . . . . . . . . . . .	Byte	 000000A0 _DATA	
+duplicate  . . . . . . . . . . .	DWord	 00000100 _DATA	
+exit . . . . . . . . . . . . . .	Text   	 INVOKE ExitProcess,0
+firstrowsize . . . . . . . . . .	Number	 00000028h   
+firstsize  . . . . . . . . . . .	Number	 0000000Bh   
+first  . . . . . . . . . . . . .	Byte	 0000022C _DATA	
+fourthrowsize  . . . . . . . . .	Number	 00000025h   
+fourthsize . . . . . . . . . . .	Number	 0000000Bh   
+fourth . . . . . . . . . . . . .	Byte	 00000712 _DATA	
+ftrowsize  . . . . . . . . . . .	Number	 00000005h   
+gotcredits . . . . . . . . . . .	DWord	 00000140 _DATA	
+gray . . . . . . . . . . . . . .	Number	 00000008h   
+green  . . . . . . . . . . . . .	Number	 00000002h   
+id . . . . . . . . . . . . . . .	Byte	 000000F2 _DATA	
+lightBlue  . . . . . . . . . . .	Number	 00000009h   
+lightCyan  . . . . . . . . . . .	Number	 0000000Bh   
+lightGray  . . . . . . . . . . .	Number	 00000007h   
+lightGreen . . . . . . . . . . .	Number	 0000000Ah   
+lightMagenta . . . . . . . . . .	Number	 0000000Dh   
+lightRed . . . . . . . . . . . .	Number	 0000000Ch   
+localt . . . . . . . . . . . . .	LPSYSTEMTIME  000000DC _DATA	
+locked1  . . . . . . . . . . . .	DWord	 00000120 _DATA	
+magenta  . . . . . . . . . . . .	Number	 00000005h   
+maxlength  . . . . . . . . . . .	Number	 00000032h   
+mysubjects . . . . . . . . . . .	DWord	 0000016C _DATA	
+overwrite1 . . . . . . . . . . .	DWord	 0000013C _DATA	
+red  . . . . . . . . . . . . . .	Number	 00000004h   
+rowsize  . . . . . . . . . . . .	Number	 00000014h   
+secondrowsize  . . . . . . . . .	Number	 00000025h   
+secondsize . . . . . . . . . . .	Number	 0000000Bh   
+second . . . . . . . . . . . . .	Byte	 000003E4 _DATA	
+size1  . . . . . . . . . . . . .	DWord	 000000FC _DATA	
+sub1 . . . . . . . . . . . . . .	DWord	 000001B4 _DATA	
+sub2 . . . . . . . . . . . . . .	DWord	 000001C8 _DATA	
+sub3 . . . . . . . . . . . . . .	DWord	 000001DC _DATA	
+sub4 . . . . . . . . . . . . . .	DWord	 000001F0 _DATA	
+sub5 . . . . . . . . . . . . . .	DWord	 00000204 _DATA	
+sub6 . . . . . . . . . . . . . .	DWord	 00000218 _DATA	
+subflag  . . . . . . . . . . . .	DWord	 00000184 _DATA	
+subgpa . . . . . . . . . . . . .	DWord	 0000019C _DATA	
+table1 . . . . . . . . . . . . .	Byte	 00000144 _DATA	
+tempstr  . . . . . . . . . . . .	Byte	 000000D2 _DATA	
+thirdrowsize . . . . . . . . . .	Number	 00000025h   
+thirdsize  . . . . . . . . . . .	Number	 0000000Bh   
+third  . . . . . . . . . . . . .	Byte	 0000057B _DATA	
+valid1 . . . . . . . . . . . . .	DWord	 00000118 _DATA	
+valid  . . . . . . . . . . . . .	DWord	 000000EE _DATA	
+white  . . . . . . . . . . . . .	Number	 0000000Fh   
+wsprintf . . . . . . . . . . . .	Text   	 wsprintfA
+yearchoice . . . . . . . . . . .	DWord	 0000011C _DATA	
+yellow . . . . . . . . . . . . .	Number	 0000000Eh   
+
+	   1 Warnings
+	   0 Errors
