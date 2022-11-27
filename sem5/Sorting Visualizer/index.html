@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sorting Visualization</title>
+    
+    <link rel="stylesheet" type="text/css" href="src/style.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" type="image/png" href="favicon.png">
+    <script src="lib/p5.js"></script>
+    <script src="src/array.js"></script>
+    <script src="src/dom.js"></script>
+    <script src="src/sketch.js"></script>
+    <script src="src/sort.js"></script>
+</head>
+<body>
+    <div id="nav-bar">
+        <div class="nav-bar-alg-selection">
+            <label for="alg-select" class="select-text">Algorithm:</label>
+            <select id="alg-select" class="nav-bar-select">
+            </select>
+            <label for="n-select" class="select-text">Element Count:</label>
+            <select id="n-select" class="nav-bar-select">
+            </select>
+        </div>
+        <div class="nav-bar-button-group">
+            <button id="start-button" class="nav-bar-button-item">Start</button>
+            <button id="random-button" class="nav-bar-button-item">Random</button>
+            <button id="sorted-button" class="nav-bar-button-item">Sorted</button>
+            <button id="shuffle-button" class="nav-bar-button-item">Shuffle</button>
+            <button id="reversed-button" class="nav-bar-button-item">Reversed</button>
+            <button id="reset-button" class="nav-bar-button-item">Reset</button>
+            <button id="upload-button" class="nav-bar-button-item">Upload</button>
+            <input type="file" id="help-button" class="nav-bar-button-item" accept="text" name="filename">
+        </div>
+    </div>
+    <div id="contentt">
+        <div id="sbox">
+            <div id="heading">Sorting Chart</div>
+            <div id="container"></div>
+        </div>
+        <div id="swapcount">
+            <p style="margin: 0px;">Swap Count:</p>
+            <div id="counter"></div>
+        </div>
+        <div id="stepsContainer">
+            <div id="stepheader">Steps</div>
+            <div id="steps">
+                <textarea contenteditable="true" disabled name="Steps" id="stepsBox" cols="50" rows="26" placeholder="Algorithm steps go here..." readonly>  
+                </textarea>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
