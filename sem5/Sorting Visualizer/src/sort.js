@@ -20,17 +20,17 @@ async function callSortFunction(fName) {
             await mergeSort(arr.slice(), 0, arr.length - 1);
             break;
         case 'insertionSort':
-            insertionSort(arr.slice());
+            await insertionSort(arr.slice());
             break;
         case 'heapSort':
-            heapSort(arr.slice());
+            await heapSort(arr.slice());
             break;
         case 'radixSort':
             if (arr.some(e => e !== Math.floor(e))) {
                 alert('Radix sort can be applied to integer values');
                 return 0;
             } else {
-                radixSort(arr.slice());
+                await radixSort(arr.slice());
             }
             break;
         case 'countSort':
@@ -41,7 +41,7 @@ async function callSortFunction(fName) {
             }else if(arr.some(e => e<0)){
                 alert('Negative numbers not allowed for Count Sort')
             }else
-            Countsort(arr.slice());
+            await Countsort(arr.slice());
             break;
     }
 
@@ -180,7 +180,7 @@ async function merge(a, low, mid, high) {
         allArr.push(a.slice());
 }
 
-function insertionSort(a) {
+async function insertionSort(a) {
     for (let i = 0; i < a.length; i++) {
         let current = a[i];
         let j = i - 1;
@@ -197,27 +197,7 @@ function insertionSort(a) {
     }
 }
 
-function selectionSort(a) {
-    allArr.push(a.slice());
-
-    for (let i = 0; i < a.length - 1; i++) {
-        let minIndex = i;
-
-        for (let j = i + 1; j < a.length; j++) {
-            if (a[j] < a[minIndex]) {
-                minIndex = j;
-            }
-        }
-
-        let tmp = a[minIndex];
-        a[minIndex] = a[i];
-        a[i] = tmp;
-
-        allArr.push(a.slice());
-    }
-}
-
-function heapSort(a) {
+async function heapSort(a) {
     for (let i = Math.floor(a.length / 2) - 1; i >= 0; i--) {
         heapify(a, a.length, i);
     }
@@ -229,11 +209,11 @@ function heapSort(a) {
 
         allArr.push(a.slice());
 
-        heapify(a, i, 0);
+        await heapify(a, i, 0);
     }
 }
 
-function heapify(a, n, i) {
+async function heapify(a, n, i) {
     let largest = i;
     let l = 2 * i + 1;
     let r = 2 * i + 2;
@@ -257,48 +237,14 @@ function heapify(a, n, i) {
     }
 }
 
-function timSortInsertion(a, low, high) {
-    for (let i = low + 1; i <= high; i++) {
-        let tmp = a[i];
-        let j = i - 1;
-
-        while (a[j] > tmp && j >= low) {
-            a[j+1] = a[j];
-            j--;
-            allArr.push(a.slice());
-        }
-
-        a[j+1] = tmp;
-        allArr.push(a.slice());
-    }
-
-}
-
-function timSort(a) {
-    const RUN = 32;
-    const n = a.length;
-
-    for (let i = 0; i < n; i += RUN) {
-        timSortInsertion(a, i, Math.min(i+RUN-1, n-1));
-    }
-
-    for (let size = RUN; size < n; size *= 2) {
-        for (let left = 0; left < n; left += 2*size) {
-            let mid = left + size - 1;
-            let right = Math.min((left + 2*size-1), (n-1));
-            merge(a, left, mid, right);
-        }
-    }
-}
-
-function radixSort(a) {
+async function radixSort(a) {
     let max = Math.max(...a); // Get maximum element
     for (let exp = 1; Math.floor(max / exp) > 0; exp *= 10) {
-        countSort(a, exp);
+        await countSort(a, exp);
     }
 }
 
-function countSort(a, exp) {
+async function countSort(a, exp) {
     let output = new Array(a.length).fill(0);
     let count = new Array(10).fill(0);
 
@@ -321,8 +267,7 @@ function countSort(a, exp) {
     }
 }
 
-
-function Countsort(a) {
+async function Countsort(a) {
     console.log(`Inside countsort function`);
     var n = a.length;
     let max = Math.max(...a);
@@ -345,128 +290,4 @@ function Countsort(a) {
         allArr.push(a.slice());
     }
     console.log(`array sorted: ${a}`);
-}
-
-function shellSort(a) {
-    for (let gap = Math.floor(a.length / 2); gap > 0; gap = Math.floor(gap / 2)) {
-        for (let i = gap; i < a.length; i++) {
-            let tmp = a[i];
-            let j;
-            for (j = i; j >= gap && a[j - gap] > tmp; j -= gap) {
-                a[j] = a[j - gap];
-                allArr.push(a.slice());
-            }
-
-            a[j] = tmp;
-            allArr.push(a.slice());
-        }
-    }
-}
-
-function cycleSort(a) {
-    for (let c = 0; c < a.length - 1; c++) {
-        let item = a[c];
-        let pos = c;
-
-        for (let i = c + 1; i < a.length; i++) {
-            if (a[i] < item) {
-                pos++;
-            }
-        }
-
-        if (pos === c) {
-            continue;
-        }
-
-        while (item === a[pos]) {
-            pos++;
-        }
-
-        let tmp = a[pos];
-        a[pos] = item;
-        item = tmp;
-        allArr.push(a.slice());
-
-        while (pos !== c) {
-            pos = c;
-            for (let i = c + 1; i < a.length; i++) {
-                if (a[i] < item) {
-                    pos++;
-                }
-            }
-
-            while (item === a[pos]) {
-                pos++;
-            }
-
-            tmp = a[pos];
-            a[pos] = item;
-            item = tmp;
-            allArr.push(a.slice());
-        }
-    }
-}
-
-function oddEvenSort(a) {
-    let sorted = false;
-
-    while (!sorted) {
-        sorted = true;
-        for (let i = 1; i < a.length - 1; i += 2) {
-            if (a[i] > a[i+1]) {
-                let tmp = a[i];
-                a[i] = a[i+1];
-                a[i+1] = tmp;
-                allArr.push(a.slice());
-                sorted = false;
-            }
-        }
-
-        for (let i = 0; i < a.length - 1; i += 2) {
-            if (a[i] > a[i+1]) {
-                let tmp = a[i];
-                a[i] = a[i+1];
-                a[i+1] = tmp;
-                allArr.push(a.slice());
-                sorted = false;
-            }
-        }
-    }
-}
-
-function cocktailSort(a) {
-    let swapped = true;
-    let start = 0;
-    let end = a.length - 1;
-    allArr.push(a.slice());
-
-    while (swapped) {
-        swapped = false;
-
-        for (let i = start; i < end; i++) {
-            if (a[i] > a[i+1]) {
-                let tmp = a[i];
-                a[i] = a[i+1];
-                a[i+1] = tmp;
-                swapped = true;
-                allArr.push(a.slice());
-            }
-        }
-
-        if (swapped) {
-            swapped = false;
-            end--;
-            for (let i = end - 1; i >= start; i--) {
-                if (a[i] > a[i+1]) {
-                    let tmp = a[i];
-                    a[i] = a[i+1];
-                    a[i+1] = tmp;
-                    swapped = true;
-                    allArr.push(a.slice());
-                }
-            }
-        }
-
-        start++;
-    }
 }
