@@ -14,10 +14,10 @@ async function callSortFunction(fName) {
             await bubbleSort(arr.slice());
             break;
         case 'quickSort':
-            quickSort(arr.slice(), 0, arr.length - 1);
+            await quickSort(arr.slice(), 0, arr.length - 1);
             break;
         case 'mergeSort':
-            mergeSort(arr.slice(), 0, arr.length - 1);
+            await mergeSort(arr.slice(), 0, arr.length - 1);
             break;
         case 'insertionSort':
             insertionSort(arr.slice());
@@ -79,24 +79,25 @@ async function bubbleSort(a) {
 }
 
 function sleep() {
-    return new Promise(resolve => setTimeout(resolve, 100));
+    return new Promise(resolve => setTimeout(resolve, 200));
 }
 
-function quickSort(a, low, high) {
+async function quickSort(a, low, high) {
     if (low < high) {
-        let pIndex = quickSortPartition(a, low, high);
+        let pIndex = await quickSortPartition(a, low, high);
         quickSort(a, low, pIndex - 1);
         quickSort(a, pIndex + 1, high);
     }
 }
 
-function quickSortPartition(a, low, high) {
+async function quickSortPartition(a, low, high) {
     let pivot = a[high];
 
     let i = low - 1;
-
     for (let j = low; j < high; j++) {
         if (a[j] < pivot) {
+            console.log(`inside pivot`);
+            //await sleep();
             allArr.push(a.slice());
             i++;
 
@@ -108,26 +109,26 @@ function quickSortPartition(a, low, high) {
 
     allArr.push(a.slice());
     i++;
-
+    console.log(`calling sleep outside loop in pivot`);
+    await sleep();
     let tmp = a[high];
     a[high] = a[i];
     a[i] = tmp;
-
     allArr.push(a.slice());
 
     return i;
 }
 
-function mergeSort(a, low, high) {
+async function mergeSort(a, low, high) {
     if (low < high) {
         let mid = parseInt(((low + high) / 2).toString());
         mergeSort(a, low, mid);
         mergeSort(a, mid + 1, high);
-        merge(a, low, mid, high);
+        await merge(a, low, mid, high);
     }
 }
 
-function merge(a, low, mid, high) {
+async function merge(a, low, mid, high) {
     let n1 = mid - low + 1;
     let n2 = high - mid;
 
@@ -156,15 +157,15 @@ function merge(a, low, mid, high) {
         }
 
         k++;
-
         allArr.push(a.slice());
+        //await sleep();
     }
 
     while (i < n1) {
         a[k] = l[i];
         i++;
         k++;
-
+        //await sleep();
         allArr.push(a.slice());
     }
 
@@ -172,9 +173,11 @@ function merge(a, low, mid, high) {
         a[k] = r[j];
         j++;
         k++;
-
+        //await sleep();
         allArr.push(a.slice());
     }
+        await sleep();
+        allArr.push(a.slice());
 }
 
 function insertionSort(a) {
