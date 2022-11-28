@@ -46,6 +46,7 @@ async function callSortFunction(fName) {
     }
 
     after = millis();
+    document.getElementById('sorted').style.display='block';
     return after - before;
 }
 
@@ -79,7 +80,7 @@ async function bubbleSort(a) {
 }
 
 function sleep() {
-    return new Promise(resolve => setTimeout(resolve, 200));
+    return new Promise(resolve => setTimeout(resolve, 150));
 }
 
 async function quickSort(a, low, high) {
@@ -264,6 +265,7 @@ async function countSort(a, exp) {
     for (let i = 0; i < a.length; i++) {
         a[i] = output[i];
         allArr.push(a.slice());
+        await sleep();
     }
 }
 
@@ -273,11 +275,11 @@ async function Countsort(a) {
     let max = Math.max(...a);
     console.log(`Unsorted Array: ${a}`);
     let output = new Array(n).fill(0);
-    let count = new Array(max).fill(0);
+    let count = new Array(max+1).fill(0);
     for (var i = 0; i < n; ++i)
         ++count[a[i]];
 
-        for (var i = 1; i <max; ++i)
+        for (var i = 1; i <max+1; ++i)
         count[i] += count[i - 1];
  
         for (var i = n - 1; i >= 0; i--) {
@@ -288,6 +290,7 @@ async function Countsort(a) {
     for (var i = 0; i < n; ++i){
         a[i] = output[i];
         allArr.push(a.slice());
+        await sleep();
     }
     console.log(`array sorted: ${a}`);
 }

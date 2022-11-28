@@ -58,6 +58,7 @@ function reset() {
     loopStatus = 'noLoop';
     k = 0;
     document.getElementById('stepsBox').innerText="";   
+    document.getElementById('sorted').style.display="none";
 }
 
 function draw() {
